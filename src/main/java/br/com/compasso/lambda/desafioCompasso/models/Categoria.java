@@ -2,16 +2,14 @@ package br.com.compasso.lambda.desafioCompasso.models;
 
 public class Categoria {
 
-	private Tipo genero;
 	private String descricao;
 	private boolean lancamento;
 	private int ano;
 
 	// Construtor
 
-	public Categoria(Tipo genero, String descricao, boolean lancamento, int ano) {
+	public Categoria(String descricao, boolean lancamento, int ano) {
 		super();
-		this.genero = genero;
 		this.descricao = descricao;
 		this.lancamento = lancamento;
 		this.ano = ano;
@@ -42,9 +40,4 @@ public class Categoria {
 	public void setAno(int ano) {
 		this.ano = ano;
 	}
-
-	public Tipo getGenero() {
-		return genero;
-	}
-
 }
