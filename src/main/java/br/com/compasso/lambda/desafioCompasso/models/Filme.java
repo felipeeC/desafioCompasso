@@ -3,7 +3,22 @@ package br.com.compasso.lambda.desafioCompasso.models;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+
+import org.hibernate.annotations.ManyToAny;
+
+
+@Entity
 public class Filme {
+	
+	@Id  @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	private String descricao;
 	private String nome;
@@ -12,7 +27,8 @@ public class Filme {
 	private String estudio;
 	private String diretor;
 	private String elenco;
-
+	@ManyToMany
+	//@JoinTable(name = "filmeCategoria" , joinColumns = @JoinColumn(name = "filme_id"), inverseJoinColumns =  @JoinColumn(name = "categoria_id"))
 	private List<Categoria> categorias = new ArrayList<>();
 
 	public Filme() {
