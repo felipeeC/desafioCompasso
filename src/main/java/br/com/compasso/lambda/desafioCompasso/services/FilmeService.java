@@ -8,7 +8,6 @@ import br.com.compasso.lambda.desafioCompasso.models.Filme;
 public class FilmeService {
 
 	private List<Filme> filmes = new ArrayList<Filme>();
-	private int id = 0;
 
 	// Métodos
 
@@ -44,12 +43,11 @@ public class FilmeService {
 	}
 
 	public void adiciona(String descricao, String nome) {
-		Filme filme = new Filme(id, descricao, nome);
+		Filme filme = new Filme();
 
 		if(filmes.contains(filme)) {
 			System.out.println("Filme já existe!");
 		} else {
-			this.id++;
 			filmes.add(filme);
 			System.out.println("Filme adicionado com sucesso!");
 		}
