@@ -32,17 +32,15 @@ public class Filme {
 
 	}
 
-	public Filme(Long id, String descricao, String nome) {
+	public Filme(String descricao, String nome) {
 		super();
-		this.id = id;
 		this.descricao = descricao;
 		this.nome = nome;
 	}
 	
-	public Filme(Long id, String descricao, String nome, String comentario, String dataLancamento, String estudio,
+	public Filme(String descricao, String nome, String comentario, String dataLancamento, String estudio,
 			String diretor, String elenco) {
 		super();
-		this.id = id;
 		this.descricao = descricao;
 		this.nome = nome;
 		this.comentario = comentario;
