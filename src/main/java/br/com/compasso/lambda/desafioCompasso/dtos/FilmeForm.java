@@ -1,14 +1,28 @@
 package br.com.compasso.lambda.desafioCompasso.dtos;
 
+
+
+import javax.validation.constraints.NotEmpty;
+
+import com.sun.istack.NotNull;
+
 import br.com.compasso.lambda.desafioCompasso.models.Filme;
 
 public class FilmeForm {
+	
+	@NotNull @NotEmpty
 	private String descricao;
+	@NotNull @NotEmpty
 	private String nome;
+	@NotNull @NotEmpty
 	private String comentario;
+	@NotNull @NotEmpty
 	private String dataLancamento;
+	@NotNull @NotEmpty
 	private String estudio;
+	@NotNull @NotEmpty
 	private String diretor;
+	@NotNull @NotEmpty
 	private String elenco;
 
 	public String getDescricao() {

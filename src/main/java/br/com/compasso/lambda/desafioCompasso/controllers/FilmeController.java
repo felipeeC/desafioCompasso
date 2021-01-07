@@ -3,6 +3,8 @@ package br.com.compasso.lambda.desafioCompasso.controllers;
 import java.net.URI;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,7 +34,7 @@ public class FilmeController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<FilmeDto> cadastrar(@RequestBody FilmeForm form, UriComponentsBuilder uriBuilder) {
+	public ResponseEntity<FilmeDto> cadastrar(@RequestBody @Valid FilmeForm form, UriComponentsBuilder uriBuilder) {
 		Filme filme = form.converter();
 		filmeRepository.save(filme);
 		URI uri = uriBuilder.path("/filmes/{id}").buildAndExpand(filme.getId()).toUri();
