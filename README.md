@@ -1,2 +1,1 @@
 # desafioEquipeLambda
-# desafioEquipeLambda
