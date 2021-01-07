@@ -1,0 +1,2 @@
+INSERT INTO Filme(descricao, nome, comentario, data_lancamento, estudio, diretor, elenco) VALUES ('A bordo', 'Titanic','Filme trágico',  '1997-05-23', 'Hollywood',  'James Cameron', 'Leonardo Dicaprio');
+INSERT INTO Filme(descricao, nome, comentario, data_lancamento, estudio, diretor, elenco) VALUES ('Quando a ameaça','Filme massa',  '2008-07-12', 'Hollywood',  'Christopher Nolan', 'Christian Bale, Heath Ledger, Isaac Bardavid')
