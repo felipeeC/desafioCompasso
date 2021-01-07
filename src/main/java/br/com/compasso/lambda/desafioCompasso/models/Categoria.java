@@ -1,51 +1,53 @@
 package br.com.compasso.lambda.desafioCompasso.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 
 
 @Entity
 public class Categoria {
+	
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
-	private String descricao;
-	private boolean lancamento;
-	private int ano;
+	private String nome;
+	
+	@ManyToMany(mappedBy = "categorias")
+	private List<Filme> filmes = new ArrayList<>();
 
 	// Construtor
-
-	public Categoria(String descricao, boolean lancamento, int ano) {
-		super();
-		this.descricao = descricao;
-		this.lancamento = lancamento;
-		this.ano = ano;
+	
+	public Categoria() {
+		
 	}
 
+	public Categoria(String nome) {
+		
+		this.nome = nome;
+
+	}
+	
 	// Getters e Setters
 
-	public String getDescricao() {
-		return descricao;
+	public long getId() {
+		return id;
 	}
 
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
+	public void setId(long id) {
+		this.id = id;
 	}
 
-	public boolean isLancamento() {
-		return lancamento;
+	public String getNome() {
+		return nome;
 	}
 
-	public void setLancamento(boolean lancamento) {
-		this.lancamento = lancamento;
+	public void setNome(String nome) {
+		this.nome = nome;
 	}
 
-	public int getAno() {
-		return ano;
-	}
-
-	public void setAno(int ano) {
-		this.ano = ano;
-	}
 }
