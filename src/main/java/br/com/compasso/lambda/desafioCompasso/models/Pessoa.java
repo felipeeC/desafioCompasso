@@ -1,24 +1,31 @@
 package br.com.compasso.lambda.desafioCompasso.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Pessoa {
 	@Id  @GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Long id;
 	private String nome;
 	private int idade;
+	
+	@OneToMany
+	private List<Filme> filmes = new ArrayList<>();
 
 	// Construtor
-
-	public Pessoa(int id, String nome, int idade) {
+	public Pessoa(Long id, String nome, int idade, List<Filme> filmes) {
 		super();
 		this.id = id;
 		this.nome = nome;
 		this.idade = idade;
+		this.filmes = filmes;
 	}
 
 	public Pessoa() {
@@ -26,12 +33,20 @@ public class Pessoa {
 	}
 
 	// Getters e Setters
+	
+	public List<Filme> getFilmes() {
+		return filmes;
+	}
+	
+	public void setFilmes(List<Filme> filmes) {
+		this.filmes = filmes;
+	}
 
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
