@@ -11,10 +11,12 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
 
+
 @Entity
 public class Filme {
-	
-	@Id  @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String descricao;
 	private String nome;
@@ -24,7 +26,8 @@ public class Filme {
 	private String diretor;
 	private String elenco;
 	@ManyToMany
-	//@JoinTable(name = "filmeCategoria" , joinColumns = @JoinColumn(name = "filme_id"), inverseJoinColumns =  @JoinColumn(name = "categoria_id"))
+	// @JoinTable(name = "filmeCategoria" , joinColumns = @JoinColumn(name =
+	// "filme_id"), inverseJoinColumns = @JoinColumn(name = "categoria_id"))
 	private List<Categoria> categorias = new ArrayList<>();
 
 	public Filme() {
@@ -37,7 +40,7 @@ public class Filme {
 		this.descricao = descricao;
 		this.nome = nome;
 	}
-	
+
 	public Filme(String descricao, String nome, String comentario, String dataLancamento, String estudio,
 			String diretor, String elenco) {
 		super();
@@ -51,12 +54,11 @@ public class Filme {
 	}
 
 	// HashCode e Equals
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((nome == null) ? 0 : nome.hashCode());
 		return result;
 	}
 
@@ -69,10 +71,10 @@ public class Filme {
 		if (getClass() != obj.getClass())
 			return false;
 		Filme other = (Filme) obj;
-		if (id == null) {
-			if (other.id != null)
+		if (nome == null) {
+			if (other.nome != null)
 				return false;
-		} else if (!id.equals(other.id))
+		} else if (!nome.equalsIgnoreCase(other.nome))
 			return false;
 		return true;
 	}
