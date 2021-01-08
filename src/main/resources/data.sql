@@ -3,3 +3,6 @@ INSERT INTO Filme(descricao, nome, comentario, data_lancamento, estudio, diretor
 
 INSERT INTO Pessoa(nome, idade)
 	VALUES ('Guilherme', 24), ('Rafael', 21), ('Gabriel', 27);
+    
+INSERT INTO Categoria(nome)
+     VALUES ('Suspense'), ('Comédia'), ('Ação'), ('Aventura'), ('Infantil'), ('Romance'), ('Ficção'), ('Terror'), ('Mistério'), ('Drama');
