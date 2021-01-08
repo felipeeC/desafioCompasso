@@ -24,9 +24,8 @@ import br.com.compasso.lambda.desafioCompasso.services.FilmeService;
 @RequestMapping(value = "/filmes")
 public class FilmeController {
 
-	//
-
-	FilmeService filmeService = new FilmeService();
+	@Autowired
+	private FilmeService filmeService;
 
 	@GetMapping
 	public List<FilmeDto> filmes() {
