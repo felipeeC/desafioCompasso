@@ -1,7 +1,6 @@
 package br.com.compasso.lambda.desafioCompasso.dtos;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import org.springframework.data.domain.Page;
 
 import br.com.compasso.lambda.desafioCompasso.models.Pessoa;
 
@@ -29,8 +28,8 @@ public class PessoaDto {
 		return idade;
 	}
 	
-	public static List<PessoaDto> converter(List<Pessoa> pessoas) {
-		return pessoas.stream().map(PessoaDto::new).collect(Collectors.toList());
+	public static Page<PessoaDto> converter(Page<Pessoa> pessoas) {
+		return pessoas.map(PessoaDto::new);
 	}
 	
 	
