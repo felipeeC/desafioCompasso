@@ -3,14 +3,64 @@ package br.com.compasso.lambda.desafioCompasso.services;
 import java.util.ArrayList;
 import java.util.List;
 
+
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import br.com.compasso.lambda.desafioCompasso.models.Filme;
-
+import br.com.compasso.lambda.desafioCompasso.repositories.FilmeRepository;
+@Service
 public class FilmeService {
-
-	private List<Filme> filmes = new ArrayList<Filme>();
+	
+	@Autowired
+	private FilmeRepository filmeRepository;
+	
+	//private List<Filme> filmes = new ArrayList<Filme>();
 
 	// Métodos
-
+	
+	@Transactional(readOnly = true)
+	public List<Filme> getFilmes() {
+		 List<Filme> filmes = filmeRepository.findAll();
+		 return filmes;
+	}
+	 
+	public void postFilme(Filme filme) {
+		filmeRepository.save(filme);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	public void imprimeById(int idFilme) {
 		for (Filme filme : filmes) {
 			if (filme.getId() == idFilme) {
@@ -69,4 +119,6 @@ public class FilmeService {
 		return false;
 
 	}
+	
+	
 }

@@ -18,27 +18,28 @@ import br.com.compasso.lambda.desafioCompasso.dtos.FilmeDto;
 import br.com.compasso.lambda.desafioCompasso.dtos.FilmeForm;
 import br.com.compasso.lambda.desafioCompasso.models.Filme;
 import br.com.compasso.lambda.desafioCompasso.repositories.FilmeRepository;
+import br.com.compasso.lambda.desafioCompasso.services.FilmeService;
 
 @RestController
 @RequestMapping(value = "/filmes")
 public class FilmeController {
 
-	@Autowired
-	private FilmeRepository filmeRepository;
-	
+	//
+
+	FilmeService filmeService = new FilmeService();
+
 	@GetMapping
-	public List<FilmeDto> filmes(){
-		List<Filme> filmes = filmeRepository.findAll();
-				
+	public List<FilmeDto> filmes() {
+		List<Filme> filmes = filmeService.getFilmes();
 		return FilmeDto.converter(filmes);
 	}
-	
+
 	@PostMapping
 	public ResponseEntity<FilmeDto> cadastrar(@RequestBody @Valid FilmeForm form, UriComponentsBuilder uriBuilder) {
 		Filme filme = form.converter();
-		filmeRepository.save(filme);
+		filmeService.postFilme(filme);
 		URI uri = uriBuilder.path("/filmes/{id}").buildAndExpand(filme.getId()).toUri();
 		return ResponseEntity.created(uri).body(new FilmeDto(filme));
 	}
-	
+
 }
