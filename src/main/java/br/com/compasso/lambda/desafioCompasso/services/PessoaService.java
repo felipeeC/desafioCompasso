@@ -3,26 +3,44 @@ package br.com.compasso.lambda.desafioCompasso.services;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.compasso.lambda.desafioCompasso.models.Pessoa;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import br.com.compasso.lambda.desafioCompasso.dtos.PessoaDto;
+import br.com.compasso.lambda.desafioCompasso.models.Pessoa;
+import br.com.compasso.lambda.desafioCompasso.repositories.PessoaRepository;
+
+@Service @Configuration
 public class PessoaService {
 	private List<Pessoa> pessoas = new ArrayList<>();
-	private int id = 0;
 
+	@Autowired
+	private PessoaRepository pessoaRepository;
+	
 	//Métodoss
 
-	public void removeById(int idPessoa) {
+	@Transactional(readOnly = true)
+	public List<PessoaDto> retornaTodas(){
+		List<Pessoa> pessoas = pessoaRepository.findAll();
 		
-		Pessoa pessoaRemovida = this.findById(idPessoa);
-		
-		if(pessoaRemovida != null) {
-			pessoas.remove(pessoaRemovida);
-			System.out.println("Pessoa removida com sucesso!");
-		} else {
-			System.out.println("Não foi encotrada nenhuma pessoa com esse id!");
-		}
-
+		return PessoaDto.converter(pessoas);
 	}
+
+//	public void removeById(int idPessoa) {
+//		
+//		Pessoa pessoaRemovida = this.findById(idPessoa);
+//		
+//		if(pessoaRemovida != null) {
+//			pessoas.remove(pessoaRemovida);
+//			System.out.println("Pessoa removida com sucesso!");
+//		} else {
+//			System.out.println("Não foi encotrada nenhuma pessoa com esse id!");
+//		}
+//
+//	}
 	
 	public void editaNomePessoa(int idPessoa, String novoNome) {
 		
@@ -59,19 +77,14 @@ public class PessoaService {
 	}
 
 	public void adiciona(String nome, int idade) {
-		Pessoa novaPessoa = new Pessoa(id, nome.toUpperCase(), idade);
+		Pessoa novaPessoa = new Pessoa();
 		
 		if(pessoas.contains(novaPessoa)) {
 			System.out.println("Pessoa já existe");
 		} else {
-			id++;
 			pessoas.add(novaPessoa);
 			System.out.println("Pessoa adicionada com sucesso!");
 		}
-	}
-	
-	public List<Pessoa> imprimeTodos (){
-		return pessoas;
 	}
 	
 	public Pessoa findById(int idPessoa) {
