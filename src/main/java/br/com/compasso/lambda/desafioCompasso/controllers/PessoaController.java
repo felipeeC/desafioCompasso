@@ -1,7 +1,8 @@
 package br.com.compasso.lambda.desafioCompasso.controllers;
 
-import java.util.List;
 import java.util.Optional;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -11,10 +12,14 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.compasso.lambda.desafioCompasso.dtos.PessoaDto;
+import br.com.compasso.lambda.desafioCompasso.dtos.PessoaForm;
 import br.com.compasso.lambda.desafioCompasso.models.Pessoa;
 import br.com.compasso.lambda.desafioCompasso.services.PessoaService;
 
@@ -32,7 +37,7 @@ public class PessoaController {
 					direction = Direction.ASC, 
 					page = 0, 
 					size = 10) Pageable paginacao
-			){
+			) {
 		return pessoaService.retornaTodas(paginacao);
 	}
 	
@@ -46,5 +51,17 @@ public class PessoaController {
 		
 		return ResponseEntity.notFound().build();
 	}
+	
+	@PostMapping
+	public ResponseEntity<PessoaDto> cadastrarPessoa(
+			@RequestBody @Valid PessoaForm form,
+			UriComponentsBuilder uriBuilder
+			) {
+		return (ResponseEntity<PessoaDto>) ResponseEntity.EMPTY;
+	}
+	
+	
 
 }
+
+
