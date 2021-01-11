@@ -1,49 +1,84 @@
 package br.com.compasso.lambda.desafioCompasso.services;
 
-import java.net.URI;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.util.UriComponentsBuilder;
 
-import br.com.compasso.lambda.desafioCompasso.dtos.FilmeCompletoDto;
 import br.com.compasso.lambda.desafioCompasso.models.Filme;
 import br.com.compasso.lambda.desafioCompasso.repositories.FilmeRepository;
-
 @Service
 public class FilmeService {
-
+	
 	@Autowired
 	private FilmeRepository filmeRepository;
-
-	// private List<Filme> filmes = new ArrayList<Filme>();
+	
+	//private List<Filme> filmes = new ArrayList<Filme>();
 
 	// Métodos
-
+	
 	@Transactional(readOnly = true)
 	public List<Filme> getFilmes() {
-		List<Filme> filmes = filmeRepository.findAll();
-		return filmes;
+		 List<Filme> filmes = filmeRepository.findAll();
+		 return filmes;
+	}
+	 
+	public void postFilme(Filme filme) {
+		filmeRepository.save(filme);
+	}
+	
+	public Filme update(Long id, Filme obj) {
+		Filme entity = filmeRepository.getOne(id);
+		updateData(entity, obj);
+		return filmeRepository.save(entity);
 	}
 
-	public ResponseEntity<FilmeCompletoDto> postFilme(Filme filme, UriComponentsBuilder uriBuilder) {
-		List<Filme> filmes = getFilmes();
-
-		if (filmes.contains(filme)) {
-			System.out.println("num deu");
-			
-			return ResponseEntity.notFound().build();
-		} else {
-			filmeRepository.save(filme);
-			URI uri = uriBuilder.path("/filmes/{id}").buildAndExpand(filme.getId()).toUri();
-			return ResponseEntity.created(uri).body(new FilmeCompletoDto(filme));
-		}
-
+	private void updateData(Filme entity, Filme obj) {
+		entity.setNome(obj.getNome());
+		entity.setDescricao(obj.getDescricao());
 	}
-
+	
+	public void delete(Long id) {
+		filmeRepository.deleteById(id);
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 //	public void imprimeById(int idFilme) {
 //		for (Filme filme : filmes) {
 //			if (filme.getId() == idFilme) {
@@ -102,5 +137,6 @@ public class FilmeService {
 //		return false;
 //
 //	}
-
+	
+	
 }
