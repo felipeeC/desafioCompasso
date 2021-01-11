@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import br.com.compasso.lambda.desafioCompasso.dtos.AtualizacaoTopicoForm;
 import br.com.compasso.lambda.desafioCompasso.dtos.PessoaDto;
 import br.com.compasso.lambda.desafioCompasso.dtos.PessoaForm;
 import br.com.compasso.lambda.desafioCompasso.models.Pessoa;
@@ -49,6 +50,18 @@ public class PessoaService {
 				.toUri();
 		
 		return ResponseEntity.created(uri).body(new PessoaDto(pessoa));
+	}
+
+	public ResponseEntity<PessoaDto> atualizarPessoa(Long id, @Valid AtualizacaoTopicoForm form) {
+		Optional<Pessoa> optional = pessoaRepository.findById(id);
+		if(optional.isPresent()) {
+			optional.get().setNome(form.getNome());
+			optional.get().setIdade(form.getIdade());
+			Pessoa pessoaAtualizada = pessoaRepository.save(optional.get());
+			return ResponseEntity.ok(new PessoaDto(pessoaAtualizada));
+		}
+		
+		return ResponseEntity.notFound().build();
 	}
 
 
