@@ -20,9 +20,12 @@ public class CategoriaService {
 		List<Categoria> categorias = categoriaRepository.findAll();
 		return categorias;
 	}
-
 	
 	public void cadastrarCategoria( Categoria categoria ) {
 		categoriaRepository.save(categoria);
+	}
+
+	public void delete(Long id) {
+		categoriaRepository.deleteById(id);
 	}
 }
