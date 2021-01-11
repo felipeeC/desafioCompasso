@@ -1,14 +1,20 @@
 package br.com.compasso.lambda.desafioCompasso.services;
 
+import java.net.URI;
 import java.util.Optional;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.compasso.lambda.desafioCompasso.dtos.PessoaDto;
+import br.com.compasso.lambda.desafioCompasso.dtos.PessoaForm;
 import br.com.compasso.lambda.desafioCompasso.models.Pessoa;
 import br.com.compasso.lambda.desafioCompasso.repositories.PessoaRepository;
 
@@ -30,6 +36,19 @@ public class PessoaService {
 	@Transactional(readOnly = true)
 	public Optional<Pessoa> findById(Long id) {
 		return pessoaRepository.findById(id);
+	}
+
+	public ResponseEntity<PessoaDto> cadastrarPessoa(
+			@Valid PessoaForm form,
+			UriComponentsBuilder uriBuilder) {
+		Pessoa pessoa = form.converter();
+		pessoaRepository.save(pessoa);
+				
+		URI uri = uriBuilder.path("/pessoas/{id}")
+				.buildAndExpand(pessoa.getId())
+				.toUri();
+		
+		return ResponseEntity.created(uri).body(new PessoaDto(pessoa));
 	}
 
 

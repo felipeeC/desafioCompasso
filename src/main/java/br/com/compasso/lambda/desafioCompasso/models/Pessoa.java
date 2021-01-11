@@ -20,9 +20,7 @@ public class Pessoa {
 	private List<Filme> filmes = new ArrayList<>();
 
 	// Construtor
-	public Pessoa(Long id, String nome, int idade, List<Filme> filmes) {
-		super();
-		this.id = id;
+	public Pessoa(String nome, int idade, List<Filme> filmes) {
 		this.nome = nome;
 		this.idade = idade;
 		this.filmes = filmes;

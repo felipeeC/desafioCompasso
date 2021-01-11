@@ -2,6 +2,7 @@ package br.com.compasso.lambda.desafioCompasso.controllers;
 
 import java.util.Optional;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,11 +54,12 @@ public class PessoaController {
 	}
 	
 	@PostMapping
+	@Transactional
 	public ResponseEntity<PessoaDto> cadastrarPessoa(
 			@RequestBody @Valid PessoaForm form,
 			UriComponentsBuilder uriBuilder
 			) {
-		return (ResponseEntity<PessoaDto>) ResponseEntity.EMPTY;
+		return pessoaService.cadastrarPessoa(form, uriBuilder);
 	}
 	
 	
