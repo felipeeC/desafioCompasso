@@ -22,6 +22,7 @@ import br.com.compasso.lambda.desafioCompasso.dtos.FilmeDto;
 import br.com.compasso.lambda.desafioCompasso.dtos.FilmeForm;
 import br.com.compasso.lambda.desafioCompasso.models.Filme;
 import br.com.compasso.lambda.desafioCompasso.services.FilmeService;
+import br.com.compasso.lambda.desafioCompasso.services.PessoaService;
 
 @RestController
 @RequestMapping(value = "/filmes")
@@ -29,9 +30,18 @@ public class FilmeController {
 
 	@Autowired
 	private FilmeService filmeService;
-
+	
+	@Autowired
+	private PessoaService pessoaService;
+	
 	@GetMapping
 	public List<FilmeDto> filmes() {
+		List<Filme> filmes = filmeService.getFilmes();
+		return FilmeDto.converter(filmes);
+	}
+	
+	@GetMapping(value = "/mylist")
+	public List<FilmeDto> filmesPessoa() {
 		List<Filme> filmes = filmeService.getFilmes();
 		return FilmeDto.converter(filmes);
 	}
