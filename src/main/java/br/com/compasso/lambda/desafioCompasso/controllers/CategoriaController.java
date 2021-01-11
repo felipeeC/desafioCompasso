@@ -16,17 +16,20 @@ import br.com.compasso.lambda.desafioCompasso.dtos.CategoriaDto;
 import br.com.compasso.lambda.desafioCompasso.dtos.CategoriaForm;
 import br.com.compasso.lambda.desafioCompasso.models.Categoria;
 import br.com.compasso.lambda.desafioCompasso.repositories.CategoriaRepository;
+import br.com.compasso.lambda.desafioCompasso.services.CategoriaService;
 
 @RestController
 @RequestMapping(value = "/categorias")
 public class CategoriaController {
 
 	@Autowired
-	private CategoriaRepository categoriaRepository;
+	private CategoriaService categoriaService;
 	
 	@GetMapping
 	public List<CategoriaDto> categorias(){
-		List<Categoria> categorias = categoriaRepository.findAll();
+		
+		List<Categoria> categorias =categoriaService.getCategorias();
+		
 				
 		return CategoriaDto.converter(categorias);
 	}
@@ -34,7 +37,7 @@ public class CategoriaController {
 	@PostMapping
 	public ResponseEntity<CategoriaDto> cadastrar(@RequestBody CategoriaForm form, UriComponentsBuilder uriBuilder) {
 		Categoria categoria = form.converter();
-		categoriaRepository.save(categoria);
+		categoriaService.cadastrarCategoria(categoria);
 		URI uri = uriBuilder.path("/categorias/{id}").buildAndExpand(categoria.getId()).toUri();
 		return ResponseEntity.created(uri).body(new CategoriaDto(categoria));
 	}
