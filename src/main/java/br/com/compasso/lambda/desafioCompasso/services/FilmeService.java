@@ -1,5 +1,6 @@
 package br.com.compasso.lambda.desafioCompasso.services;
 
+
 import java.net.URI;
 import java.util.List;
 
@@ -12,10 +13,9 @@ import org.springframework.web.util.UriComponentsBuilder;
 import br.com.compasso.lambda.desafioCompasso.dtos.FilmeCompletoDto;
 import br.com.compasso.lambda.desafioCompasso.models.Filme;
 import br.com.compasso.lambda.desafioCompasso.repositories.FilmeRepository;
-
 @Service
 public class FilmeService {
-
+	
 	@Autowired
 	private FilmeRepository filmeRepository;
 
@@ -43,6 +43,23 @@ public class FilmeService {
 		}
 
 	}
+	
+	public Filme update(Long id, Filme obj) {
+		Filme entity = filmeRepository.getOne(id);
+		updateData(entity, obj);
+		return filmeRepository.save(entity);
+	}
+
+	private void updateData(Filme entity, Filme obj) {
+		entity.setNome(obj.getNome());
+		entity.setDescricao(obj.getDescricao());
+	}
+	
+	public void delete(Long id) {
+		filmeRepository.deleteById(id);
+		
+	}
+	
 
 //	public void imprimeById(int idFilme) {
 //		for (Filme filme : filmes) {
@@ -102,5 +119,6 @@ public class FilmeService {
 //		return false;
 //
 //	}
-
+	
+	
 }

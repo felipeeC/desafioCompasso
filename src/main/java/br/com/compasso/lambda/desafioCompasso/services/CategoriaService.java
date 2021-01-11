@@ -22,19 +22,19 @@ public class CategoriaService {
 	@Autowired
 	private CategoriaRepository categoriaRepository;
 
-	@GetMapping
-	public List<CategoriaDto> categorias() {
+	
+	public List<Categoria> getCategorias() {
 		List<Categoria> categorias = categoriaRepository.findAll();
 
-		return CategoriaDto.converter(categorias);
+		return categorias;
 	}
 
-	@PostMapping
-	public ResponseEntity<CategoriaDto> cadastrar(@RequestBody CategoriaForm form, UriComponentsBuilder uriBuilder) {
-		Categoria categoria = form.converter();
+	
+	public void cadastrarCategoria( Categoria categoria ) {
+		//Categoria categoria = form.converter();
 		categoriaRepository.save(categoria);
-		URI uri = uriBuilder.path("/categorias/{id}").buildAndExpand(categoria.getId()).toUri();
-		return ResponseEntity.created(uri).body(new CategoriaDto(categoria));
+		//URI uri = uriBuilder.path("/categorias/{id}").buildAndExpand(categoria.getId()).toUri();
+		//return ResponseEntity.created(uri).body(new CategoriaDto(categoria));
 	}
 
 }
