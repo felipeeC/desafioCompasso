@@ -15,7 +15,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 import br.com.compasso.lambda.desafioCompasso.dtos.CategoriaDto;
 import br.com.compasso.lambda.desafioCompasso.dtos.CategoriaForm;
 import br.com.compasso.lambda.desafioCompasso.models.Categoria;
-import br.com.compasso.lambda.desafioCompasso.repositories.CategoriaRepository;
 import br.com.compasso.lambda.desafioCompasso.services.CategoriaService;
 
 @RestController
@@ -27,10 +26,7 @@ public class CategoriaController {
 	
 	@GetMapping
 	public List<CategoriaDto> categorias(){
-		
 		List<Categoria> categorias =categoriaService.getCategorias();
-		
-				
 		return CategoriaDto.converter(categorias);
 	}
 	
