@@ -16,12 +16,11 @@ INSERT INTO Filme(descricao, nome, comentario, data_lancamento, estudio, diretor
 		'Chris Columbus',
 		'Daniel Radcliffe'
 		);
-<<<<<<< HEAD
+
 
 INSERT INTO Filme(descricao, nome, comentario, data_lancamento, estudio, diretor, elenco)
 	VALUES ('tt', 'calculadora','ttttt',  '1999-05-12', 'Hollywood',  'felipe alves', 'Leonardo Da vinci');
-=======
->>>>>>> 8acab32eaa036c8c8f60c3c05f1273a2b11870c1
+
 
 INSERT INTO Pessoa(nome, idade)
 	VALUES 
