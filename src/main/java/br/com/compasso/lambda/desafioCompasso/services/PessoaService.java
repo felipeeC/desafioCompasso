@@ -1,5 +1,6 @@
 package br.com.compasso.lambda.desafioCompasso.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.compasso.lambda.desafioCompasso.dtos.PessoaDto;
+import br.com.compasso.lambda.desafioCompasso.models.Filme;
 import br.com.compasso.lambda.desafioCompasso.models.Pessoa;
 import br.com.compasso.lambda.desafioCompasso.repositories.PessoaRepository;
 
@@ -31,6 +33,13 @@ public class PessoaService {
 	public Optional<Pessoa> findById(Long id) {
 		return pessoaRepository.findById(id);
 	}
+
+	public List<Filme> getPessoaFilmes() {
+		
+		return null;
+	}
+	
+	
 
 
 }

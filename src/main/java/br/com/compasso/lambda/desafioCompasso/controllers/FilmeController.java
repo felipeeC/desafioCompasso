@@ -9,11 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -21,6 +23,7 @@ import br.com.compasso.lambda.desafioCompasso.dtos.FilmeCompletoDto;
 import br.com.compasso.lambda.desafioCompasso.dtos.FilmeDto;
 import br.com.compasso.lambda.desafioCompasso.dtos.FilmeForm;
 import br.com.compasso.lambda.desafioCompasso.models.Filme;
+import br.com.compasso.lambda.desafioCompasso.models.Pessoa;
 import br.com.compasso.lambda.desafioCompasso.services.FilmeService;
 import br.com.compasso.lambda.desafioCompasso.services.PessoaService;
 
@@ -40,9 +43,18 @@ public class FilmeController {
 		return FilmeDto.converter(filmes);
 	}
 	
+	
+	@PostMapping("/associarFilmePessoa")
+	public String associarPessoa(@ModelAttribute Pessoa pessoa, @RequestParam long id ) {
+		//pessoa = pessoaService.get
+		
+		
+		return null;
+	}
+	
 	@GetMapping(value = "/mylist")
 	public List<FilmeDto> filmesPessoa() {
-		List<Filme> filmes = filmeService.getFilmes();
+		List<Filme> filmes = pessoaService.getPessoaFilmes();
 		return FilmeDto.converter(filmes);
 	}
 	
