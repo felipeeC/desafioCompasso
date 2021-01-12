@@ -7,19 +7,12 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
 
-import br.com.compasso.lambda.desafioCompasso.models.Pessoa;
-
-public class PessoaForm {
-	
+public class AtualizacaoTopicoForm {
 	@NotNull @NotEmpty @Length(min = 5, max = 60)
 	private String nome;
 	
 	@NotNull @DecimalMax(value = "110") @DecimalMin(value = "0")
 	private int idade;
-	
-	public Pessoa converter() {
-		return new Pessoa(nome, idade, null);
-	}
 
 	public void setNome(String nome) {
 		this.nome = nome;
@@ -27,6 +20,14 @@ public class PessoaForm {
 
 	public void setIdade(int idade) {
 		this.idade = idade;
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public int getIdade() {
+		return idade;
 	}
 	
 	

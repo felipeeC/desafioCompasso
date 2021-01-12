@@ -18,10 +18,15 @@ public class Pessoa {
 	@ManyToMany(mappedBy = "pessoas")
 	private List<Filme> filmes;
 
+<<<<<<< HEAD
 	//Construtor
 	public Pessoa(Long id, String nome, int idade, List<Filme> filmes) {
 		super();
 		this.id = id;
+=======
+	// Construtor
+	public Pessoa(String nome, int idade, List<Filme> filmes) {
+>>>>>>> c101f2717e0793b669d8e5f0dacb2d0a384016ba
 		this.nome = nome;
 		this.idade = idade;
 		this.filmes = filmes;
