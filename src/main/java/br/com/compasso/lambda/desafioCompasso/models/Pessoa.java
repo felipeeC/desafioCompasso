@@ -1,5 +1,6 @@
 package br.com.compasso.lambda.desafioCompasso.models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -16,21 +17,20 @@ public class Pessoa {
 	private int idade;
 	
 	@ManyToMany(mappedBy = "pessoas")
-	private List<Filme> filmes;
+	private List<Filme> filmes = new ArrayList<>();
 
 
 
 	//Construtor
-	public Pessoa(Long id, String nome, int idade, List<Filme> filmes) {
+	public Pessoa(Long id, String nome, int idade) {
 		super();
 		this.id = id;
 	}
 	
 	// Construtor
-	public Pessoa(String nome, int idade, List<Filme> filmes) {
+	public Pessoa(String nome, int idade) {
 		this.nome = nome;
 		this.idade = idade;
-		this.filmes = filmes;
 	}
 
 	public Pessoa() {

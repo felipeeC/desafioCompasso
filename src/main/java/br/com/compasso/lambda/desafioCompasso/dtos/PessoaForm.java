@@ -18,7 +18,7 @@ public class PessoaForm {
 	private int idade;
 	
 	public Pessoa converter() {
-		return new Pessoa(nome, idade, null);
+		return new Pessoa(nome, idade);
 	}
 
 	public void setNome(String nome) {
