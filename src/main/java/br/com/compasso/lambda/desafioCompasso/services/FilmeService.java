@@ -1,6 +1,5 @@
 package br.com.compasso.lambda.desafioCompasso.services;
 
-
 import java.net.URI;
 import java.util.List;
 
@@ -10,12 +9,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.util.UriComponentsBuilder;
 
+
+
 import br.com.compasso.lambda.desafioCompasso.dtos.FilmeCompletoDto;
 import br.com.compasso.lambda.desafioCompasso.models.Filme;
 import br.com.compasso.lambda.desafioCompasso.repositories.FilmeRepository;
+
 @Service
 public class FilmeService {
-	
+
 	@Autowired
 	private FilmeRepository filmeRepository;
 
@@ -34,7 +36,7 @@ public class FilmeService {
 
 		if (filmes.contains(filme)) {
 			System.out.println("num deu");
-			
+
 			return ResponseEntity.notFound().build();
 		} else {
 			filmeRepository.save(filme);
@@ -43,7 +45,7 @@ public class FilmeService {
 		}
 
 	}
-	
+
 	public Filme update(Long id, Filme obj) {
 		Filme entity = filmeRepository.getOne(id);
 		updateData(entity, obj);
@@ -54,12 +56,21 @@ public class FilmeService {
 		entity.setNome(obj.getNome());
 		entity.setDescricao(obj.getDescricao());
 	}
-	
+
 	public void delete(Long id) {
 		filmeRepository.deleteById(id);
-		
+
 	}
-	
+
+	public Filme getFilmeById(long id) {
+		return filmeRepository.findById(id).get();
+	}
+
+	public void salvar(Filme filme) {
+
+		filmeRepository.save(filme);
+
+	}
 
 //	public void imprimeById(int idFilme) {
 //		for (Filme filme : filmes) {
@@ -119,6 +130,5 @@ public class FilmeService {
 //		return false;
 //
 //	}
-	
-	
+
 }

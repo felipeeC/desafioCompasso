@@ -1,6 +1,5 @@
 package br.com.compasso.lambda.desafioCompasso.controllers;
 
-import java.net.URI;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -33,57 +32,59 @@ public class FilmeController {
 
 	@Autowired
 	private FilmeService filmeService;
-	
+
 	@Autowired
 	private PessoaService pessoaService;
-	
+
 	@GetMapping
 	public List<FilmeDto> filmes() {
 		List<Filme> filmes = filmeService.getFilmes();
 		return FilmeDto.converter(filmes);
 	}
-	
-	
-	@PostMapping("/associarFilmePessoa")
-	public String associarPessoa(@ModelAttribute Pessoa pessoa, @RequestParam long id ) {
-		//pessoa = pessoaService.get
+
+	@PostMapping("/associarPessoa/{idpessoa}/{idfilme}")
+	public String associarPessoa(@PathVariable(name = "idpessoa") long idPessoa,@PathVariable(name = "idfilme") long idFilme) {
+		Pessoa pessoa = pessoaService.getById(idPessoa);
+		Filme filme = filmeService.getFilmeById(idFilme);
 		
-		
+
+		filme.getPessoas().add(pessoa);
+		filmeService.salvar(filme);
+
 		return null;
 	}
-	
+
 	@GetMapping(value = "/mylist")
 	public List<FilmeDto> filmesPessoa() {
 		List<Filme> filmes = pessoaService.getPessoaFilmes();
 		return FilmeDto.converter(filmes);
 	}
-	
+
 	@GetMapping(value = "/completo")
 	public List<FilmeCompletoDto> filmesCompletos() {
 		List<Filme> filmes = filmeService.getFilmes();
 		return FilmeCompletoDto.converter(filmes);
 	}
 
-
 	@PostMapping
-	public  ResponseEntity<FilmeCompletoDto> cadastrar(@RequestBody @Valid FilmeForm form, UriComponentsBuilder uriBuilder) {
+	public ResponseEntity<FilmeCompletoDto> cadastrar(@RequestBody @Valid FilmeForm form,
+			UriComponentsBuilder uriBuilder) {
 		Filme filme = form.converter();
 		return filmeService.postFilme(filme, uriBuilder);
-		
-		//return ResponseEntity.created(uri).body(new FilmeCompletoDto(filme));
+
+		// return ResponseEntity.created(uri).body(new FilmeCompletoDto(filme));
 	}
-	
+
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<Filme> atualizar(@PathVariable Long id, @RequestBody Filme obj){
+	public ResponseEntity<Filme> atualizar(@PathVariable Long id, @RequestBody Filme obj) {
 		obj = filmeService.update(id, obj);
 		return ResponseEntity.ok().body(obj);
 	}
-	
+
 	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<Void> delete(@PathVariable Long id){
+	public ResponseEntity<Void> delete(@PathVariable Long id) {
 		filmeService.delete(id);
 		return ResponseEntity.noContent().build();
 	}
-	
-	
+
 }
