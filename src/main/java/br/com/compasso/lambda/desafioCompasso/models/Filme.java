@@ -7,10 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-
-
 
 @Entity
 public class Filme {
@@ -25,14 +22,13 @@ public class Filme {
 	private String estudio;
 	private String diretor;
 	private String elenco;
-	
-	
+
 	@ManyToMany
 //	@JoinTable(name = "FILME_PESSOAS" ,
 //	joinColumns = @JoinColumn(name ="Filme_id"),
 //	inverseJoinColumns = @JoinColumn(name = "Pessoa_id"))
 	private List<Pessoa> pessoas;
-	
+
 	@ManyToMany
 	// @JoinTable(name = "filmeCategoria" , joinColumns = @JoinColumn(name =
 	// "filme_id"), inverseJoinColumns = @JoinColumn(name = "categoria_id"))
@@ -159,6 +155,14 @@ public class Filme {
 
 	public void setCategorias(List<Categoria> categorias) {
 		this.categorias = categorias;
+	}
+
+	public List<Pessoa> getPessoas() {
+		return pessoas;
+	}
+
+	public void setPessoas(List<Pessoa> pessoas) {
+		this.pessoas = pessoas;
 	}
 
 	@Override
