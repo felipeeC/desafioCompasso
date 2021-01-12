@@ -63,6 +63,10 @@ public class PessoaService {
 		
 		return ResponseEntity.notFound().build();
 	}
+	
+	public Pessoa getById(Long id) {
+		return pessoaRepository.findById(id).get();
+	}
 
 
 }
