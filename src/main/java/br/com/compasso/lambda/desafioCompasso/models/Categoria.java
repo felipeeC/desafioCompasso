@@ -9,14 +9,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
-
 @Entity
 public class Categoria {
 	
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	private String nome;
-	private Filme filme;
 	
 	@ManyToMany(mappedBy = "categorias")
 	private List<Filme> filmes = new ArrayList<>();
@@ -24,16 +22,17 @@ public class Categoria {
 	// Construtor
 	
 	public Categoria() {
-		
 	}
 
 	public Categoria(String nome) {
-		
 		this.nome = nome;
-
 	}
 	
 	// Getters e Setters
+	
+	public List<Filme> getFilmes() {
+		return filmes;
+	}
 
 	public long getId() {
 		return id;
@@ -49,14 +48,6 @@ public class Categoria {
 
 	public void setNome(String nome) {
 		this.nome = nome;
-	}
-
-	public Filme getFilme() {
-		return filme;
-	}
-
-	public void setFilme(Filme filme) {
-		this.filme = filme;
 	}
 
 }
