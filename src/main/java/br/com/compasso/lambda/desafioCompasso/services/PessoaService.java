@@ -1,10 +1,14 @@
 package br.com.compasso.lambda.desafioCompasso.services;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 import java.util.List;
 =======
 import java.net.URI;
 >>>>>>> c101f2717e0793b669d8e5f0dacb2d0a384016ba
+=======
+import java.net.URI;
+>>>>>>> 8acab32eaa036c8c8f60c3c05f1273a2b11870c1
 import java.util.Optional;
 
 import javax.validation.Valid;
@@ -20,10 +24,14 @@ import org.springframework.web.util.UriComponentsBuilder;
 import br.com.compasso.lambda.desafioCompasso.dtos.AtualizacaoTopicoForm;
 import br.com.compasso.lambda.desafioCompasso.dtos.PessoaDto;
 <<<<<<< HEAD
+<<<<<<< HEAD
 import br.com.compasso.lambda.desafioCompasso.models.Filme;
 =======
 import br.com.compasso.lambda.desafioCompasso.dtos.PessoaForm;
 >>>>>>> c101f2717e0793b669d8e5f0dacb2d0a384016ba
+=======
+import br.com.compasso.lambda.desafioCompasso.dtos.PessoaForm;
+>>>>>>> 8acab32eaa036c8c8f60c3c05f1273a2b11870c1
 import br.com.compasso.lambda.desafioCompasso.models.Pessoa;
 import br.com.compasso.lambda.desafioCompasso.repositories.PessoaRepository;
 
@@ -48,6 +56,7 @@ public class PessoaService {
 	}
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 	public List<Filme> getPessoaFilmes() {
 		
 		return null;
@@ -55,6 +64,8 @@ public class PessoaService {
 	
 	
 =======
+=======
+>>>>>>> 8acab32eaa036c8c8f60c3c05f1273a2b11870c1
 	public ResponseEntity<PessoaDto> cadastrarPessoa(
 			@Valid PessoaForm form,
 			UriComponentsBuilder uriBuilder) {
@@ -79,7 +90,14 @@ public class PessoaService {
 		
 		return ResponseEntity.notFound().build();
 	}
+<<<<<<< HEAD
 >>>>>>> c101f2717e0793b669d8e5f0dacb2d0a384016ba
+=======
+	
+	public Pessoa getById(Long id) {
+		return pessoaRepository.findById(id).get();
+	}
+>>>>>>> 8acab32eaa036c8c8f60c3c05f1273a2b11870c1
 
 
 }
