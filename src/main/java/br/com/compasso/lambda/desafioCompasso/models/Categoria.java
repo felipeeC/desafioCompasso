@@ -16,6 +16,7 @@ public class Categoria {
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	private String nome;
+	private Filme filme;
 	
 	@ManyToMany(mappedBy = "categorias")
 	private List<Filme> filmes = new ArrayList<>();
@@ -48,6 +49,14 @@ public class Categoria {
 
 	public void setNome(String nome) {
 		this.nome = nome;
+	}
+
+	public Filme getFilme() {
+		return filme;
+	}
+
+	public void setFilme(Filme filme) {
+		this.filme = filme;
 	}
 
 }
