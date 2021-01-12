@@ -1,5 +1,6 @@
 package br.com.compasso.lambda.desafioCompasso.controllers;
 
+import java.net.URI;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -25,6 +26,7 @@ import br.com.compasso.lambda.desafioCompasso.models.Filme;
 import br.com.compasso.lambda.desafioCompasso.models.Pessoa;
 import br.com.compasso.lambda.desafioCompasso.services.FilmeService;
 import br.com.compasso.lambda.desafioCompasso.services.PessoaService;
+import net.bytebuddy.implementation.bytecode.Throw;
 
 @RestController
 @RequestMapping(value = "/filmes")
@@ -42,27 +44,30 @@ public class FilmeController {
 		return FilmeDto.converter(filmes);
 	}
 
-	@PostMapping("/associarPessoa/{idpessoa}/{idfilme}")
-	public String associarPessoa(@PathVariable(name = "idpessoa") long idPessoa,@PathVariable(name = "idfilme") long idFilme) {
+	@PostMapping("/associar-pessoa/{idpessoa}/{idfilme}")
+	public ResponseEntity associarPessoa(@PathVariable(name = "idpessoa") long idPessoa,
+			@PathVariable(name = "idfilme") long idFilme, UriComponentsBuilder uriBuilder) {
 		Pessoa pessoa = pessoaService.getById(idPessoa);
 		Filme filme = filmeService.getFilmeById(idFilme);
-		
 
 		filme.getPessoas().add(pessoa);
 		filmeService.salvar(filme);
 
-		return null;
+		URI uri = uriBuilder.path("/filmes/{id}").buildAndExpand(filme.getId()).toUri();
+		return ResponseEntity.created(uri).body(new FilmeCompletoDto(filme));
 	}
 
-	@GetMapping(value = "/mylist")
-	public List<FilmeDto> filmesPessoa() {
-		List<Filme> filmes = pessoaService.getPessoaFilmes();
+	@GetMapping(value = "/mylist/{idpessoa}")
+	public List<FilmeDto> filmesPessoa(@PathVariable(name = "idpessoa") long idPessoa) {
+		Pessoa pessoa = pessoaService.getById(idPessoa);
+		List<Filme> filmes = pessoa.getFilmes();
 		return FilmeDto.converter(filmes);
 	}
 
 	@GetMapping(value = "/completo")
 	public List<FilmeCompletoDto> filmesCompletos() {
 		List<Filme> filmes = filmeService.getFilmes();
+
 		return FilmeCompletoDto.converter(filmes);
 	}
 
