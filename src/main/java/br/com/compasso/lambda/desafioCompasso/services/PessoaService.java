@@ -5,8 +5,6 @@ import java.util.List;
 
 import java.net.URI;
 
-import java.net.URI;
-
 import java.util.Optional;
 
 import javax.validation.Valid;
@@ -24,8 +22,6 @@ import br.com.compasso.lambda.desafioCompasso.dtos.AtualizacaoTopicoForm;
 import br.com.compasso.lambda.desafioCompasso.dtos.PessoaDto;
 
 import br.com.compasso.lambda.desafioCompasso.models.Filme;
-
-import br.com.compasso.lambda.desafioCompasso.dtos.PessoaForm;
 
 import br.com.compasso.lambda.desafioCompasso.dtos.PessoaForm;
 
@@ -88,6 +84,17 @@ public class PessoaService {
 	
 	public Pessoa getById(Long id) {
 		return pessoaRepository.findById(id).get();
+	}
+
+	public ResponseEntity<?> deleteById(Long id) {
+		Optional<Pessoa> pessoa = pessoaRepository.findById(id);
+		
+		if(pessoa.isPresent()) {
+			pessoaRepository.delete(pessoa.get());
+			return ResponseEntity.noContent().build();
+		}
+		
+		return ResponseEntity.notFound().build();
 	}
 
 
