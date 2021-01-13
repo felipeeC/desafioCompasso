@@ -40,7 +40,7 @@ public class FilmeService {
 		List<Filme> filmes = getFilmes();
 		
 		if (filmes.contains(filme)) {
-			System.out.println("num deu");
+			System.out.println("Tentou Adicionar Filme Repetido");
 		} else {
 			filmeRepository.save(filme);
 		}
