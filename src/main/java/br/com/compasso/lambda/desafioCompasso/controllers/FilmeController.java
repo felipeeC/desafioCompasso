@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -75,13 +76,13 @@ public class FilmeController {
 		// return ResponseEntity.created(uri).body(new FilmeCompletoDto(filme));
 	}
 
-	@PutMapping(value = "/{id}")
+	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Filme> atualizar(@PathVariable Long id, @RequestBody Filme obj) {
 		obj = filmeService.update(id, obj);
 		return ResponseEntity.ok().body(obj);
 	}
 
-	@DeleteMapping(value = "/{id}")
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> delete(@PathVariable Long id) {
 		filmeService.delete(id);
 		return ResponseEntity.noContent().build();
