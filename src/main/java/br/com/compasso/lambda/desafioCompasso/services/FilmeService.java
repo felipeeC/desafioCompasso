@@ -68,7 +68,7 @@ public class FilmeService {
 
 	}
 
-	public Optional<Filme> getFilmeById(long id) {
+	public Optional<Filme> getFilmeById(Long id) {
 		return filmeRepository.findById(id);
 
 	}
