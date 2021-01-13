@@ -64,6 +64,16 @@ public class FilmeController {
 		List<Filme> filmes = pessoa.getFilmes();
 		return FilmeDto.converter(filmes);
 	}
+	
+	@RequestMapping(value = "mylist/{idpessoa}/delete/{idfilme}", method = RequestMethod.DELETE)
+	public ResponseEntity<FilmeCompletoDto> removeFilmeMyList(@PathVariable (name = "idfilme")Long idFilme, @PathVariable(name = "idpessoa") long idPessoa, UriComponentsBuilder uriBuilder){
+		Filme filme= filmeService.getFilmeById(idFilme);
+		Pessoa pessoa = pessoaService.getById(idPessoa);
+		filme.getPessoas().remove(pessoa);
+		filmeService.salvar(filme);
+		URI uri = uriBuilder.path("/filmes/{id}").buildAndExpand(filme.getId()).toUri();
+		return ResponseEntity.created(uri).body(new FilmeCompletoDto(filme));
+	}
 
 	@GetMapping(value = "/completo")
 	public List<FilmeCompletoDto> filmesCompletos() {

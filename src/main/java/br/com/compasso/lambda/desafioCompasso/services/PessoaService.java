@@ -48,14 +48,6 @@ public class PessoaService {
 		return pessoaRepository.findById(id);
 	}
 
-	public List<Filme> getPessoaFilmes(long id) {
-		
-		
-		return null;
-	}
-	
-	
-
 	public ResponseEntity<PessoaDto> cadastrarPessoa(
 			@Valid PessoaForm form,
 			UriComponentsBuilder uriBuilder) {
