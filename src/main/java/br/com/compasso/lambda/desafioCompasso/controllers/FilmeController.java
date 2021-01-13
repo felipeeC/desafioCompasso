@@ -20,9 +20,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import br.com.compasso.lambda.desafioCompasso.dtos.AtualizacaoTopicoForm;
 import br.com.compasso.lambda.desafioCompasso.dtos.FilmeCompletoDto;
 import br.com.compasso.lambda.desafioCompasso.dtos.FilmeDto;
 import br.com.compasso.lambda.desafioCompasso.dtos.FilmeForm;
+import br.com.compasso.lambda.desafioCompasso.dtos.PessoaDto;
 import br.com.compasso.lambda.desafioCompasso.models.Filme;
 import br.com.compasso.lambda.desafioCompasso.models.Pessoa;
 import br.com.compasso.lambda.desafioCompasso.services.FilmeService;
@@ -91,13 +93,15 @@ public class FilmeController {
 		// return ResponseEntity.created(uri).body(new FilmeCompletoDto(filme));
 	}
 
-	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<Filme> atualizar(@PathVariable Long id, @RequestBody Filme obj) {
-		obj = filmeService.update(id, obj);
-		return ResponseEntity.ok().body(obj);
+	@RequestMapping(value = "/completo/{id}", method = RequestMethod.PUT)
+	public ResponseEntity<FilmeCompletoDto> atualizarFilme(
+			@PathVariable Long id,
+			@RequestBody @Valid FilmeForm form) { 
+		return filmeService.update(id, form);
+		
 	}
 
-	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/completo/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> delete(@PathVariable Long id) {
 		filmeService.delete(id);
 		return ResponseEntity.noContent().build();

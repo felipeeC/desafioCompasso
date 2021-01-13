@@ -2,6 +2,9 @@ package br.com.compasso.lambda.desafioCompasso.services;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -9,8 +12,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import br.com.compasso.lambda.desafioCompasso.dtos.AtualizacaoTopicoForm;
 import br.com.compasso.lambda.desafioCompasso.dtos.FilmeCompletoDto;
+import br.com.compasso.lambda.desafioCompasso.dtos.FilmeForm;
+import br.com.compasso.lambda.desafioCompasso.dtos.PessoaDto;
 import br.com.compasso.lambda.desafioCompasso.models.Filme;
+import br.com.compasso.lambda.desafioCompasso.models.Pessoa;
 import br.com.compasso.lambda.desafioCompasso.repositories.FilmeRepository;
 
 @Service
@@ -44,15 +51,20 @@ public class FilmeService {
 
 	}
 
-	public Filme update(Long id, Filme obj) {
-		Filme entity = filmeRepository.getOne(id);
-		updateData(entity, obj);
-		return filmeRepository.save(entity);
-	}
-
-	private void updateData(Filme entity, Filme obj) {
-		entity.setNome(obj.getNome());
-		entity.setDescricao(obj.getDescricao());
+	public ResponseEntity<FilmeCompletoDto> update(Long id, @Valid FilmeForm form) {
+		Optional<Filme> optional = filmeRepository.findById(id);
+		if(optional.isPresent()) {
+			optional.get().setNome(form.getNome());
+			optional.get().setDescricao(form.getDescricao());
+			optional.get().setComentario(form.getComentario());
+			optional.get().setDiretor(form.getDiretor());
+			optional.get().setElenco(form.getElenco());
+			optional.get().setEstudio(form.getEstudio());
+			Filme filmeAtualizado = filmeRepository.save(optional.get());
+			return ResponseEntity.ok(new FilmeCompletoDto(filmeAtualizado));
+		}
+		
+		return ResponseEntity.notFound().build();
 	}
 
 	public void delete(Long id) {
