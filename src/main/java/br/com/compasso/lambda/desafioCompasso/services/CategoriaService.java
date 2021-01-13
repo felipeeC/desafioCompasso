@@ -28,4 +28,9 @@ public class CategoriaService {
 	public void delete(Long id) {
 		categoriaRepository.deleteById(id);
 	}
+
+	public Categoria getById(long id) {
+		return categoriaRepository.findById(id).get();
+	}
 }
+
