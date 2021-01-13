@@ -36,17 +36,13 @@ public class FilmeService {
 		return filmes;
 	}
 
-	public ResponseEntity<FilmeCompletoDto> postFilme(Filme filme, UriComponentsBuilder uriBuilder) {
+	public void postFilme(Filme filme) {
 		List<Filme> filmes = getFilmes();
-
+		
 		if (filmes.contains(filme)) {
 			System.out.println("num deu");
-
-			return ResponseEntity.notFound().build();
 		} else {
 			filmeRepository.save(filme);
-			URI uri = uriBuilder.path("/filmes/{id}").buildAndExpand(filme.getId()).toUri();
-			return ResponseEntity.created(uri).body(new FilmeCompletoDto(filme));
 		}
 
 	}

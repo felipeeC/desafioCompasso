@@ -41,6 +41,7 @@ public class FilmeController {
 	@Autowired
 	private PessoaService pessoaService;
 
+	
 	@GetMapping
 	public List<FilmeDto> filmes() {
 		List<Filme> filmes = filmeService.getFilmes();
@@ -88,8 +89,10 @@ public class FilmeController {
 	public ResponseEntity<FilmeCompletoDto> cadastrar(@RequestBody @Valid FilmeForm form,
 			UriComponentsBuilder uriBuilder) {
 		Filme filme = form.converter();
-		return filmeService.postFilme(filme, uriBuilder);
+		filmeService.postFilme(filme);
 
+		URI uri = uriBuilder.path("/filmes/{id}").buildAndExpand(filme.getId()).toUri();
+		return ResponseEntity.created(uri).body(new FilmeCompletoDto(filme));
 		// return ResponseEntity.created(uri).body(new FilmeCompletoDto(filme));
 	}
 
