@@ -38,7 +38,7 @@ public class FilmeService {
 
 	public void postFilme(Filme filme) {
 		List<Filme> filmes = getFilmes();
-		
+
 		if (filmes.contains(filme)) {
 			System.out.println("Tentou Adicionar Filme Repetido");
 		} else {
@@ -49,7 +49,7 @@ public class FilmeService {
 
 	public ResponseEntity<FilmeCompletoDto> update(Long id, @Valid FilmeForm form) {
 		Optional<Filme> optional = filmeRepository.findById(id);
-		if(optional.isPresent()) {
+		if (optional.isPresent()) {
 			optional.get().setNome(form.getNome());
 			optional.get().setDescricao(form.getDescricao());
 			optional.get().setComentario(form.getComentario());
@@ -59,7 +59,7 @@ public class FilmeService {
 			Filme filmeAtualizado = filmeRepository.save(optional.get());
 			return ResponseEntity.ok(new FilmeCompletoDto(filmeAtualizado));
 		}
-		
+
 		return ResponseEntity.notFound().build();
 	}
 
@@ -68,8 +68,9 @@ public class FilmeService {
 
 	}
 
-	public Filme getFilmeById(long id) {
-		return filmeRepository.findById(id).get();
+	public Optional<Filme> getFilmeById(long id) {
+		return filmeRepository.findById(id);
+
 	}
 
 	public void salvar(Filme filme) {

@@ -2,6 +2,7 @@ package br.com.compasso.lambda.desafioCompasso.controllers;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -49,16 +50,20 @@ public class FilmeController {
 	}
 
 	@PostMapping("/associar-pessoa/{idpessoa}/{idfilme}")
-	public ResponseEntity associarPessoa(@PathVariable(name = "idpessoa") long idPessoa,
+	public ResponseEntity<FilmeCompletoDto> associarPessoa(@PathVariable(name = "idpessoa") long idPessoa,
 			@PathVariable(name = "idfilme") long idFilme, UriComponentsBuilder uriBuilder) {
 		Pessoa pessoa = pessoaService.getById(idPessoa);
-		Filme filme = filmeService.getFilmeById(idFilme);
+		Optional<Filme> filme= filmeService.getFilmeById(idFilme);
+		if(filme.isPresent()) {
+			filme.get().getPessoas().add(pessoa);
+			filmeService.salvar(filme.get());
 
-		filme.getPessoas().add(pessoa);
-		filmeService.salvar(filme);
+			URI uri = uriBuilder.path("/filmes/{id}").buildAndExpand(filme.get().getId()).toUri();
+			return ResponseEntity.created(uri).body(new FilmeCompletoDto(filme.get()));
+		}
+		return ResponseEntity.notFound().build();
 
-		URI uri = uriBuilder.path("/filmes/{id}").buildAndExpand(filme.getId()).toUri();
-		return ResponseEntity.created(uri).body(new FilmeCompletoDto(filme));
+		
 	}
 
 	@GetMapping(value = "/mylist/{idpessoa}")
@@ -70,12 +75,12 @@ public class FilmeController {
 	
 	@RequestMapping(value = "mylist/{idpessoa}/delete/{idfilme}", method = RequestMethod.DELETE)
 	public ResponseEntity<FilmeCompletoDto> removeFilmeMyList(@PathVariable (name = "idfilme")Long idFilme, @PathVariable(name = "idpessoa") long idPessoa, UriComponentsBuilder uriBuilder){
-		Filme filme= filmeService.getFilmeById(idFilme);
+		Optional<Filme> filme= filmeService.getFilmeById(idFilme);
 		Pessoa pessoa = pessoaService.getById(idPessoa);
-		filme.getPessoas().remove(pessoa);
-		filmeService.salvar(filme);
-		URI uri = uriBuilder.path("/filmes/{id}").buildAndExpand(filme.getId()).toUri();
-		return ResponseEntity.created(uri).body(new FilmeCompletoDto(filme));
+		filme.get().getPessoas().remove(pessoa);
+		filmeService.salvar(filme.get());
+		URI uri = uriBuilder.path("/filmes/{id}").buildAndExpand(filme.get().getId()).toUri();
+		return ResponseEntity.created(uri).body(new FilmeCompletoDto(filme.get()));
 	}
 
 	@GetMapping(value = "/completo")
