@@ -89,6 +89,14 @@ public class FilmeControllerTest {
 
         assertTrue(filmeTest.isEmpty());
 	}
+	@Test
+	public void deletaFilmeById() {
+		Long id = 1L;
+
+        Optional<Filme> filme = service.getFilmeById(id);
+        
+        service.delete(id);
+	}
 	
 	// Not Ok
     @Test
@@ -98,7 +106,7 @@ public class FilmeControllerTest {
 
         filmeTeste.get().setNome("");
 
-        URI uri = new URI("/completo/1");
+        URI uri = new URI("filmes/completo/1");
         mock.perform(MockMvcRequestBuilders.post(uri).content(transformaObjectJson(filmeTeste.get()))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().is(HttpStatus.BAD_REQUEST.value()));

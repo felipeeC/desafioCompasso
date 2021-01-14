@@ -92,7 +92,6 @@ public class FilmeService {
 
 	public Optional<Filme> getFilmeById(Long id) {
 		return filmeRepository.findById(id);
-
 	}
 
 	public void salvar(Filme filme) {
