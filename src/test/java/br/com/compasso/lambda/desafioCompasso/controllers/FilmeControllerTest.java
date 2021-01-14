@@ -53,7 +53,7 @@ public class FilmeControllerTest {
 	@Test
 	public void retornaFilmeNaoExistente() {
 		//Filme filme = service.getFilmeById(4);
-		Optional<Filme> filme = service.getFilmeById(4);
+		Optional<Filme> filme = service.getFilmeById(4L);
 
 		assertFalse(filme.isEmpty());
 	}
@@ -66,7 +66,7 @@ public class FilmeControllerTest {
 		Filme filme = ff.converter();
         service.postFilme(filme);
         
-        assertTrue(service.getFilmeById(3).isPresent());
+        assertTrue(service.getFilmeById(3L).isPresent());
 	}
 
 }
