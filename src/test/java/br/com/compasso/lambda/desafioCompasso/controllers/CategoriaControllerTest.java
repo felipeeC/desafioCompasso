@@ -73,6 +73,7 @@ class CategoriaControllerTest {
 		mockMvc.perform(MockMvcRequestBuilders.post(uri).content(asJsonString(categoriaForm))
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(MockMvcResultMatchers.status().is(HttpStatus.CREATED.value()));
+
 	}
 
 	public static String asJsonString(final Object obj) {
