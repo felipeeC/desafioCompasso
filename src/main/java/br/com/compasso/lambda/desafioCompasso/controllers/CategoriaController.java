@@ -4,6 +4,8 @@ import java.net.URI;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -43,6 +45,12 @@ public class CategoriaController {
 	
 	@PostMapping
 	public ResponseEntity<CategoriaDto> cadastrar(@RequestBody CategoriaForm form, UriComponentsBuilder uriBuilder) {
+		if (form.getNome() == null || form.getNome().isEmpty() )
+		{
+			return ResponseEntity.noContent().build();
+			//new ResponseEntity<CategoriaDto>(null,new HttpHeaders(),HttpStatus.NO_CONTENT);
+		}
+		
 		Categoria categoria = form.converter();
 		categoriaService.cadastrarCategoria(categoria);
 		URI uri = uriBuilder.path("/categorias/{id}").buildAndExpand(categoria.getId()).toUri();
@@ -50,7 +58,7 @@ public class CategoriaController {
 	}
 	
 	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<Void> delete(@PathVariable Long id){
+	public ResponseEntity<Void> delete(@PathVariable long id){
 		categoriaService.delete(id);
 		return ResponseEntity.noContent().build();
 	}
