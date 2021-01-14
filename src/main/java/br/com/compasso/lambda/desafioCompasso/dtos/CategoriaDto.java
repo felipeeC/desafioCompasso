@@ -7,7 +7,7 @@ import br.com.compasso.lambda.desafioCompasso.models.Categoria;
 
 public class CategoriaDto {
 
-		private Long id;
+		private long id;
 		private String nome;
 
 		public CategoriaDto(Categoria categoria) {
@@ -15,7 +15,7 @@ public class CategoriaDto {
 			this.nome = categoria.getNome();
 		}
 
-		public Long getId() {
+		public long getId() {
 			return id;
 		}
 
