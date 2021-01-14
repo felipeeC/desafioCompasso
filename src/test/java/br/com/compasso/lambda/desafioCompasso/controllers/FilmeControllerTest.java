@@ -1,27 +1,42 @@
 package br.com.compasso.lambda.desafioCompasso.controllers;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import br.com.compasso.lambda.desafioCompasso.dtos.FilmeForm;
 import br.com.compasso.lambda.desafioCompasso.models.Filme;
 import br.com.compasso.lambda.desafioCompasso.services.FilmeService;
 
 @SpringBootTest
+@ExtendWith(SpringExtension.class)
+@AutoConfigureMockMvc
 
 public class FilmeControllerTest {
 
 	@Autowired
 	private FilmeService service;
+	
+	private MockMvc mock;
+	final static ObjectMapper mapper = new ObjectMapper();
 
 	// Ok
 	@Test
@@ -74,5 +89,28 @@ public class FilmeControllerTest {
 
         assertTrue(filmeTest.isEmpty());
 	}
+	
+	// Not Ok
+    @Test
+    public void atualizaFilmeComCampoVazio() throws Exception {
+        Long id = 1L;
+        Optional<Filme> filmeTeste = service.getFilmeById(id);
+
+        filmeTeste.get().setNome("");
+
+        URI uri = new URI("/completo/1");
+        mock.perform(MockMvcRequestBuilders.post(uri).content(transformaObjectJson(filmeTeste.get()))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().is(HttpStatus.BAD_REQUEST.value()));
+    }
+    
+    public static String transformaObjectJson(final Object obj) {
+	    try {
+	        final String jsonContent = mapper.writeValueAsString(obj);
+	        return jsonContent;
+	    } catch (Exception e) {
+	        throw new RuntimeException(e);
+	    }
+	}  
 
 }
