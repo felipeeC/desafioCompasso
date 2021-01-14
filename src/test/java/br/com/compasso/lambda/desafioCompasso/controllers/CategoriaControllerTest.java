@@ -26,6 +26,8 @@ import br.com.compasso.lambda.desafioCompasso.dtos.CategoriaForm;
 @ActiveProfiles("test")
 @AutoConfigureMockMvc
 class CategoriaControllerTest {
+	
+	final static ObjectMapper mapper = new ObjectMapper();
 
 	@Autowired
 	private MockMvc mockMvc;
@@ -85,7 +87,6 @@ class CategoriaControllerTest {
 	
 	public static String asJsonString(final Object obj) {
 	    try {
-	        final ObjectMapper mapper = new ObjectMapper();
 	        final String jsonContent = mapper.writeValueAsString(obj);
 	        return jsonContent;
 	    } catch (Exception e) {
