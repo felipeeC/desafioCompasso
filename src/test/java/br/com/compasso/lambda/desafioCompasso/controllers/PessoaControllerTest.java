@@ -161,8 +161,8 @@ class PessoaControllerTest {
 		mockMvc.perform(get(uri)
 		.accept(MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk())
-			.andExpect(jsonPath("$[0].nome", Matchers.is("Guilherme")))
-			.andExpect(jsonPath("$[0].idade", Matchers.is(24)));
+			.andExpect(jsonPath("$.content[0].nome", Matchers.is("Guilherme")))
+			.andExpect(jsonPath("$.content[0].idade", Matchers.is(24)));
 	}
 	
 	public static String asJsonString(final Object obj) {
