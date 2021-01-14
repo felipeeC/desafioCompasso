@@ -25,6 +25,22 @@ public class FilmeForm {
 	@NotNull @NotEmpty
 	private String elenco;
 
+	
+	
+
+
+	public FilmeForm(@NotEmpty String descricao, @NotEmpty String nome, @NotEmpty String comentario,
+			@NotEmpty String dataLancamento, @NotEmpty String estudio, @NotEmpty String diretor,
+			@NotEmpty String elenco) {
+		this.descricao = descricao;
+		this.nome = nome;
+		this.comentario = comentario;
+		this.dataLancamento = dataLancamento;
+		this.estudio = estudio;
+		this.diretor = diretor;
+		this.elenco = elenco;
+	}
+
 	public String getDescricao() {
 		return descricao;
 	}

@@ -52,21 +52,27 @@ public class FilmeControllerTest {
 	// Ok
 	@Test
 	public void retornaFilmeNaoExistente() {
-		//Filme filme = service.getFilmeById(4);
-		Optional<Filme> filme = service.getFilmeById(4L);
+		Long id= 80L;
+		Optional<Filme> filme = service.getFilmeById(id);
 
-		assertFalse(filme.isEmpty());
+		assertTrue(filme.isEmpty());
 	}
 	
 	// Not Ok
 	@Test
 	public void cadastraFilmeVazio() {
-		FilmeForm ff = new FilmeForm();
-				
-		Filme filme = ff.converter();
+		FilmeForm ff = new FilmeForm(null, null, null, null, null, null, null);
+        Filme filme = ff.converter();
         service.postFilme(filme);
+
+        Long id = 4L;
+
+        Optional<Filme> filmeTest = service.getFilmeById(id);
+
+        System.out.println(filmeTest);
         
-        assertTrue(service.getFilmeById(3L).isPresent());
+
+        assertTrue(filmeTest.isEmpty());
 	}
 
 }

@@ -16,9 +16,11 @@ import br.com.compasso.lambda.desafioCompasso.dtos.AtualizacaoTopicoForm;
 import br.com.compasso.lambda.desafioCompasso.dtos.FilmeCompletoDto;
 import br.com.compasso.lambda.desafioCompasso.dtos.FilmeForm;
 import br.com.compasso.lambda.desafioCompasso.dtos.PessoaDto;
+import br.com.compasso.lambda.desafioCompasso.exception.ObjetoIsNull;
 import br.com.compasso.lambda.desafioCompasso.models.Filme;
 import br.com.compasso.lambda.desafioCompasso.models.Pessoa;
 import br.com.compasso.lambda.desafioCompasso.repositories.FilmeRepository;
+import net.bytebuddy.implementation.bytecode.Throw;
 
 @Service
 public class FilmeService {
@@ -38,8 +40,28 @@ public class FilmeService {
 
 	public void postFilme(Filme filme) {
 		List<Filme> filmes = getFilmes();
+		if (filme.getNome() == "" || filme.getNome() == null) {
 
-		if (filmes.contains(filme)) {
+		}
+		else if (filme.getComentario() == "" || filme.getComentario() == null) {
+			throw new  ObjetoIsNull("OBJETO NÃO PODE SER NULO");
+		}
+		else if  (filme.getDataLancamento() == "" || filme.getDataLancamento() == null) {
+			throw new  ObjetoIsNull("OBJETO NÃO PODE SER NULO");
+		}
+		else if  (filme.getDescricao() == "" || filme.getDescricao() == null) {
+			throw new  ObjetoIsNull("OBJETO NÃO PODE SER NULO");
+		}
+		else if  (filme.getDiretor() == "" || filme.getDiretor() == null) {
+			throw new  ObjetoIsNull("OBJETO NÃO PODE SER NULO");
+		}
+		else if  (filme.getElenco() == "" || filme.getElenco() == null) {
+			throw new  ObjetoIsNull("OBJETO NÃO PODE SER NULO");
+		}
+		else if  (filme.getEstudio() == "" || filme.getEstudio() == null) {
+			throw new  ObjetoIsNull("OBJETO NÃO PODE SER NULO");
+		}
+		else if  (filmes.contains(filme)) {
 			System.out.println("Tentou Adicionar Filme Repetido");
 		} else {
 			filmeRepository.save(filme);
