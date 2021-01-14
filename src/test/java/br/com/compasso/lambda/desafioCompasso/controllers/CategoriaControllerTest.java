@@ -1,6 +1,8 @@
 package br.com.compasso.lambda.desafioCompasso.controllers;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.net.URI;
 
@@ -20,78 +22,80 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import br.com.compasso.lambda.desafioCompasso.dtos.CategoriaForm;
+import br.com.compasso.lambda.desafioCompasso.models.Categoria;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @ActiveProfiles("test")
 @AutoConfigureMockMvc
 class CategoriaControllerTest {
-	
+
 	final static ObjectMapper mapper = new ObjectMapper();
 
 	@Autowired
 	private MockMvc mockMvc;
-	
+
 	@Test
 	public void testCadastroCategoriaNomeVazio() throws Exception {
-		
+
 		CategoriaForm categoriaForm = new CategoriaForm();
-		
+
 		categoriaForm.setNome("");
-		// setting fields for the NewObject  
 
 		URI uri = new URI("/categorias");
-		
-		mockMvc.perform(MockMvcRequestBuilders.post(uri)
-		  .content(asJsonString(categoriaForm))
-		  .contentType(MediaType.APPLICATION_JSON))
-		  .andExpect(MockMvcResultMatchers.status().is(HttpStatus.NO_CONTENT.value()));
-		  
-		 
+
+		mockMvc.perform(MockMvcRequestBuilders.post(uri).content(asJsonString(categoriaForm))
+				.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(MockMvcResultMatchers.status().is(HttpStatus.NO_CONTENT.value()));
 	}
-	
+
 	@Test
 	public void testCadastroCategoriaNomeNulo() throws Exception {
-		
+
 		CategoriaForm categoriaForm = new CategoriaForm();
-				
-		// setting fields for the NewObject  
+
 		URI uri = new URI("/categorias");
-		
-		mockMvc.perform(MockMvcRequestBuilders.post(uri)
-		  .content(asJsonString(categoriaForm))
-		  .contentType(MediaType.APPLICATION_JSON))
-		  .andExpect(MockMvcResultMatchers.status().is(HttpStatus.NO_CONTENT.value()));
-		  
-		 
+
+		mockMvc.perform(MockMvcRequestBuilders.post(uri).content(asJsonString(categoriaForm))
+				.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(MockMvcResultMatchers.status().is(HttpStatus.NO_CONTENT.value()));
 	}
-	
+
 	@Test
 	public void testCadastroCategoriaPossuiNome() throws Exception {
-		
+
 		CategoriaForm categoriaForm = new CategoriaForm();
-		// setting fields for the NewObject  
 
 		categoriaForm.setNome("Terror");
-		
+
 		URI uri = new URI("/categorias");
-		
-		mockMvc.perform(MockMvcRequestBuilders.post(uri)
-		  .content(asJsonString(categoriaForm))
-		  .contentType(MediaType.APPLICATION_JSON))
-		  .andExpect(MockMvcResultMatchers.status().is(HttpStatus.CREATED.value()));
-		  
-		 
+
+		mockMvc.perform(MockMvcRequestBuilders.post(uri).content(asJsonString(categoriaForm))
+				.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(MockMvcResultMatchers.status().is(HttpStatus.CREATED.value()));
+	}
+
+	public static String asJsonString(final Object obj) {
+		try {
+			final String jsonContent = mapper.writeValueAsString(obj);
+			return jsonContent;
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	@Test
+	public void testDeleteCategoria() throws Exception {
+
+		Categoria idCategoria = new Categoria();
+
+	    idCategoria.setId(0);
+
+		URI uri = new URI("/categorias/id");
+
+		mockMvc.perform(MockMvcRequestBuilders.delete(uri)
+				.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(MockMvcResultMatchers.status().is(HttpStatus.BAD_REQUEST.value()));
 	}
 	
-	
-	public static String asJsonString(final Object obj) {
-	    try {
-	        final String jsonContent = mapper.writeValueAsString(obj);
-	        return jsonContent;
-	    } catch (Exception e) {
-	        throw new RuntimeException(e);
-	    }
-	}  
-
 }
