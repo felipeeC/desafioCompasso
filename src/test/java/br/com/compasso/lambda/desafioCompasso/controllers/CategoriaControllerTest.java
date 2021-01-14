@@ -1,9 +1,5 @@
 package br.com.compasso.lambda.desafioCompasso.controllers;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import java.net.URI;
 
 import org.junit.jupiter.api.Test;
