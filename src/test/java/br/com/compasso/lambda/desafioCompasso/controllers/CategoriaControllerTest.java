@@ -31,7 +31,7 @@ class CategoriaControllerTest {
 	private MockMvc mockMvc;
 	
 	@Test
-	void testCadastroCategoriaNomeVazio() throws Exception {
+	public void testCadastroCategoriaNomeVazio() throws Exception {
 		
 		CategoriaForm categoriaForm = new CategoriaForm();
 		
@@ -49,7 +49,7 @@ class CategoriaControllerTest {
 	}
 	
 	@Test
-	void testCadastroCategoriaNomeNulo() throws Exception {
+	public void testCadastroCategoriaNomeNulo() throws Exception {
 		
 		CategoriaForm categoriaForm = new CategoriaForm();
 				
@@ -65,12 +65,12 @@ class CategoriaControllerTest {
 	}
 	
 	@Test
-	void testCadastroCategoriaPossuiNome() throws Exception {
+	public void testCadastroCategoriaPossuiNome() throws Exception {
 		
 		CategoriaForm categoriaForm = new CategoriaForm();
 		// setting fields for the NewObject  
 
-		categoriaForm.setNome("João");
+		categoriaForm.setNome("Terror");
 		
 		URI uri = new URI("/categorias");
 		
