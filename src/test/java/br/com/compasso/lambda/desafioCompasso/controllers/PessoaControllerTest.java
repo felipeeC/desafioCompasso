@@ -1,5 +1,6 @@
 package br.com.compasso.lambda.desafioCompasso.controllers;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -163,6 +164,15 @@ class PessoaControllerTest {
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.content[0].nome", Matchers.is("Guilherme")))
 			.andExpect(jsonPath("$.content[0].idade", Matchers.is(24)));
+	}
+	
+	@Test
+	void testDeletePessoa() throws Exception {
+		URI uri = new URI("/pessoas/3");
+		
+		mockMvc.perform(delete(uri)
+		.accept(MediaType.APPLICATION_JSON))
+			.andExpect(status().isNoContent());
 	}
 	
 	public static String asJsonString(final Object obj) {
