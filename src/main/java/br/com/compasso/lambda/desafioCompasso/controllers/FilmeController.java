@@ -121,7 +121,6 @@ public class FilmeController {
 			return ResponseEntity.notFound().build();
 		}
 
-		// return ResponseEntity.created(uri).body(new FilmeCompletoDto(filme));
 	}
 
 	@PutMapping(value = "/completo/{id}")

@@ -42,11 +42,8 @@ public class FilmeControllerTest {
 	private FilmeService service;
 
 	@Autowired
-	private PessoaService pessoaService;
-
-	@Autowired
 	private MockMvc mock;
-	
+
 	static final ObjectMapper mapper = new ObjectMapper();
 
 	// Ok
@@ -78,29 +75,28 @@ public class FilmeControllerTest {
 	// Ok
 	@Test
 	public void retornaFilmeNaoExistente() {
-		Long id= 80L;
+		Long id = 80L;
 		Optional<Filme> filme = service.getFilmeById(id);
 
 		assertTrue(filme.isEmpty());
 	}
-	
+
 	// Not Ok
 	@Test
 	public void cadastraFilmeVazio() {
 		FilmeForm ff = new FilmeForm(null, null, null, null, null, null, null);
-        Filme filme = ff.converter();
-        service.postFilme(filme);
+		Filme filme = ff.converter();
+		service.postFilme(filme);
 
-        Long id = 4L;
+		Long id = 4L;
 
-        Optional<Filme> filmeTest = service.getFilmeById(id);
+		Optional<Filme> filmeTest = service.getFilmeById(id);
 
-        System.out.println(filmeTest);
-        
+		System.out.println(filmeTest);
 
-        assertTrue(filmeTest.isEmpty());
+		assertTrue(filmeTest.isEmpty());
 	}
-	
+
 //	@Test
 //	public void deletaFilmeById() {
 //		Long id = 1L;
@@ -108,98 +104,45 @@ public class FilmeControllerTest {
 //        Optional<Filme> filme = service.getFilmeById(id);
 //        
 //        service.delete(id);
+//        
 //	}
-	
+
 	@Test
 	public void adicionaCategoriaNoFilme() throws Exception {
 		URI uriCategoriaFilme = new URI("/filmes/associar-categoria/1/1");
-		
-		mock.perform(post(uriCategoriaFilme)
-				  .contentType(MediaType.APPLICATION_JSON))
-				  .andExpect(status().is(HttpStatus.CREATED.value()));
-		
+
+		mock.perform(post(uriCategoriaFilme).contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().is(HttpStatus.CREATED.value()));
+
 	}
-	
+
 	@Test
 	public void adicionaCategoriaDuplicadaNoFilme() throws Exception {
 		URI uriCategoriaFilme = new URI("/filmes/associar-categoria/1/1");
-		
-		mock.perform(post(uriCategoriaFilme)
-				  .contentType(MediaType.APPLICATION_JSON))
-				  .andExpect(status().is(HttpStatus.BAD_REQUEST.value()));
-		
+
+		mock.perform(post(uriCategoriaFilme).contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().is(HttpStatus.BAD_REQUEST.value()));
+
 	}
-	
+
 	@Test
 	@Order(1)
 	public void adicionaPessoaNoFilme() throws Exception {
 		URI uriCategoriaFilme = new URI("/filmes/associar-pessoa/1/2");
-		
-		mock.perform(post(uriCategoriaFilme)
-				  .contentType(MediaType.APPLICATION_JSON))
-				  .andExpect(status().is(HttpStatus.CREATED.value()));
-		
+
+		mock.perform(post(uriCategoriaFilme).contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().is(HttpStatus.CREATED.value()));
+
 	}
-	
+
 	@Test
 	@Order(2)
 	public void adicionaPessoaDuplicadaNoFilme() throws Exception {
 		URI uriCategoriaFilme = new URI("/filmes/associar-pessoa/1/2");
-		
-		mock.perform(post(uriCategoriaFilme)
-				  .contentType(MediaType.APPLICATION_JSON))
-				  .andExpect(status().is(HttpStatus.BAD_REQUEST.value()));
-		
+
+		mock.perform(post(uriCategoriaFilme).contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().is(HttpStatus.BAD_REQUEST.value()));
+
 	}
-	
-	
-//	@Test
-//	public void adicionaFilmeNoMyList() {
-//		Long idPessoa = 2L;
-//		Long idFilme = 1L;
-//		Pessoa pessoa = pessoaService.getById(idPessoa);
-//		System.out.println(pessoa);
-//		Optional<Filme> filme= service.getFilmeById(idFilme);
-//		System.out.println(filme.get());
-//		//até aqui ok
-//		
-//			List<Pessoa>pessoas = filme.get().getPessoas();
-//			System.out.println(pessoas);
-//			//pessoas.add(pessoa);
-//			//service.salvar(filme.get());
-//			//assertFalse(filme.get().getPessoas().isEmpty());
-//	}
-//	@Test
-//	public void retornaMyList() {
-//		Long idPessoa = 2L;
-//		Pessoa pessoa = pessoaService.getById(idPessoa);
-//		List<Filme> filmes = pessoa.getFilmes();
-//		System.out.println(filmes);
-//		assertFalse(filmes.isEmpty());
-//		//filmes.forEach(filme -> System.out.println(filme.getNome()));
-//	}
-	
-//	// Not Ok
-//    @Test
-//    public void atualizaFilmeComCampoVazio() throws Exception {
-//        Long id = 1L;
-//        Optional<Filme> filmeTeste = service.getFilmeById(id);
-//
-//        filmeTeste.get().setNome("");
-//
-//        URI uri = new URI("filmes/completo/1");
-//        mock.perform(MockMvcRequestBuilders.post(uri).content(transformaObjectJson(filmeTeste.get()))
-//                .contentType(MediaType.APPLICATION_JSON))
-//                .andExpect(MockMvcResultMatchers.status().is(HttpStatus.BAD_REQUEST.value()));
-//    }
-//    
-//    public static String transformaObjectJson(final Object obj) {
-//	    try {
-//	        final String jsonContent = mapper.writeValueAsString(obj);
-//	        return jsonContent;
-//	    } catch (Exception e) {
-//	        throw new RuntimeException(e);
-//	    }
-//	}  
 
 }
