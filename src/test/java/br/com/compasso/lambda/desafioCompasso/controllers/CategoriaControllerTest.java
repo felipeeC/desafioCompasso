@@ -62,7 +62,7 @@ class CategoriaControllerTest {
 
 		CategoriaForm categoriaForm = new CategoriaForm();
 
-		categoriaForm.setNome("Terror");
+		categoriaForm.setNome("Familia");
 
 		URI uri = new URI("/categorias");
 

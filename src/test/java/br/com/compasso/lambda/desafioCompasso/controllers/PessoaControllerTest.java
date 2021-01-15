@@ -133,8 +133,8 @@ class PessoaControllerTest {
 		PessoaForm pessoaForm = new PessoaForm();
 		// setting fields for the NewObject  
 
-		pessoaForm.setNome("Marcelo");
-		pessoaForm.setIdade(55);
+		pessoaForm.setNome("Moacir");
+		pessoaForm.setIdade(90);
 		
 		URI uri = new URI("/pessoas");
 		
