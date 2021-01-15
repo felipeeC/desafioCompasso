@@ -129,13 +129,13 @@ public class FilmeController {
 		// return ResponseEntity.created(uri).body(new FilmeCompletoDto(filme));
 	}
 
-	@RequestMapping(value = "/completo/{id}", method = RequestMethod.PUT)
+	@PutMapping(value = "/completo/{id}")
 	public ResponseEntity<FilmeCompletoDto> atualizarFilme(@PathVariable Long id, @RequestBody @Valid FilmeForm form) {
 		return filmeService.update(id, form);
 
 	}
 
-	@RequestMapping(value = "/completo/{id}", method = RequestMethod.DELETE)
+	@DeleteMapping(value = "/completo/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Long id) {
 		filmeService.delete(id);
 		return ResponseEntity.noContent().build();
