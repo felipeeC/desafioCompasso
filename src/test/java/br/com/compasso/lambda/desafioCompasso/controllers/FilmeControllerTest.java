@@ -11,7 +11,10 @@ import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -32,7 +35,7 @@ import br.com.compasso.lambda.desafioCompasso.services.PessoaService;
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
 @AutoConfigureMockMvc
-
+@TestMethodOrder(OrderAnnotation.class)
 public class FilmeControllerTest {
 
 	@Autowired
@@ -128,21 +131,44 @@ public class FilmeControllerTest {
 	}
 	
 	@Test
-	public void adicionaFilmeNoMyList() {
-		Long idPessoa = 2L;
-		Long idFilme = 1L;
-		Pessoa pessoa = pessoaService.getById(idPessoa);
-		System.out.println(pessoa);
-		Optional<Filme> filme= service.getFilmeById(idFilme);
-		System.out.println(filme.get());
-		//até aqui ok
+	@Order(1)
+	public void adicionaPessoaNoFilme() throws Exception {
+		URI uriCategoriaFilme = new URI("/filmes/associar-pessoa/1/2");
 		
-			List<Pessoa>pessoas = filme.get().getPessoas();
-			System.out.println(pessoas);
-			//pessoas.add(pessoa);
-			//service.salvar(filme.get());
-			//assertFalse(filme.get().getPessoas().isEmpty());
+		mock.perform(post(uriCategoriaFilme)
+				  .contentType(MediaType.APPLICATION_JSON))
+				  .andExpect(status().is(HttpStatus.CREATED.value()));
+		
 	}
+	
+	@Test
+	@Order(2)
+	public void adicionaPessoaDuplicadaNoFilme() throws Exception {
+		URI uriCategoriaFilme = new URI("/filmes/associar-pessoa/1/2");
+		
+		mock.perform(post(uriCategoriaFilme)
+				  .contentType(MediaType.APPLICATION_JSON))
+				  .andExpect(status().is(HttpStatus.BAD_REQUEST.value()));
+		
+	}
+	
+	
+//	@Test
+//	public void adicionaFilmeNoMyList() {
+//		Long idPessoa = 2L;
+//		Long idFilme = 1L;
+//		Pessoa pessoa = pessoaService.getById(idPessoa);
+//		System.out.println(pessoa);
+//		Optional<Filme> filme= service.getFilmeById(idFilme);
+//		System.out.println(filme.get());
+//		//até aqui ok
+//		
+//			List<Pessoa>pessoas = filme.get().getPessoas();
+//			System.out.println(pessoas);
+//			//pessoas.add(pessoa);
+//			//service.salvar(filme.get());
+//			//assertFalse(filme.get().getPessoas().isEmpty());
+//	}
 //	@Test
 //	public void retornaMyList() {
 //		Long idPessoa = 2L;

@@ -10,30 +10,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import br.com.compasso.lambda.desafioCompasso.dtos.AtualizacaoTopicoForm;
 import br.com.compasso.lambda.desafioCompasso.dtos.FilmeCompletoCategoriaDto;
 import br.com.compasso.lambda.desafioCompasso.dtos.FilmeCompletoDto;
 import br.com.compasso.lambda.desafioCompasso.dtos.FilmeDto;
 import br.com.compasso.lambda.desafioCompasso.dtos.FilmeForm;
-import br.com.compasso.lambda.desafioCompasso.dtos.PessoaDto;
 import br.com.compasso.lambda.desafioCompasso.models.Categoria;
 import br.com.compasso.lambda.desafioCompasso.models.Filme;
 import br.com.compasso.lambda.desafioCompasso.models.Pessoa;
 import br.com.compasso.lambda.desafioCompasso.services.CategoriaService;
 import br.com.compasso.lambda.desafioCompasso.services.FilmeService;
 import br.com.compasso.lambda.desafioCompasso.services.PessoaService;
-import net.bytebuddy.implementation.bytecode.Throw;
 
 @RestController
 @RequestMapping(value = "/filmes")
@@ -59,25 +54,25 @@ public class FilmeController {
 			@PathVariable(name = "idfilme") long idFilme, UriComponentsBuilder uriBuilder) {
 		Pessoa pessoa = pessoaService.getById(idPessoa);
 		Optional<Filme> filme = filmeService.getFilmeById(idFilme);
-		if (filme.isPresent()) {
+		List<Pessoa>pessoas = filme.get().getPessoas();
+		
+		if (filme.isPresent() && !filme.get().getPessoas().contains(pessoa)) {
 			filme.get().getPessoas().add(pessoa);
 			filmeService.salvar(filme.get());
 
 			URI uri = uriBuilder.path("/filmes/{id}").buildAndExpand(filme.get().getId()).toUri();
 			return ResponseEntity.created(uri).body(new FilmeCompletoDto(filme.get()));
 		}
-		return ResponseEntity.notFound().build();
-
-	}
+		return ResponseEntity.badRequest().build();
+	}//
 
 	@PostMapping("/associar-categoria/{idcategoria}/{idfilme}")
 	public ResponseEntity<FilmeCompletoCategoriaDto> associarCategoria(
 			@PathVariable(name = "idcategoria") long idCategoria, @PathVariable(name = "idfilme") long idFilme,
 			UriComponentsBuilder uriBuilder) {
 		Categoria categoria = categoriaService.getById(idCategoria);
-		System.out.println(categoria);
+
 		Optional<Filme> filme = filmeService.getFilmeById(idFilme);
-		System.out.println(filme);
 
 		if (filme.isPresent() && !filme.get().getCategorias().contains(categoria)) {
 
@@ -87,7 +82,7 @@ public class FilmeController {
 			URI uri = uriBuilder.path("/filmes/{id}").buildAndExpand(filme.get().getId()).toUri();
 			return ResponseEntity.created(uri).body(new FilmeCompletoCategoriaDto(filme.get()));
 		}
-		return ResponseEntity.notFound().build();
+		return ResponseEntity.badRequest().build();
 	}
 
 	@GetMapping(value = "/mylist/{idpessoa}")
