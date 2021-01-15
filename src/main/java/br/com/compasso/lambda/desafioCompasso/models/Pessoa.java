@@ -76,7 +76,14 @@ public class Pessoa {
 		return this.id + "\t" + this.nome + "\t\t" + this.idade;
 	}
 
-	// Equals
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + idade;
+		result = prime * result + ((nome == null) ? 0 : nome.hashCode());
+		return result;
+	}
 
 	@Override
 	public boolean equals(Object obj) {
@@ -84,15 +91,21 @@ public class Pessoa {
 			return true;
 		if (obj == null)
 			return false;
-
-		Pessoa outraPessoa = (Pessoa) obj;
-
-		if (!this.nome.toUpperCase().equals(outraPessoa.nome.toUpperCase()))
+		if (getClass() != obj.getClass())
 			return false;
-		if (this.idade != outraPessoa.idade)
+		Pessoa other = (Pessoa) obj;
+		if (idade != other.idade)
 			return false;
-
+		if (nome == null) {
+			if (other.nome != null)
+				return false;
+		} else if (!nome.equalsIgnoreCase(other.nome))
+			return false;
 		return true;
-
 	}
+
+	
+	
+
+	
 }
