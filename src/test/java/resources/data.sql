@@ -30,3 +30,6 @@ INSERT INTO Pessoa(nome, idade)
     
 INSERT INTO Categoria(nome)
      VALUES ('Suspense'), ('Comédia'), ('Ação'), ('Aventura'), ('Infantil'), ('Romance'), ('Ficção'), ('Terror'), ('Mistério'), ('Drama');
+     
+     INSERT INTO FILME_PESSOAS (FILMES_ID, PESSOAS_ID)
+	VALUES (2,2), (1,2);

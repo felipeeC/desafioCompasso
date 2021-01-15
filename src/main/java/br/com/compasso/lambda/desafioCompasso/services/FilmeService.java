@@ -38,13 +38,14 @@ public class FilmeService {
 		return filmes;
 	}
 
-	public void postFilme(Filme filme) {
+	public boolean postFilme(Filme filme) {
 		List<Filme> filmes = getFilmes();
 		if (filme.getNome() == "" || filme.getNome() == null) {
-
+			return false;
 		}
 		else if (filme.getComentario() == "" || filme.getComentario() == null) {
 			throw new  ObjetoIsNull("OBJETO NÃO PODE SER NULO");
+			
 		}
 		else if  (filme.getDataLancamento() == "" || filme.getDataLancamento() == null) {
 			throw new  ObjetoIsNull("OBJETO NÃO PODE SER NULO");
@@ -63,8 +64,10 @@ public class FilmeService {
 		}
 		else if  (filmes.contains(filme)) {
 			System.out.println("Tentou Adicionar Filme Repetido");
+			return false;
 		} else {
 			filmeRepository.save(filme);
+			return true;
 		}
 
 	}

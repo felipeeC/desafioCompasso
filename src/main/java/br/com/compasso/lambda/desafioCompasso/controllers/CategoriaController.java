@@ -2,6 +2,9 @@ package br.com.compasso.lambda.desafioCompasso.controllers;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +22,7 @@ import br.com.compasso.lambda.desafioCompasso.dtos.CategoriaForm;
 import br.com.compasso.lambda.desafioCompasso.dtos.FilmeDto;
 import br.com.compasso.lambda.desafioCompasso.models.Categoria;
 import br.com.compasso.lambda.desafioCompasso.models.Filme;
+import br.com.compasso.lambda.desafioCompasso.repositories.CategoriaRepository;
 import br.com.compasso.lambda.desafioCompasso.services.CategoriaService;
 
 @RestController
@@ -27,20 +31,20 @@ public class CategoriaController {
 
 	@Autowired
 	private CategoriaService categoriaService;
-	
+
 	@GetMapping
-	public List<CategoriaDto> categorias(){
-		List<Categoria> categorias =categoriaService.getCategorias();
+	public List<CategoriaDto> categorias() {
+		List<Categoria> categorias = categoriaService.getCategorias();
 		return CategoriaDto.converter(categorias);
 	}
-	
+
 	@GetMapping(value = "/filmes/{idcategoria}")
 	public List<FilmeDto> filmesCategoria(@PathVariable(name = "idcategoria") long idCategoria) {
 		Categoria categoria = categoriaService.getById(idCategoria);
 		List<Filme> filmes = categoria.getFilmes();
 		return FilmeDto.converter(filmes);
 	}
-	
+
 	@PostMapping
 	public ResponseEntity<CategoriaDto> cadastrar(@RequestBody CategoriaForm form, UriComponentsBuilder uriBuilder) {
 		if (form.getNome() == null || form.getNome().isEmpty() )
@@ -49,16 +53,26 @@ public class CategoriaController {
 			//new ResponseEntity<CategoriaDto>(null,new HttpHeaders(),HttpStatus.NO_CONTENT);
 		}
 		
+		List<Categoria>categorias = categoriaService.getCategorias();
+		
+		
+		
+		if(categorias.contains(form.converter())) {
+			return ResponseEntity.badRequest().build();
+		}
+		
 		Categoria categoria = form.converter();
 		categoriaService.cadastrarCategoria(categoria);
 		URI uri = uriBuilder.path("/categorias/{id}").buildAndExpand(categoria.getId()).toUri();
 		return ResponseEntity.created(uri).body(new CategoriaDto(categoria));
 	}
-	
+
+
+
 	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<Void> delete(@PathVariable long id){
+	public ResponseEntity<Void> delete(@PathVariable long id) {
 		categoriaService.delete(id);
 		return ResponseEntity.noContent().build();
 	}
-	
+
 }

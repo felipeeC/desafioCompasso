@@ -102,15 +102,34 @@ public class FilmeControllerTest {
         
         service.delete(id);
 	}
-	@Test
-	public void retornaMyList() {
-		Long idPessoa = 2L;
-		Pessoa pessoa = pessoaService.getById(idPessoa);
-		List<Filme> filmes = pessoa.getFilmes();
-		assertFalse(filmes.isEmpty());
-	}
 	
-	// Not Ok
+	@Test
+	public void adicionaFilmeNoMyList() {
+		Long idPessoa = 2L;
+		Long idFilme = 1L;
+		Pessoa pessoa = pessoaService.getById(idPessoa);
+		System.out.println(pessoa);
+		Optional<Filme> filme= service.getFilmeById(idFilme);
+		System.out.println(filme.get());
+		//até aqui ok
+		
+			List<Pessoa>pessoas = filme.get().getPessoas();
+			System.out.println(pessoas);
+			//pessoas.add(pessoa);
+			//service.salvar(filme.get());
+			//assertFalse(filme.get().getPessoas().isEmpty());
+	}
+//	@Test
+//	public void retornaMyList() {
+//		Long idPessoa = 2L;
+//		Pessoa pessoa = pessoaService.getById(idPessoa);
+//		List<Filme> filmes = pessoa.getFilmes();
+//		System.out.println(filmes);
+//		assertFalse(filmes.isEmpty());
+//		//filmes.forEach(filme -> System.out.println(filme.getNome()));
+//	}
+	
+//	// Not Ok
 //    @Test
 //    public void atualizaFilmeComCampoVazio() throws Exception {
 //        Long id = 1L;
@@ -123,14 +142,14 @@ public class FilmeControllerTest {
 //                .contentType(MediaType.APPLICATION_JSON))
 //                .andExpect(MockMvcResultMatchers.status().is(HttpStatus.BAD_REQUEST.value()));
 //    }
-    
-    public static String transformaObjectJson(final Object obj) {
-	    try {
-	        final String jsonContent = mapper.writeValueAsString(obj);
-	        return jsonContent;
-	    } catch (Exception e) {
-	        throw new RuntimeException(e);
-	    }
-	}  
+//    
+//    public static String transformaObjectJson(final Object obj) {
+//	    try {
+//	        final String jsonContent = mapper.writeValueAsString(obj);
+//	        return jsonContent;
+//	    } catch (Exception e) {
+//	        throw new RuntimeException(e);
+//	    }
+//	}  
 
 }
