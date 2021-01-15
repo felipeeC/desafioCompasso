@@ -50,14 +50,11 @@ public class CategoriaController {
 		if (form.getNome() == null || form.getNome().isEmpty() )
 		{
 			return ResponseEntity.noContent().build();
-			//new ResponseEntity<CategoriaDto>(null,new HttpHeaders(),HttpStatus.NO_CONTENT);
 		}
 		
 		List<Categoria>categorias = categoriaService.getCategorias();
-		
-		
-		
 		if(categorias.contains(form.converter())) {
+			
 			return ResponseEntity.badRequest().build();
 		}
 		
@@ -66,8 +63,6 @@ public class CategoriaController {
 		URI uri = uriBuilder.path("/categorias/{id}").buildAndExpand(categoria.getId()).toUri();
 		return ResponseEntity.created(uri).body(new CategoriaDto(categoria));
 	}
-
-
 
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> delete(@PathVariable long id) {

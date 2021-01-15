@@ -35,7 +35,6 @@ public class CategoriaService {
 	}
 
 	public Optional<Categoria> findByNome(String nome) {
-		
 		return categoriaRepository.findByNome(nome);
 	}
 }
