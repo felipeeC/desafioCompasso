@@ -51,7 +51,14 @@ public class PessoaService {
 	public ResponseEntity<PessoaDto> cadastrarPessoa(
 			@Valid PessoaForm form,
 			UriComponentsBuilder uriBuilder) {
+		
 		Pessoa pessoa = form.converter();
+		List<Pessoa> pessoas = pessoaRepository.findAll();
+		
+		if(pessoas.contains(pessoa)) {
+			return ResponseEntity.badRequest().build();
+		}
+		
 		pessoaRepository.save(pessoa);
 				
 		URI uri = uriBuilder.path("/pessoas/{id}")
