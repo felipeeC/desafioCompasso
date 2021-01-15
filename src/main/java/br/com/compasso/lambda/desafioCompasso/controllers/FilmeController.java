@@ -49,7 +49,7 @@ public class FilmeController {
 		return FilmeDto.converter(filmes);
 	}
 
-	@PostMapping("/associar-pessoa/{idpessoa}/{idfilme}")
+	@PostMapping("/{idfilme}/associar-pessoa/{idpessoa}")
 	public ResponseEntity<FilmeCompletoDto> associarPessoa(@PathVariable(name = "idpessoa") long idPessoa,
 			@PathVariable(name = "idfilme") long idFilme, UriComponentsBuilder uriBuilder) {
 		Pessoa pessoa = pessoaService.getById(idPessoa);
@@ -64,9 +64,9 @@ public class FilmeController {
 			return ResponseEntity.created(uri).body(new FilmeCompletoDto(filme.get()));
 		}
 		return ResponseEntity.badRequest().build();
-	}//
+	}
 
-	@PostMapping("/associar-categoria/{idcategoria}/{idfilme}")
+	@PostMapping("/{idfilme}/associar-categoria/{idcategoria}")
 	public ResponseEntity<FilmeCompletoCategoriaDto> associarCategoria(
 			@PathVariable(name = "idcategoria") long idCategoria, @PathVariable(name = "idfilme") long idFilme,
 			UriComponentsBuilder uriBuilder) {
