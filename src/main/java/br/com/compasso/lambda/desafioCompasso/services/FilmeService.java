@@ -7,6 +7,7 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,6 +15,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.compasso.lambda.desafioCompasso.dtos.AtualizacaoTopicoForm;
 import br.com.compasso.lambda.desafioCompasso.dtos.FilmeCompletoDto;
+import br.com.compasso.lambda.desafioCompasso.dtos.FilmeDto;
 import br.com.compasso.lambda.desafioCompasso.dtos.FilmeForm;
 import br.com.compasso.lambda.desafioCompasso.dtos.PessoaDto;
 import br.com.compasso.lambda.desafioCompasso.exception.ObjetoIsNull;
@@ -38,37 +40,18 @@ public class FilmeService {
 		return filmes;
 	}
 
-	public boolean postFilme(Filme filme) {
+	public ResponseEntity<FilmeCompletoDto> postFilme(@Valid FilmeForm form, UriComponentsBuilder uriBuilder) {
+		Filme filme = form.converter();
 		List<Filme> filmes = getFilmes();
-		if (filme.getNome() == "" || filme.getNome() == null) {
-			return false;
-		}
-		else if (filme.getComentario() == "" || filme.getComentario() == null) {
-			throw new  ObjetoIsNull("OBJETO NÃO PODE SER NULO");
-			
-		}
-		else if  (filme.getDataLancamento() == "" || filme.getDataLancamento() == null) {
-			throw new  ObjetoIsNull("OBJETO NÃO PODE SER NULO");
-		}
-		else if  (filme.getDescricao() == "" || filme.getDescricao() == null) {
-			throw new  ObjetoIsNull("OBJETO NÃO PODE SER NULO");
-		}
-		else if  (filme.getDiretor() == "" || filme.getDiretor() == null) {
-			throw new  ObjetoIsNull("OBJETO NÃO PODE SER NULO");
-		}
-		else if  (filme.getElenco() == "" || filme.getElenco() == null) {
-			throw new  ObjetoIsNull("OBJETO NÃO PODE SER NULO");
-		}
-		else if  (filme.getEstudio() == "" || filme.getEstudio() == null) {
-			throw new  ObjetoIsNull("OBJETO NÃO PODE SER NULO");
-		}
-		else if  (filmes.contains(filme)) {
+		HttpStatus status;
+		if (filmes.contains(filme)) {
 			System.out.println("Tentou Adicionar Filme Repetido");
-			return false;
-		} else {
-			filmeRepository.save(filme);
-			return true;
+			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
 		}
+		filmeRepository.save(filme);
+		
+		URI uri = uriBuilder.path("/filmes/{id}").buildAndExpand(filme.getId()).toUri();
+		return ResponseEntity.created(uri).body(new FilmeCompletoDto(filme));
 
 	}
 
