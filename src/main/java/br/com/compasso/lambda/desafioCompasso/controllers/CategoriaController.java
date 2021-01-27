@@ -1,8 +1,6 @@
 package br.com.compasso.lambda.desafioCompasso.controllers;
 
-import java.net.URI;
 import java.util.List;
-import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -19,12 +17,9 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.compasso.lambda.desafioCompasso.dtos.CategoriaDto;
 import br.com.compasso.lambda.desafioCompasso.dtos.CategoriaForm;
-import br.com.compasso.lambda.desafioCompasso.dtos.FilmeCompletoDto;
 import br.com.compasso.lambda.desafioCompasso.dtos.FilmeDto;
-import br.com.compasso.lambda.desafioCompasso.dtos.FilmeForm;
 import br.com.compasso.lambda.desafioCompasso.models.Categoria;
 import br.com.compasso.lambda.desafioCompasso.models.Filme;
-import br.com.compasso.lambda.desafioCompasso.repositories.CategoriaRepository;
 import br.com.compasso.lambda.desafioCompasso.services.CategoriaService;
 
 @RestController
