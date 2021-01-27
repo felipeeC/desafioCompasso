@@ -72,15 +72,6 @@ class CategoriaControllerTest {
 
 	}
 
-	public static String asJsonString(final Object obj) {
-		try {
-			final String jsonContent = mapper.writeValueAsString(obj);
-			return jsonContent;
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
-
 	@Test
 	public void testDeleteCategoria() throws Exception {
 
@@ -92,7 +83,16 @@ class CategoriaControllerTest {
 
 		mockMvc.perform(MockMvcRequestBuilders.delete(uri)
 				.contentType(MediaType.APPLICATION_JSON))
-				.andExpect(MockMvcResultMatchers.status().is(HttpStatus.BAD_REQUEST.value()));
+				.andExpect(MockMvcResultMatchers.status().is(HttpStatus.ACCEPTED.value()));
+	}
+	
+	public static String asJsonString(final Object obj) {
+		try {
+			final String jsonContent = mapper.writeValueAsString(obj);
+			return jsonContent;
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 	
 }
