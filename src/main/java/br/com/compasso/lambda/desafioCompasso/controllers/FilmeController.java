@@ -54,8 +54,8 @@ public class FilmeController {
 			@PathVariable(name = "idfilme") long idFilme, UriComponentsBuilder uriBuilder) {
 		Pessoa pessoa = pessoaService.getById(idPessoa);
 		Optional<Filme> filme = filmeService.getFilmeById(idFilme);
-		List<Pessoa>pessoas = filme.get().getPessoas();
-		
+		List<Pessoa> pessoas = filme.get().getPessoas();
+
 		if (filme.isPresent() && !filme.get().getPessoas().contains(pessoa)) {
 			filme.get().getPessoas().add(pessoa);
 			filmeService.salvar(filme.get());
@@ -113,14 +113,8 @@ public class FilmeController {
 	@PostMapping
 	public ResponseEntity<FilmeCompletoDto> cadastrar(@RequestBody @Valid FilmeForm form,
 			UriComponentsBuilder uriBuilder) {
-		Filme filme = form.converter();
-		if (filmeService.postFilme(filme)) {
-			URI uri = uriBuilder.path("/filmes/{id}").buildAndExpand(filme.getId()).toUri();
-			return ResponseEntity.created(uri).body(new FilmeCompletoDto(filme));
-		} else {
-			return ResponseEntity.notFound().build();
-		}
-
+		
+		return filmeService.postFilme(form, uriBuilder);
 	}
 
 	@PutMapping(value = "/completo/{id}")
