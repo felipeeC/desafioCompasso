@@ -8,6 +8,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,7 +45,7 @@ public class PessoaService {
 		List<Pessoa> pessoas = pessoaRepository.findAll();
 
 		if (pessoas.contains(pessoa)) {
-			return ResponseEntity.badRequest().build();
+			return ResponseEntity.status(HttpStatus.CONFLICT).build();
 		}
 
 		pessoaRepository.save(pessoa);
