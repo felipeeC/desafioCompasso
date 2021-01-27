@@ -1,22 +1,28 @@
 package br.com.compasso.lambda.desafioCompasso.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import br.com.compasso.lambda.desafioCompasso.models.Filme;
 
+@SpringBootTest
+@ExtendWith(SpringExtension.class)
 public class FilmeServiceTest {
 
 	@Autowired
 	private FilmeService service;
 
-	// CORRIGIR
+	// OK
 	@Test
 	public void retornaTodosFilmes() throws Exception {
 
@@ -37,11 +43,28 @@ public class FilmeServiceTest {
 		filmesTeste.add(filme2);
 		filmesTeste.add(filme3);
 
-		URI uri = new URI("/filmes");
-
 		assertEquals(filme1.getNome(), filmes.get(0).getNome());
 		assertEquals(filme2.getNome(), filmes.get(1).getNome());
 		assertEquals(filme3.getNome(), filmes.get(2).getNome());
+	}
+	
+	// OK
+	@Test
+	public void retornaFilmeNaoExistente() {
+		Long id = 80L;
+		Optional<Filme> filme = service.getFilmeById(id);
+
+		assertTrue(filme.isEmpty());
+	}
+	
+	// OK
+	@Test
+	public void deletaFilmeById() {
+		Long id = 1L;
+
+		Optional<Filme> filme = service.getFilmeById(id);
+
+		service.delete(id);
 	}
 
 }

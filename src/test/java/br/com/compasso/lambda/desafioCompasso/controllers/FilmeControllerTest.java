@@ -49,15 +49,6 @@ public class FilmeControllerTest {
 
 	static final ObjectMapper mapper = new ObjectMapper();
 
-	// CORRIGIR
-//	@Test
-//	public void retornaFilmeNaoExistente() {
-//		Long id = 80L;
-//		Optional<Filme> filme = service.getFilmeById(id);
-//
-//		assertTrue(filme.isEmpty());
-//	}
-
 	// OK
 	@Test
 	public void cadastraFilmeVazio() throws Exception {
@@ -68,10 +59,10 @@ public class FilmeControllerTest {
 
 		URI uri = new URI("/filmes");
 
-		mockMvc.perform(MockMvcRequestBuilders.post(uri).content(asJsonString(ff))
-				.contentType(MediaType.APPLICATION_JSON))
+		mockMvc.perform(
+				MockMvcRequestBuilders.post(uri).content(asJsonString(ff)).contentType(MediaType.APPLICATION_JSON))
 				.andExpect(MockMvcResultMatchers.status().is(HttpStatus.NO_CONTENT.value()));
-		
+
 //		service.postFilme(filme);
 //
 //		Long id = 4L;
@@ -82,17 +73,6 @@ public class FilmeControllerTest {
 
 //		assertTrue(filmeTest.isEmpty());
 	}
-
-	// CORRIGIR
-//	@Test
-//	public void deletaFilmeById() {
-//		Long id = 1L;
-//
-//		Optional<Filme> filme = service.getFilmeById(id);
-//
-//		service.delete(id);
-//
-//	}
 
 	// OK
 	@Test
@@ -131,9 +111,62 @@ public class FilmeControllerTest {
 
 		mockMvc.perform(post(uriCategoriaFilme).contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().is(HttpStatus.CONFLICT.value()));
-
 	}
-	
+
+	// OK
+	@Test
+	public void pegaIdPessoaFilmeInexistente() throws Exception {
+		URI uriCategoriaFilme = new URI("/filmes/mylist/5");
+
+		mockMvc.perform(MockMvcRequestBuilders.get(uriCategoriaFilme).contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().is(HttpStatus.NOT_FOUND.value()));
+	}
+
+	// OK
+	@Test
+	public void pegaPessoaFilmeVazio() throws Exception {
+		URI uriCategoriaFilme = new URI("/filmes/mylist/1");
+
+		mockMvc.perform(MockMvcRequestBuilders.get(uriCategoriaFilme).contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().is(HttpStatus.OK.value()));
+	}
+
+	// OK
+	@Test
+	public void deletaFilmeInexistenteDeFilmePessoa() throws Exception {
+		URI uriCategoriaFilme = new URI("mylist/2/delete/3");
+
+		mockMvc.perform(MockMvcRequestBuilders.get(uriCategoriaFilme).contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().is(HttpStatus.CREATED.value()));
+	}
+
+	// OK
+	@Test
+	public void deletaFilmeExistenteDeFilmePessoa() throws Exception {
+		URI uriCategoriaFilme = new URI("mylist/2/delete/1");
+
+		mockMvc.perform(MockMvcRequestBuilders.get(uriCategoriaFilme).contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().is(HttpStatus.CREATED.value()));
+	}
+
+	// CORRIGIR
+	@Test
+	public void deletaFilmeNaoExiste() throws Exception {
+		URI uriCategoriaFilme = new URI("mylist/2/delete/1");
+
+		mockMvc.perform(MockMvcRequestBuilders.get(uriCategoriaFilme).contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().is(HttpStatus.CREATED.value()));
+	}
+
+	// CORRIGIR
+	@Test
+	public void deletaFilmeQueExiste() throws Exception {
+		URI uriCategoriaFilme = new URI("mylist/2/delete/1");
+
+		mockMvc.perform(MockMvcRequestBuilders.get(uriCategoriaFilme).contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().is(HttpStatus.CREATED.value()));
+	}
+
 	public static String asJsonString(final Object obj) {
 		try {
 			final String jsonContent = mapper.writeValueAsString(obj);
