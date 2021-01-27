@@ -23,9 +23,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import br.com.compasso.lambda.desafioCompasso.dtos.CategoriaForm;
 import br.com.compasso.lambda.desafioCompasso.dtos.FilmeForm;
 import br.com.compasso.lambda.desafioCompasso.models.Filme;
 import br.com.compasso.lambda.desafioCompasso.models.Pessoa;
@@ -38,54 +41,37 @@ import br.com.compasso.lambda.desafioCompasso.services.PessoaService;
 @TestMethodOrder(OrderAnnotation.class)
 public class FilmeControllerTest {
 
-	@Autowired
-	private FilmeService service;
+//	@Autowired
+//	private FilmeService service;
 
 	@Autowired
-	private MockMvc mock;
+	private MockMvc mockMvc;
 
 	static final ObjectMapper mapper = new ObjectMapper();
 
-	// Ok
-	@Test
-	public void retornaTodosFilmes() {
-
-		List<Filme> filmes = service.getFilmes();
-
-		Filme filme1 = new Filme("A bordo", "Titanic", "Filme trágico", "1997-05-23", "Hollywood", "James Cameron",
-				"Leonardo Dicaprio");
-		Filme filme2 = new Filme(
-				"An orphaned boy enrolls in a school of wizardry, where he learns the truth about himself, his family and the terrible evil that haunts the magical world.",
-				"Harry Potter e a Pedra Filosofal", "", "2001-11-23", "Warner Bros.", "Chris Columbus",
-				"Daniel Radcliffe");
-		Filme filme3 = new Filme("tt", "calculadora", "ttttt", "1999-05-12", "Hollywood", "felipe alves",
-				"Leonardo Da vinci");
-
-		List<Filme> filmesTeste = new ArrayList<>();
-
-		filmesTeste.add(filme1);
-		filmesTeste.add(filme2);
-		filmesTeste.add(filme3);
-
-		assertEquals(filme1.getNome(), filmes.get(0).getNome());
-		assertEquals(filme2.getNome(), filmes.get(1).getNome());
-		assertEquals(filme3.getNome(), filmes.get(2).getNome());
-	}
-
-	// Ok
-	@Test
-	public void retornaFilmeNaoExistente() {
-		Long id = 80L;
-		Optional<Filme> filme = service.getFilmeById(id);
-
-		assertTrue(filme.isEmpty());
-	}
-
-//	// Not Ok
+	// CORRIGIR
 //	@Test
-//	public void cadastraFilmeVazio() {
-//		FilmeForm ff = new FilmeForm(null, null, null, null, null, null, null);
-//		Filme filme = ff.converter();
+//	public void retornaFilmeNaoExistente() {
+//		Long id = 80L;
+//		Optional<Filme> filme = service.getFilmeById(id);
+//
+//		assertTrue(filme.isEmpty());
+//	}
+
+	// OK
+	@Test
+	public void cadastraFilmeVazio() throws Exception {
+
+		FilmeForm ff = new FilmeForm(null, null, null, null, null, null, null);
+
+		ff.setNome("");
+
+		URI uri = new URI("/filmes");
+
+		mockMvc.perform(MockMvcRequestBuilders.post(uri).content(asJsonString(ff))
+				.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(MockMvcResultMatchers.status().is(HttpStatus.NO_CONTENT.value()));
+		
 //		service.postFilme(filme);
 //
 //		Long id = 4L;
@@ -93,56 +79,68 @@ public class FilmeControllerTest {
 //		Optional<Filme> filmeTest = service.getFilmeById(id);
 //
 //		System.out.println(filmeTest);
-//
-//		assertTrue(filmeTest.isEmpty());
-//	}
 
+//		assertTrue(filmeTest.isEmpty());
+	}
+
+	// CORRIGIR
 //	@Test
 //	public void deletaFilmeById() {
 //		Long id = 1L;
 //
-//        Optional<Filme> filme = service.getFilmeById(id);
-//        
-//        service.delete(id);
-//        
+//		Optional<Filme> filme = service.getFilmeById(id);
+//
+//		service.delete(id);
+//
 //	}
 
+	// OK
 	@Test
 	public void adicionaCategoriaNoFilme() throws Exception {
 		URI uriCategoriaFilme = new URI("/filmes/associar-categoria/1/1");
 
-		mock.perform(post(uriCategoriaFilme).contentType(MediaType.APPLICATION_JSON))
+		mockMvc.perform(post(uriCategoriaFilme).contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().is(HttpStatus.CREATED.value()));
-
 	}
 
+	// OK
 	@Test
 	public void adicionaCategoriaDuplicadaNoFilme() throws Exception {
 		URI uriCategoriaFilme = new URI("/filmes/associar-categoria/1/1");
 
-		mock.perform(post(uriCategoriaFilme).contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().is(HttpStatus.BAD_REQUEST.value()));
+		mockMvc.perform(post(uriCategoriaFilme).contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().is(HttpStatus.CONFLICT.value()));
 
 	}
 
+	// OK
 	@Test
 	@Order(1)
 	public void adicionaPessoaNoFilme() throws Exception {
 		URI uriCategoriaFilme = new URI("/filmes/associar-pessoa/1/2");
 
-		mock.perform(post(uriCategoriaFilme).contentType(MediaType.APPLICATION_JSON))
+		mockMvc.perform(post(uriCategoriaFilme).contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().is(HttpStatus.CREATED.value()));
-
 	}
 
+	// OK
 	@Test
 	@Order(2)
 	public void adicionaPessoaDuplicadaNoFilme() throws Exception {
 		URI uriCategoriaFilme = new URI("/filmes/associar-pessoa/1/2");
 
-		mock.perform(post(uriCategoriaFilme).contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().is(HttpStatus.BAD_REQUEST.value()));
+		mockMvc.perform(post(uriCategoriaFilme).contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().is(HttpStatus.CONFLICT.value()));
 
+	}
+	
+	public static String asJsonString(final Object obj) {
+		try {
+			final String jsonContent = mapper.writeValueAsString(obj);
+			return jsonContent;
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 }
