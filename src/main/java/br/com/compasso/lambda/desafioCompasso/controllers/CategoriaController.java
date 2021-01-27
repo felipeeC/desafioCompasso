@@ -19,7 +19,9 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.compasso.lambda.desafioCompasso.dtos.CategoriaDto;
 import br.com.compasso.lambda.desafioCompasso.dtos.CategoriaForm;
+import br.com.compasso.lambda.desafioCompasso.dtos.FilmeCompletoDto;
 import br.com.compasso.lambda.desafioCompasso.dtos.FilmeDto;
+import br.com.compasso.lambda.desafioCompasso.dtos.FilmeForm;
 import br.com.compasso.lambda.desafioCompasso.models.Categoria;
 import br.com.compasso.lambda.desafioCompasso.models.Filme;
 import br.com.compasso.lambda.desafioCompasso.repositories.CategoriaRepository;
@@ -44,26 +46,14 @@ public class CategoriaController {
 		List<Filme> filmes = categoria.getFilmes();
 		return FilmeDto.converter(filmes);
 	}
-
+	
 	@PostMapping
-	public ResponseEntity<CategoriaDto> cadastrar(@RequestBody CategoriaForm form, UriComponentsBuilder uriBuilder) {
-		if (form.getNome() == null || form.getNome().isEmpty() )
-		{
-			return ResponseEntity.noContent().build();
+	public ResponseEntity<CategoriaDto> cadastrar(@RequestBody @Valid CategoriaForm form,
+			UriComponentsBuilder uriBuilder) {
+		
+		return categoriaService.postCategoria(form, uriBuilder);
 		}
 		
-		List<Categoria>categorias = categoriaService.getCategorias();
-		if(categorias.contains(form.converter())) {
-			
-			return ResponseEntity.badRequest().build();
-		}
-		
-		Categoria categoria = form.converter();
-		categoriaService.cadastrarCategoria(categoria);
-		URI uri = uriBuilder.path("/categorias/{id}").buildAndExpand(categoria.getId()).toUri();
-		return ResponseEntity.created(uri).body(new CategoriaDto(categoria));
-	}
-
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> delete(@PathVariable long id) {
 		categoriaService.delete(id);
