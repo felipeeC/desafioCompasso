@@ -1,7 +1,5 @@
 package br.com.compasso.lambda.desafioCompasso.controllers;
 
-import java.util.Optional;
-
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
@@ -24,7 +22,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 import br.com.compasso.lambda.desafioCompasso.dtos.AtualizacaoTopicoForm;
 import br.com.compasso.lambda.desafioCompasso.dtos.PessoaDto;
 import br.com.compasso.lambda.desafioCompasso.dtos.PessoaForm;
-import br.com.compasso.lambda.desafioCompasso.models.Pessoa;
 import br.com.compasso.lambda.desafioCompasso.services.PessoaService;
 
 @RestController
@@ -47,13 +44,7 @@ public class PessoaController {
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<PessoaDto> pessoaById(@PathVariable Long id) {
-		Optional<Pessoa> pessoa = pessoaService.findById(id);
-		
-		if(pessoa.isPresent()) {
-			return ResponseEntity.ok(new PessoaDto(pessoa.get()));
-		}
-		
-		return ResponseEntity.notFound().build();
+		return pessoaService.retornaPessoa(id);
 	}
 	
 	@PostMapping
