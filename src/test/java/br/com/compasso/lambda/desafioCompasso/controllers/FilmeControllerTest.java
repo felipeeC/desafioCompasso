@@ -61,7 +61,7 @@ public class FilmeControllerTest {
 
 		mockMvc.perform(
 				MockMvcRequestBuilders.post(uri).content(asJsonString(ff)).contentType(MediaType.APPLICATION_JSON))
-				.andExpect(MockMvcResultMatchers.status().is(HttpStatus.NO_CONTENT.value()));
+				.andExpect(MockMvcResultMatchers.status().is(HttpStatus.NOT_FOUND.value()));
 
 //		service.postFilme(filme);
 //
@@ -128,7 +128,7 @@ public class FilmeControllerTest {
 		URI uriCategoriaFilme = new URI("/filmes/mylist/1");
 
 		mockMvc.perform(MockMvcRequestBuilders.get(uriCategoriaFilme).contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().is(HttpStatus.OK.value()));
+				.andExpect(status().is(HttpStatus.NOT_FOUND.value()));
 	}
 
 	// OK
@@ -137,7 +137,7 @@ public class FilmeControllerTest {
 		URI uriCategoriaFilme = new URI("mylist/2/delete/3");
 
 		mockMvc.perform(MockMvcRequestBuilders.get(uriCategoriaFilme).contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().is(HttpStatus.CREATED.value()));
+				.andExpect(status().is(HttpStatus.NOT_FOUND.value()));
 	}
 
 	// OK
@@ -155,7 +155,7 @@ public class FilmeControllerTest {
 		URI uriCategoriaFilme = new URI("mylist/2/delete/1");
 
 		mockMvc.perform(MockMvcRequestBuilders.get(uriCategoriaFilme).contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().is(HttpStatus.CREATED.value()));
+				.andExpect(status().is(HttpStatus.NOT_FOUND.value()));
 	}
 
 	// CORRIGIR
