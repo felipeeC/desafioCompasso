@@ -95,14 +95,11 @@ public class FilmeController {
 	@RequestMapping(value = "mylist/{idpessoa}/delete/{idfilme}", method = RequestMethod.DELETE)
 	public ResponseEntity<FilmeCompletoDto> removeFilmeMyList(@PathVariable(name = "idfilme") Long idFilme,
 			@PathVariable(name = "idpessoa") long idPessoa, UriComponentsBuilder uriBuilder) {
-		Optional<Filme> filme = filmeService.getFilmeById(idFilme);
-		Pessoa pessoa = pessoaService.getById(idPessoa);
-		filme.get().getPessoas().remove(pessoa);
-		filmeService.salvar(filme.get());
-		URI uri = uriBuilder.path("/filmes/{id}").buildAndExpand(filme.get().getId()).toUri();
-		return ResponseEntity.created(uri).body(new FilmeCompletoDto(filme.get()));
+		
+		return filmeService.deleteFilmeDoMyList(idFilme, idPessoa, uriBuilder);
 	}
 
+	//ok
 	@GetMapping(value = "/completo")
 	public List<FilmeCompletoDto> filmesCompletos() {
 		List<Filme> filmes = filmeService.getFilmes();
@@ -110,19 +107,22 @@ public class FilmeController {
 		return FilmeCompletoDto.converter(filmes);
 	}
 
+	//ok
 	@PostMapping
 	public ResponseEntity<FilmeCompletoDto> cadastrar(@RequestBody @Valid FilmeForm form,
 			UriComponentsBuilder uriBuilder) {
 		
 		return filmeService.postFilme(form, uriBuilder);
 	}
-
+	
+	//ok
 	@PutMapping(value = "/completo/{id}")
 	public ResponseEntity<FilmeCompletoDto> atualizarFilme(@PathVariable Long id, @RequestBody @Valid FilmeForm form) {
 		return filmeService.update(id, form);
 
 	}
 
+	//ok
 	@DeleteMapping(value = "/completo/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Long id) {
 		filmeService.delete(id);

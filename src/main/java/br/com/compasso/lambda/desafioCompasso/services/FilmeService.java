@@ -29,7 +29,8 @@ public class FilmeService {
 
 	@Autowired
 	private FilmeRepository filmeRepository;
-
+	@Autowired
+	private PessoaService pessoaService;
 	// private List<Filme> filmes = new ArrayList<Filme>();
 
 	// Métodos
@@ -40,6 +41,7 @@ public class FilmeService {
 		return filmes;
 	}
 
+	//ok
 	public ResponseEntity<FilmeCompletoDto> postFilme(@Valid FilmeForm form, UriComponentsBuilder uriBuilder) {
 		Filme filme = form.converter();
 		List<Filme> filmes = getFilmes();
@@ -75,6 +77,16 @@ public class FilmeService {
 		filmeRepository.deleteById(id);
 
 	}
+	
+	public ResponseEntity<FilmeCompletoDto> deleteFilmeDoMyList(Long idFilme ,Long idPessoa, UriComponentsBuilder uriBuilder){
+		Optional<Filme> filme = getFilmeById(idFilme);
+		Pessoa pessoa = pessoaService.getById(idPessoa);
+		filme.get().getPessoas().contains(pessoa);
+		filme.get().getPessoas().remove(pessoa);
+		salvar(filme.get());
+		URI uri = uriBuilder.path("/filmes/{id}").buildAndExpand(filme.get().getId()).toUri();
+		return ResponseEntity.ok(new FilmeCompletoDto(filme.get()));
+	}
 
 	public Optional<Filme> getFilmeById(Long id) {
 		return filmeRepository.findById(id);
@@ -83,7 +95,6 @@ public class FilmeService {
 	public void salvar(Filme filme) {
 
 		filmeRepository.save(filme);
-
 	}
 
 //	public void imprimeById(int idFilme) {
