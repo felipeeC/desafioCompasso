@@ -31,6 +31,7 @@ class CategoriaControllerTest {
 	@Autowired
 	private MockMvc mockMvc;
 
+	// OK
 	@Test
 	public void testCadastroCategoriaNomeVazio() throws Exception {
 
@@ -42,9 +43,10 @@ class CategoriaControllerTest {
 
 		mockMvc.perform(MockMvcRequestBuilders.post(uri).content(asJsonString(categoriaForm))
 				.contentType(MediaType.APPLICATION_JSON))
-				.andExpect(MockMvcResultMatchers.status().is(HttpStatus.NO_CONTENT.value()));
+				.andExpect(MockMvcResultMatchers.status().is(HttpStatus.UNPROCESSABLE_ENTITY.value()));
 	}
 
+	// OK
 	@Test
 	public void testCadastroCategoriaNomeNulo() throws Exception {
 
@@ -54,9 +56,10 @@ class CategoriaControllerTest {
 
 		mockMvc.perform(MockMvcRequestBuilders.post(uri).content(asJsonString(categoriaForm))
 				.contentType(MediaType.APPLICATION_JSON))
-				.andExpect(MockMvcResultMatchers.status().is(HttpStatus.NO_CONTENT.value()));
+				.andExpect(MockMvcResultMatchers.status().is(HttpStatus.UNPROCESSABLE_ENTITY.value()));
 	}
 
+	// OK
 	@Test
 	public void testCadastroCategoriaPossuiNome() throws Exception {
 
@@ -69,23 +72,52 @@ class CategoriaControllerTest {
 		mockMvc.perform(MockMvcRequestBuilders.post(uri).content(asJsonString(categoriaForm))
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(MockMvcResultMatchers.status().is(HttpStatus.CREATED.value()));
-
 	}
 
+	// OK
 	@Test
 	public void testDeleteCategoria() throws Exception {
 
 		Categoria idCategoria = new Categoria();
 
-	    idCategoria.setId(0);
+		idCategoria.setId(0);
 
 		URI uri = new URI("/categorias/id");
 
-		mockMvc.perform(MockMvcRequestBuilders.delete(uri)
-				.contentType(MediaType.APPLICATION_JSON))
-				.andExpect(MockMvcResultMatchers.status().is(HttpStatus.ACCEPTED.value()));
+		mockMvc.perform(MockMvcRequestBuilders.delete(uri).contentType(MediaType.APPLICATION_JSON))
+				.andExpect(MockMvcResultMatchers.status().is(HttpStatus.NO_CONTENT.value()));
 	}
-	
+
+	// OK
+	@Test
+	public void DevolveFilmesPorCategoria() throws Exception {
+
+		URI uri = new URI("/categorias/filmes/1");
+
+		mockMvc.perform(MockMvcRequestBuilders.get(uri).contentType(MediaType.APPLICATION_JSON))
+				.andExpect(MockMvcResultMatchers.status().is(HttpStatus.OK.value()));
+	}
+
+	// OK
+	@Test
+	public void DevolveFilmesPorCategoriaQueNaoExiste() throws Exception {
+
+		URI uri = new URI("/categorias/filmes/15");
+
+		mockMvc.perform(MockMvcRequestBuilders.get(uri).contentType(MediaType.APPLICATION_JSON))
+				.andExpect(MockMvcResultMatchers.status().is(HttpStatus.NOT_FOUND.value()));
+	}
+
+	// OK
+	@Test
+	public void DevolveCategorias() throws Exception {
+
+		URI uri = new URI("/categorias");
+
+		mockMvc.perform(MockMvcRequestBuilders.get(uri).contentType(MediaType.APPLICATION_JSON))
+				.andExpect(MockMvcResultMatchers.status().is(HttpStatus.OK.value()));
+	}
+
 	public static String asJsonString(final Object obj) {
 		try {
 			final String jsonContent = mapper.writeValueAsString(obj);
@@ -94,5 +126,5 @@ class CategoriaControllerTest {
 			throw new RuntimeException(e);
 		}
 	}
-	
+
 }

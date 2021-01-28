@@ -136,7 +136,7 @@ public class FilmeControllerTest {
 	public void deletaFilmeInexistenteDeFilmePessoa() throws Exception {
 		URI uriCategoriaFilme = new URI("/filmes/mylist/2/delete/3");
 
-		mockMvc.perform(MockMvcRequestBuilders.get(uriCategoriaFilme).contentType(MediaType.APPLICATION_JSON))
+		mockMvc.perform(MockMvcRequestBuilders.delete(uriCategoriaFilme).contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().is(HttpStatus.NOT_FOUND.value()));
 	}
 
@@ -145,7 +145,7 @@ public class FilmeControllerTest {
 	public void deletaFilmeExistenteDeFilmePessoa() throws Exception {
 		URI uriCategoriaFilme = new URI("/filmes/mylist/2/delete/1");
 
-		mockMvc.perform(MockMvcRequestBuilders.get(uriCategoriaFilme).contentType(MediaType.APPLICATION_JSON))
+		mockMvc.perform(MockMvcRequestBuilders.delete(uriCategoriaFilme).contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().is(HttpStatus.NO_CONTENT.value()));
 	}
 
@@ -154,7 +154,7 @@ public class FilmeControllerTest {
 	public void deletaFilmeNaoExiste() throws Exception {
 		URI uriCategoriaFilme = new URI("/filmes/5");
 
-		mockMvc.perform(MockMvcRequestBuilders.get(uriCategoriaFilme).contentType(MediaType.APPLICATION_JSON))
+		mockMvc.perform(MockMvcRequestBuilders.delete(uriCategoriaFilme).contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().is(HttpStatus.NOT_FOUND.value()));
 	}
 
@@ -163,7 +163,7 @@ public class FilmeControllerTest {
 	public void deletaFilmeQueExiste() throws Exception {
 		URI uriCategoriaFilme = new URI("/filmes/1");
 
-		mockMvc.perform(MockMvcRequestBuilders.get(uriCategoriaFilme).contentType(MediaType.APPLICATION_JSON))
+		mockMvc.perform(MockMvcRequestBuilders.delete(uriCategoriaFilme).contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().is(HttpStatus.NO_CONTENT.value()));
 	}
 

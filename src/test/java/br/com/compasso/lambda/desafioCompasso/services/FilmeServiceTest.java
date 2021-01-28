@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import br.com.compasso.lambda.desafioCompasso.dtos.FilmeForm;
 import br.com.compasso.lambda.desafioCompasso.models.Filme;
 
 @SpringBootTest
@@ -47,7 +48,7 @@ public class FilmeServiceTest {
 		assertEquals(filme2.getNome(), filmes.get(1).getNome());
 		assertEquals(filme3.getNome(), filmes.get(2).getNome());
 	}
-	
+
 	// OK
 	@Test
 	public void retornaFilmeNaoExistente() {
@@ -56,7 +57,7 @@ public class FilmeServiceTest {
 
 		assertTrue(filme.isEmpty());
 	}
-	
+
 	// OK
 	@Test
 	public void deletaFilmeById() {
@@ -65,6 +66,55 @@ public class FilmeServiceTest {
 		Optional<Filme> filme = service.getFilmeById(id);
 
 		service.delete(id);
+
+		filme = service.getFilmeById(id);
+
+		assertTrue(filme.isEmpty());
+	}
+
+	// OK
+	@Test
+	public void deletaFilmeByIdQueNaoExsite() {
+		Long id = 5L;
+
+		try {
+			Optional<Filme> filme = service.getFilmeById(id);
+
+			service.delete(id);
+		} catch (Exception e) {
+			assertTrue(true);
+		}
+
+	}
+
+	// OK
+	@Test
+	public void atualizaFilme() {
+		Long id = 1L;
+
+		FilmeForm ff = new FilmeForm("A bordo", "Titanic", "Drama antigo", "1997-05-23", "Hollywood", "James Cameron",
+				"Leonardo Dicaprio");
+
+		service.update(id, ff);
+		
+		Optional<Filme> filme = service.getFilmeById(id);
+
+		assertEquals("Drama antigo",filme.get().getComentario());
+	}
+
+	// OK
+	@Test
+	public void atualizaFilmeComDadosFaltando() {
+		Long id = 1L;
+
+		FilmeForm ff = new FilmeForm("A bordo", "Titanic", "", "1997-05-23", "Hollywood", "James Cameron",
+				"Leonardo Dicaprio");
+
+		service.update(id, ff);
+		
+		Optional<Filme> filme = service.getFilmeById(id);
+
+		assertTrue(filme.isEmpty());
 	}
 
 }
