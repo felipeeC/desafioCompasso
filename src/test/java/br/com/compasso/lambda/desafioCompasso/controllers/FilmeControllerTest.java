@@ -61,7 +61,7 @@ public class FilmeControllerTest {
 
 		mockMvc.perform(
 				MockMvcRequestBuilders.post(uri).content(asJsonString(ff)).contentType(MediaType.APPLICATION_JSON))
-				.andExpect(MockMvcResultMatchers.status().is(HttpStatus.NOT_FOUND.value()));
+				.andExpect(MockMvcResultMatchers.status().is(HttpStatus.UNPROCESSABLE_ENTITY.value()));
 
 //		service.postFilme(filme);
 //
@@ -128,13 +128,13 @@ public class FilmeControllerTest {
 		URI uriCategoriaFilme = new URI("/filmes/mylist/1");
 
 		mockMvc.perform(MockMvcRequestBuilders.get(uriCategoriaFilme).contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().is(HttpStatus.NOT_FOUND.value()));
+				.andExpect(status().is(HttpStatus.OK.value()));
 	}
 
 	// OK
 	@Test
 	public void deletaFilmeInexistenteDeFilmePessoa() throws Exception {
-		URI uriCategoriaFilme = new URI("mylist/2/delete/3");
+		URI uriCategoriaFilme = new URI("/filmes/mylist/2/delete/3");
 
 		mockMvc.perform(MockMvcRequestBuilders.get(uriCategoriaFilme).contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().is(HttpStatus.NOT_FOUND.value()));
@@ -143,16 +143,16 @@ public class FilmeControllerTest {
 	// OK
 	@Test
 	public void deletaFilmeExistenteDeFilmePessoa() throws Exception {
-		URI uriCategoriaFilme = new URI("mylist/2/delete/1");
+		URI uriCategoriaFilme = new URI("/filmes/mylist/2/delete/1");
 
 		mockMvc.perform(MockMvcRequestBuilders.get(uriCategoriaFilme).contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().is(HttpStatus.CREATED.value()));
+				.andExpect(status().is(HttpStatus.NO_CONTENT.value()));
 	}
 
 	// CORRIGIR
 	@Test
 	public void deletaFilmeNaoExiste() throws Exception {
-		URI uriCategoriaFilme = new URI("mylist/2/delete/1");
+		URI uriCategoriaFilme = new URI("/filmes/5");
 
 		mockMvc.perform(MockMvcRequestBuilders.get(uriCategoriaFilme).contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().is(HttpStatus.NOT_FOUND.value()));
@@ -161,10 +161,10 @@ public class FilmeControllerTest {
 	// CORRIGIR
 	@Test
 	public void deletaFilmeQueExiste() throws Exception {
-		URI uriCategoriaFilme = new URI("mylist/2/delete/1");
+		URI uriCategoriaFilme = new URI("/filmes/1");
 
 		mockMvc.perform(MockMvcRequestBuilders.get(uriCategoriaFilme).contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().is(HttpStatus.CREATED.value()));
+				.andExpect(status().is(HttpStatus.NO_CONTENT.value()));
 	}
 
 	public static String asJsonString(final Object obj) {
