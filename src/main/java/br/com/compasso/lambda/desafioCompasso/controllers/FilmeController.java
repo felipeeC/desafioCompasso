@@ -65,33 +65,23 @@ public class FilmeController {
 		}
 		return ResponseEntity.badRequest().build();
 	}
-
+	//ok
 	@PostMapping("/{idfilme}/associar-categoria/{idcategoria}")
 	public ResponseEntity<FilmeCompletoCategoriaDto> associarCategoria(
 			@PathVariable(name = "idcategoria") long idCategoria, @PathVariable(name = "idfilme") long idFilme,
 			UriComponentsBuilder uriBuilder) {
-		Categoria categoria = categoriaService.getById(idCategoria);
-
-		Optional<Filme> filme = filmeService.getFilmeById(idFilme);
-
-		if (filme.isPresent() && !filme.get().getCategorias().contains(categoria)) {
-
-			filme.get().getCategorias().add(categoria);
-			filmeService.salvar(filme.get());
-
-			URI uri = uriBuilder.path("/filmes/{id}").buildAndExpand(filme.get().getId()).toUri();
-			return ResponseEntity.created(uri).body(new FilmeCompletoCategoriaDto(filme.get()));
-		}
-		return ResponseEntity.badRequest().build();
+		return filmeService.associaCategoria(idCategoria, idFilme, uriBuilder);
 	}
-
+	
+	//ok
 	@GetMapping(value = "/mylist/{idpessoa}")
 	public List<FilmeDto> filmesPessoa(@PathVariable(name = "idpessoa") long idPessoa) {
 		Pessoa pessoa = pessoaService.getById(idPessoa);
 		List<Filme> filmes = pessoa.getFilmes();
 		return FilmeDto.converter(filmes);
 	}
-
+	
+	//ok
 	@RequestMapping(value = "mylist/{idpessoa}/delete/{idfilme}", method = RequestMethod.DELETE)
 	public ResponseEntity<FilmeCompletoDto> removeFilmeMyList(@PathVariable(name = "idfilme") Long idFilme,
 			@PathVariable(name = "idpessoa") long idPessoa, UriComponentsBuilder uriBuilder) {
