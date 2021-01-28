@@ -13,18 +13,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import br.com.compasso.lambda.desafioCompasso.dtos.AtualizacaoTopicoForm;
 import br.com.compasso.lambda.desafioCompasso.dtos.FilmeCompletoCategoriaDto;
 import br.com.compasso.lambda.desafioCompasso.dtos.FilmeCompletoDto;
-import br.com.compasso.lambda.desafioCompasso.dtos.FilmeDto;
 import br.com.compasso.lambda.desafioCompasso.dtos.FilmeForm;
-import br.com.compasso.lambda.desafioCompasso.dtos.PessoaDto;
-import br.com.compasso.lambda.desafioCompasso.exception.ObjetoIsNull;
 import br.com.compasso.lambda.desafioCompasso.models.Categoria;
 import br.com.compasso.lambda.desafioCompasso.models.Filme;
 import br.com.compasso.lambda.desafioCompasso.models.Pessoa;
 import br.com.compasso.lambda.desafioCompasso.repositories.FilmeRepository;
-import net.bytebuddy.implementation.bytecode.Throw;
 
 @Service
 public class FilmeService {
