@@ -5,35 +5,26 @@ import java.time.LocalDate;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
 
 import org.hibernate.validator.constraints.Length;
-import org.springframework.format.annotation.DateTimeFormat;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+public class PessoaAtualizaForm {
 
-import br.com.compasso.lambda.desafioCompasso.models.Pessoa;
-
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class PessoaForm {
-	
 	@NotNull @NotEmpty @Length(min = 5, max = 60)
 	private String nome;
 	
-	@NotNull @NotEmpty @DateTimeFormat(pattern = "yyyy-MM-dd")
-	private String aniversario;
+	@Past
+	private LocalDate aniversario;
 	
-	@NotNull @NotEmpty @Email
+	@Email
 	private String email;
-	
-	public Pessoa converter() {
-		return new Pessoa(nome, LocalDate.parse(aniversario), email);
-	}
 
 	public String getNome() {
 		return nome;
 	}
 
-	public String getAniversario() {
+	public LocalDate getAniversario() {
 		return aniversario;
 	}
 
@@ -45,7 +36,7 @@ public class PessoaForm {
 		this.nome = nome;
 	}
 
-	public void setAniversario(String aniversario) {
+	public void setAniversario(LocalDate aniversario) {
 		this.aniversario = aniversario;
 	}
 
