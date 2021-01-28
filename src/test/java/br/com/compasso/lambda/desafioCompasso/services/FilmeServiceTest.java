@@ -63,11 +63,9 @@ public class FilmeServiceTest {
 	public void deletaFilmeById() {
 		Long id = 1L;
 
-		Optional<Filme> filme = service.getFilmeById(id);
-
 		service.delete(id);
 
-		filme = service.getFilmeById(id);
+		Optional<Filme> filme = service.getFilmeById(id);
 
 		assertTrue(filme.isEmpty());
 	}
@@ -78,13 +76,10 @@ public class FilmeServiceTest {
 		Long id = 5L;
 
 		try {
-			Optional<Filme> filme = service.getFilmeById(id);
-
 			service.delete(id);
 		} catch (Exception e) {
 			assertTrue(true);
 		}
-
 	}
 
 	// OK
