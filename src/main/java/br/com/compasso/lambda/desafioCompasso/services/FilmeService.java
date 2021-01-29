@@ -13,16 +13,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import br.com.compasso.lambda.desafioCompasso.dtos.AtualizacaoTopicoForm;
+import br.com.compasso.lambda.desafioCompasso.dtos.FilmeCompletoCategoriaDto;
 import br.com.compasso.lambda.desafioCompasso.dtos.FilmeCompletoDto;
-import br.com.compasso.lambda.desafioCompasso.dtos.FilmeDto;
 import br.com.compasso.lambda.desafioCompasso.dtos.FilmeForm;
-import br.com.compasso.lambda.desafioCompasso.dtos.PessoaDto;
-import br.com.compasso.lambda.desafioCompasso.exception.ObjetoIsNull;
+import br.com.compasso.lambda.desafioCompasso.models.Categoria;
 import br.com.compasso.lambda.desafioCompasso.models.Filme;
 import br.com.compasso.lambda.desafioCompasso.models.Pessoa;
 import br.com.compasso.lambda.desafioCompasso.repositories.FilmeRepository;
-import net.bytebuddy.implementation.bytecode.Throw;
 
 @Service
 public class FilmeService {
@@ -31,6 +28,9 @@ public class FilmeService {
 	private FilmeRepository filmeRepository;
 	@Autowired
 	private PessoaService pessoaService;
+	@Autowired
+	private CategoriaService categoriaService;
+
 	// private List<Filme> filmes = new ArrayList<Filme>();
 
 	// Métodos
@@ -41,7 +41,7 @@ public class FilmeService {
 		return filmes;
 	}
 
-	//ok
+	// ok
 	public ResponseEntity<FilmeCompletoDto> postFilme(@Valid FilmeForm form, UriComponentsBuilder uriBuilder) {
 		Filme filme = form.converter();
 		List<Filme> filmes = getFilmes();
@@ -51,7 +51,7 @@ public class FilmeService {
 			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
 		}
 		filmeRepository.save(filme);
-		
+
 		URI uri = uriBuilder.path("/filmes/{id}").buildAndExpand(filme.getId()).toUri();
 		return ResponseEntity.created(uri).body(new FilmeCompletoDto(filme));
 
@@ -77,8 +77,9 @@ public class FilmeService {
 		filmeRepository.deleteById(id);
 
 	}
-	
-	public ResponseEntity<FilmeCompletoDto> deleteFilmeDoMyList(Long idFilme ,Long idPessoa, UriComponentsBuilder uriBuilder){
+
+	public ResponseEntity<FilmeCompletoDto> deleteFilmeDoMyList(Long idFilme, Long idPessoa,
+			UriComponentsBuilder uriBuilder) {
 		Optional<Filme> filme = getFilmeById(idFilme);
 		Pessoa pessoa = pessoaService.getById(idPessoa);
 		filme.get().getPessoas().contains(pessoa);
@@ -97,6 +98,23 @@ public class FilmeService {
 		filmeRepository.save(filme);
 	}
 
+	public ResponseEntity<FilmeCompletoCategoriaDto> associaCategoria(Long idCategoria, Long idFilme,
+			UriComponentsBuilder uriBuilder) {
+		Categoria categoria = categoriaService.getById(idCategoria);
+
+		Optional<Filme> filme = getFilmeById(idFilme);
+
+		if (filme.isPresent() && !filme.get().getCategorias().contains(categoria)) {
+
+			filme.get().getCategorias().add(categoria);
+			salvar(filme.get());
+
+			URI uri = uriBuilder.path("/filmes/{id}").buildAndExpand(filme.get().getId()).toUri();
+			return ResponseEntity.created(uri).body(new FilmeCompletoCategoriaDto(filme.get()));
+		}
+		return ResponseEntity.badRequest().build();
+
+	}
 //	public void imprimeById(int idFilme) {
 //		for (Filme filme : filmes) {
 //			if (filme.getId() == idFilme) {

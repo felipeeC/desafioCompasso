@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import br.com.compasso.lambda.desafioCompasso.dtos.AtualizacaoTopicoForm;
+import br.com.compasso.lambda.desafioCompasso.dtos.PessoaAtualizaForm;
 import br.com.compasso.lambda.desafioCompasso.dtos.PessoaDto;
 import br.com.compasso.lambda.desafioCompasso.dtos.PessoaForm;
 import br.com.compasso.lambda.desafioCompasso.services.PessoaService;
@@ -60,7 +60,7 @@ public class PessoaController {
 	@Transactional
 	public ResponseEntity<PessoaDto> atualizarPessoa(
 			@PathVariable Long id,
-			@RequestBody @Valid AtualizacaoTopicoForm form) { 
+			@RequestBody @Valid PessoaAtualizaForm form) { 
 		return pessoaService.atualizarPessoa(id, form);
 		
 	}

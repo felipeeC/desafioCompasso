@@ -48,7 +48,7 @@ public class CategoriaService {
 		HttpStatus status;
 		if (categorias.contains(categoria)) {
 			System.out.println("Tentou adicionar Categoria repetida");
-			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
+			return ResponseEntity.status(HttpStatus.CONFLICT).build();
 		}
 		categoriaRepository.save(categoria);
 		
