@@ -1,16 +1,10 @@
 package br.com.compasso.lambda.desafioCompasso.controllers;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -28,12 +22,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import br.com.compasso.lambda.desafioCompasso.dtos.CategoriaForm;
 import br.com.compasso.lambda.desafioCompasso.dtos.FilmeForm;
-import br.com.compasso.lambda.desafioCompasso.models.Filme;
-import br.com.compasso.lambda.desafioCompasso.models.Pessoa;
-import br.com.compasso.lambda.desafioCompasso.services.FilmeService;
-import br.com.compasso.lambda.desafioCompasso.services.PessoaService;
 
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
@@ -149,7 +138,7 @@ public class FilmeControllerTest {
 				.andExpect(status().is(HttpStatus.NO_CONTENT.value()));
 	}
 
-	// CORRIGIR
+	// OK
 	@Test
 	public void deletaFilmeNaoExiste() throws Exception {
 		URI uriCategoriaFilme = new URI("/filmes/5");
@@ -158,7 +147,7 @@ public class FilmeControllerTest {
 				.andExpect(status().is(HttpStatus.NOT_FOUND.value()));
 	}
 
-	// CORRIGIR
+	// OK
 	@Test
 	public void deletaFilmeQueExiste() throws Exception {
 		URI uriCategoriaFilme = new URI("/filmes/1");
