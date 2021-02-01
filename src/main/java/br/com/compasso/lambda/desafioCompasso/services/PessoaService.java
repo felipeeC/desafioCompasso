@@ -1,18 +1,14 @@
 package br.com.compasso.lambda.desafioCompasso.services;
 
 import java.util.List;
-import java.net.URI;
 import java.util.Optional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.compasso.lambda.desafioCompasso.dtos.PessoaAtualizaForm;
 import br.com.compasso.lambda.desafioCompasso.dtos.PessoaDto;
@@ -39,58 +35,46 @@ public class PessoaService {
 		return pessoaRepository.findById(id);
 	}
 
-	public ResponseEntity<PessoaDto> cadastrarPessoa(@Valid PessoaForm form, UriComponentsBuilder uriBuilder) {
+	public PessoaDto cadastrarPessoa(@Valid PessoaForm form) {
 
 		Pessoa pessoa = form.converter();
 		List<Pessoa> pessoas = pessoaRepository.findAll();
 
 		if (pessoas.contains(pessoa)) {
-			return ResponseEntity.status(HttpStatus.CONFLICT).build();
+			return null;
 		}
 
 		pessoaRepository.save(pessoa);
 
-		URI uri = uriBuilder.path("/pessoas/{id}").buildAndExpand(pessoa.getId()).toUri();
-
-		return ResponseEntity.created(uri).body(new PessoaDto(pessoa));
+		return new PessoaDto(pessoa);
 	}
 
-	public ResponseEntity<PessoaDto> atualizarPessoa(Long id, @Valid PessoaAtualizaForm form) {
+	public PessoaDto atualizarPessoa(Long id, @Valid PessoaAtualizaForm form) {
 		Optional<Pessoa> optional = pessoaRepository.findById(id);
 		if (optional.isPresent()) {
 			optional.get().setNome(form.getNome());
 			optional.get().setAniversario(form.getAniversario());
 			optional.get().setEmail(form.getEmail());
 			Pessoa pessoaAtualizada = pessoaRepository.save(optional.get());
-			return ResponseEntity.ok(new PessoaDto(pessoaAtualizada));
+			return new PessoaDto(pessoaAtualizada);
 		}
 
-		return ResponseEntity.notFound().build();
+		return null;
 	}
 
 	public Pessoa getById(Long id) {
 		return pessoaRepository.findById(id).get();
 	}
 
-	public ResponseEntity<?> deleteById(Long id) {
+	public Boolean deleteById(Long id) {
 		Optional<Pessoa> pessoa = pessoaRepository.findById(id);
 
 		if (pessoa.isPresent()) {
 			pessoaRepository.delete(pessoa.get());
-			return ResponseEntity.noContent().build();
+			return true;
 		}
 
-		return ResponseEntity.notFound().build();
-	}
-
-	public ResponseEntity<PessoaDto> retornaPessoa(Long id) {
-		Optional<Pessoa> pessoa = findById(id);
-
-		if (pessoa.isPresent()) {
-			return ResponseEntity.ok(new PessoaDto(pessoa.get()));
-		}
-
-		return ResponseEntity.notFound().build();
+		return false;
 	}
 
 }
