@@ -7,6 +7,7 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -63,33 +64,47 @@ public class FilmeController {
 			URI uri = uriBuilder.path("/filmes/{id}").buildAndExpand(filme.get().getId()).toUri();
 			return ResponseEntity.created(uri).body(new FilmeCompletoDto(filme.get()));
 		}
-		return ResponseEntity.badRequest().build();
+		return ResponseEntity.status(HttpStatus.CONFLICT).build();
 	}
-	//ok
+
+	// ok
 	@PostMapping("/{idfilme}/associar-categoria/{idcategoria}")
 	public ResponseEntity<FilmeCompletoCategoriaDto> associarCategoria(
 			@PathVariable(name = "idcategoria") long idCategoria, @PathVariable(name = "idfilme") long idFilme,
 			UriComponentsBuilder uriBuilder) {
-		return filmeService.associaCategoria(idCategoria, idFilme, uriBuilder);
+
+		if (filmeService.associaCategoria(idCategoria, idFilme)) {
+			Optional<Filme> filme = filmeService.getFilmeById(idFilme);
+			URI uri = uriBuilder.path("/filmes/{id}").buildAndExpand(filme.get().getId()).toUri();
+			return ResponseEntity.created(uri).body(new FilmeCompletoCategoriaDto(filme.get()));
+		} else {
+			return ResponseEntity.status(HttpStatus.CONFLICT).build();
+		}
 	}
-	
-	//ok
+
+	// ok
 	@GetMapping(value = "/mylist/{idpessoa}")
 	public List<FilmeDto> filmesPessoa(@PathVariable(name = "idpessoa") long idPessoa) {
 		Pessoa pessoa = pessoaService.getById(idPessoa);
 		List<Filme> filmes = pessoa.getFilmes();
 		return FilmeDto.converter(filmes);
 	}
-	
-	//ok
+
+	// ok
 	@RequestMapping(value = "mylist/{idpessoa}/delete/{idfilme}", method = RequestMethod.DELETE)
 	public ResponseEntity<FilmeCompletoDto> removeFilmeMyList(@PathVariable(name = "idfilme") Long idFilme,
 			@PathVariable(name = "idpessoa") long idPessoa, UriComponentsBuilder uriBuilder) {
-		
-		return filmeService.deleteFilmeDoMyList(idFilme, idPessoa, uriBuilder);
+		Optional<Filme> filme = filmeService.getFilmeById(idFilme);
+		if (filmeService.deleteFilmeDoMyList(idFilme, idPessoa)) {
+			URI uri = uriBuilder.path("/filmes/{id}").buildAndExpand(filme.get().getId()).toUri();
+			return ResponseEntity.ok(new FilmeCompletoDto(filme.get()));
+		} else {
+			return ResponseEntity.noContent().build();
+		}
+
 	}
 
-	//ok
+	// ok
 	@GetMapping(value = "/completo")
 	public List<FilmeCompletoDto> filmesCompletos() {
 		List<Filme> filmes = filmeService.getFilmes();
@@ -97,22 +112,28 @@ public class FilmeController {
 		return FilmeCompletoDto.converter(filmes);
 	}
 
-	//ok
+	// ok
 	@PostMapping
 	public ResponseEntity<FilmeCompletoDto> cadastrar(@RequestBody @Valid FilmeForm form,
 			UriComponentsBuilder uriBuilder) {
-		
-		return filmeService.postFilme(form, uriBuilder);
+
+		if (filmeService.postFilme(form)) {
+			Filme filme = filmeService.converteFilmeForm(form);
+			URI uri = uriBuilder.path("/filmes/{id}").buildAndExpand(filme.getId()).toUri();
+			return ResponseEntity.created(uri).body(new FilmeCompletoDto(filme));
+		} else {
+			return ResponseEntity.status(HttpStatus.CONFLICT).build();
+		}
 	}
-	
-	//ok
+
+	// ok
 	@PutMapping(value = "/completo/{id}")
 	public ResponseEntity<FilmeCompletoDto> atualizarFilme(@PathVariable Long id, @RequestBody @Valid FilmeForm form) {
 		return filmeService.update(id, form);
 
 	}
 
-	//ok
+	// ok
 	@DeleteMapping(value = "/completo/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Long id) {
 		filmeService.delete(id);

@@ -42,19 +42,20 @@ public class FilmeService {
 	}
 
 	// ok
-	public ResponseEntity<FilmeCompletoDto> postFilme(@Valid FilmeForm form, UriComponentsBuilder uriBuilder) {
-		Filme filme = form.converter();
+	public boolean postFilme(@Valid FilmeForm form) {
+		Filme filme = converteFilmeForm(form);
 		List<Filme> filmes = getFilmes();
-		HttpStatus status;
 		if (filmes.contains(filme)) {
 			System.out.println("Tentou Adicionar Filme Repetido");
-			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
+			return false;
 		}
 		filmeRepository.save(filme);
+		return true;
+	}
 
-		URI uri = uriBuilder.path("/filmes/{id}").buildAndExpand(filme.getId()).toUri();
-		return ResponseEntity.created(uri).body(new FilmeCompletoDto(filme));
-
+	public Filme converteFilmeForm(FilmeForm form) {
+		Filme filme = form.converter();
+		return filme;
 	}
 
 	public ResponseEntity<FilmeCompletoDto> update(Long id, @Valid FilmeForm form) {
@@ -78,15 +79,17 @@ public class FilmeService {
 
 	}
 
-	public ResponseEntity<FilmeCompletoDto> deleteFilmeDoMyList(Long idFilme, Long idPessoa,
-			UriComponentsBuilder uriBuilder) {
+	public boolean deleteFilmeDoMyList(Long idFilme, Long idPessoa) {
 		Optional<Filme> filme = getFilmeById(idFilme);
 		Pessoa pessoa = pessoaService.getById(idPessoa);
-		filme.get().getPessoas().contains(pessoa);
-		filme.get().getPessoas().remove(pessoa);
-		salvar(filme.get());
-		URI uri = uriBuilder.path("/filmes/{id}").buildAndExpand(filme.get().getId()).toUri();
-		return ResponseEntity.ok(new FilmeCompletoDto(filme.get()));
+		if (filme.get().getPessoas().contains(pessoa)) {
+			filme.get().getPessoas().remove(pessoa);
+			salvar(filme.get());
+			return true;
+		} else {
+			return false;
+		}
+
 	}
 
 	public Optional<Filme> getFilmeById(Long id) {
@@ -94,12 +97,10 @@ public class FilmeService {
 	}
 
 	public void salvar(Filme filme) {
-
 		filmeRepository.save(filme);
 	}
 
-	public ResponseEntity<FilmeCompletoCategoriaDto> associaCategoria(Long idCategoria, Long idFilme,
-			UriComponentsBuilder uriBuilder) {
+	public boolean associaCategoria(Long idCategoria, Long idFilme) {
 		Categoria categoria = categoriaService.getById(idCategoria);
 
 		Optional<Filme> filme = getFilmeById(idFilme);
@@ -108,11 +109,10 @@ public class FilmeService {
 
 			filme.get().getCategorias().add(categoria);
 			salvar(filme.get());
-
-			URI uri = uriBuilder.path("/filmes/{id}").buildAndExpand(filme.get().getId()).toUri();
-			return ResponseEntity.created(uri).body(new FilmeCompletoCategoriaDto(filme.get()));
+			return true;
+		} else {
+			return false;
 		}
-		return ResponseEntity.badRequest().build();
 
 	}
 //	public void imprimeById(int idFilme) {
