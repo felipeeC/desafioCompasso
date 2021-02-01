@@ -7,7 +7,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.net.URI;
-import java.net.URISyntaxException;
 
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
@@ -20,7 +19,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
@@ -45,9 +43,8 @@ class PessoaControllerTest {
 		PessoaForm pessoaForm = new PessoaForm();
 		
 		pessoaForm.setNome("");
-		pessoaForm.setIdade(24);
-
-		// setting fields for the NewObject  
+		pessoaForm.setAniversario("2000-01-01");
+		pessoaForm.setEmail("abc@gmail.com");
 
 		URI uri = new URI("/pessoas");
 		
@@ -62,8 +59,9 @@ class PessoaControllerTest {
 	void testCadastroPessoaNomeNulo() throws Exception {
 		
 		PessoaForm pessoaForm = new PessoaForm();
-		pessoaForm.setIdade(24);
-		// setting fields for the NewObject  
+		pessoaForm.setAniversario("2000-01-01");
+		pessoaForm.setEmail("abc@gmail.com");
+
 		URI uri = new URI("/pessoas");
 		
 		mockMvc.perform(MockMvcRequestBuilders.post(uri)
@@ -96,7 +94,8 @@ class PessoaControllerTest {
 		
 		PessoaForm pessoaForm = new PessoaForm();
 		pessoaForm.setNome("Guilherme");
-		pessoaForm.setIdade(-24);
+		pessoaForm.setAniversario("2030-01-01");
+		pessoaForm.setEmail("abc@gmail.com");
 		
 		// setting fields for the NewObject  
 		URI uri = new URI("/pessoas");
@@ -114,7 +113,8 @@ class PessoaControllerTest {
 		
 		PessoaForm pessoaForm = new PessoaForm();
 		pessoaForm.setNome("Guilherme");
-		pessoaForm.setIdade(125);
+		pessoaForm.setAniversario("1900-01-01");
+		pessoaForm.setEmail("abc@gmail.com");
 		
 		// setting fields for the NewObject  
 		URI uri = new URI("/pessoas");
@@ -134,7 +134,8 @@ class PessoaControllerTest {
 		// setting fields for the NewObject  
 
 		pessoaForm.setNome("Moacir");
-		pessoaForm.setIdade(90);
+		pessoaForm.setAniversario("2000-01-01");
+		pessoaForm.setEmail("abc@gmail.com");
 		
 		URI uri = new URI("/pessoas");
 		
@@ -182,7 +183,8 @@ class PessoaControllerTest {
 		
 		PessoaForm pessoaForm = new PessoaForm();
 		pessoaForm.setNome("Marcelo");
-		pessoaForm.setIdade(55);
+		pessoaForm.setAniversario("2000-01-01");
+		pessoaForm.setEmail("abc@gmail.com");
 		
 		mockMvc.perform(
 					put(uri)
