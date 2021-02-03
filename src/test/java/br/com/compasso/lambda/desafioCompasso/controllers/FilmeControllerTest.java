@@ -15,6 +15,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -24,6 +25,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import br.com.compasso.lambda.desafioCompasso.dtos.FilmeForm;
 
+@ActiveProfiles("test")
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
 @AutoConfigureMockMvc
@@ -66,7 +68,7 @@ public class FilmeControllerTest {
 	// OK
 	@Test
 	public void adicionaCategoriaNoFilme() throws Exception {
-		URI uriCategoriaFilme = new URI("/filmes/associar-categoria/1/1");
+		URI uriCategoriaFilme = new URI("/filmes/1/associar-categoria/1");
 
 		mockMvc.perform(post(uriCategoriaFilme).contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().is(HttpStatus.CREATED.value()));
@@ -86,7 +88,7 @@ public class FilmeControllerTest {
 	@Test
 	@Order(1)
 	public void adicionaPessoaNoFilme() throws Exception {
-		URI uriCategoriaFilme = new URI("/filmes/associar-pessoa/1/2");
+		URI uriCategoriaFilme = new URI("/filmes/2/associar-pessoa/1");
 
 		mockMvc.perform(post(uriCategoriaFilme).contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().is(HttpStatus.CREATED.value()));
@@ -96,7 +98,7 @@ public class FilmeControllerTest {
 	@Test
 	@Order(2)
 	public void adicionaPessoaDuplicadaNoFilme() throws Exception {
-		URI uriCategoriaFilme = new URI("/filmes/associar-pessoa/1/2");
+		URI uriCategoriaFilme = new URI("/filmes/2/associar-pessoa/1");
 
 		mockMvc.perform(post(uriCategoriaFilme).contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().is(HttpStatus.CONFLICT.value()));
@@ -123,7 +125,7 @@ public class FilmeControllerTest {
 	// OK
 	@Test
 	public void deletaFilmeInexistenteDeFilmePessoa() throws Exception {
-		URI uriCategoriaFilme = new URI("/filmes/mylist/2/delete/3");
+		URI uriCategoriaFilme = new URI("/filmes/mylist/3/delete/1");
 
 		mockMvc.perform(MockMvcRequestBuilders.delete(uriCategoriaFilme).contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().is(HttpStatus.NOT_FOUND.value()));
