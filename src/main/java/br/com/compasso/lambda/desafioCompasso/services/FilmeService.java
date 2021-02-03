@@ -60,7 +60,7 @@ public class FilmeService {
 		return filmeRepository.save(newObj);
 	}
 
-	private void updateData(Filme newObj, Filme obj) {
+	public void updateData(Filme newObj, Filme obj) {
 		newObj.setNome(obj.getNome());
 		newObj.setDescricao(obj.getDescricao());
 		newObj.setComentario(obj.getComentario());

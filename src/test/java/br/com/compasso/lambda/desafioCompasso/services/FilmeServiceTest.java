@@ -87,14 +87,16 @@ public class FilmeServiceTest {
 	public void atualizaFilme() {
 		Long id = 1L;
 
-		FilmeForm ff = new FilmeForm("A bordo", "Titanic", "Drama antigo", "1997-05-23", "Hollywood", "James Cameron",
+		
+		Filme filme = new Filme("A bordo", "Titanic", "Drama antigo", "1997-05-23", "Hollywood", "James Cameron",
+				"Leonardo Dicaprio");
+		
+		Filme filmeAtualizado = new Filme("A bordo", "Teste 4", "Drama antigo", "1997-05-23", "Hollywood", "James Cameron",
 				"Leonardo Dicaprio");
 
-		service.update(id, ff);
-		
-		Optional<Filme> filme = service.getFilmeById(id);
+		service.updateData(filmeAtualizado, filme);
 
-		assertEquals("Drama antigo",filme.get().getComentario());
+		assertEquals("Drama antigo",filme.getComentario());
 	}
 
 	// OK
@@ -102,14 +104,18 @@ public class FilmeServiceTest {
 	public void atualizaFilmeComDadosFaltando() {
 		Long id = 1L;
 
-		FilmeForm ff = new FilmeForm("A bordo", "Titanic", "", "1997-05-23", "Hollywood", "James Cameron",
+		Filme filme = new Filme("A bordo", "Titanic", "", "1997-05-23", "Hollywood", "James Cameron",
+				"Leonardo Dicaprio");
+		
+		Filme filmeAtualizado = new Filme("A bordo", "", "Drama antigo", "1997-05-23", "Hollywood", "James Cameron",
 				"Leonardo Dicaprio");
 
-		service.update(id, ff);
+		service.updateData(filmeAtualizado, filme);
 		
-		Optional<Filme> filme = service.getFilmeById(id);
+		Optional<Filme> filme3 = service.getFilmeById(id);
 
-		assertTrue(filme.isEmpty());
+		assertTrue(filme3.isEmpty());
 	}
+	
 
 }
