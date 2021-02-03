@@ -90,16 +90,16 @@ public class FilmeService {
 
 	public boolean deleteFilmeDoMyList(Long idFilme, Long idPessoa) {
 		Filme filme = find(idFilme);
-		if(filme != null) {
+		if (filme != null) {
 			Pessoa pessoa = pessoaService.getById(idPessoa);
 			if (filme.getPessoas().contains(pessoa)) {
 				filme.getPessoas().remove(pessoa);
 				salvar(filme);
 				return true;
-				}else {return false;
-				}
-		}
-		 else {
+			} else {
+				return false;
+			}
+		} else {
 			return false;
 		}
 
@@ -128,72 +128,29 @@ public class FilmeService {
 		}
 
 	}
-//	public void imprimeById(int idFilme) {
-//		for (Filme filme : filmes) {
-//			if (filme.getId() == idFilme) {
-//				System.out.println(filme);
-//			}
-//		}
-//	}
-//
-//	public boolean imprimeByName(String nomeFilme) {
-//		for (Filme f : filmes) {
-//			if (f.getNome() == nomeFilme.toUpperCase()) {
-//				return true;
-//			}
-//		}
-//
-//		System.out.println("Filme não encontrado");
-//		return false;
-//	}
-//
-//	public boolean removeById(int idFilme) {
-//		for (Filme f : filmes) {
-//			if (f.getId() == idFilme) {
-//				filmes.remove(f);
-//				return true;
-//			}
-//
-//		}
-//		System.out.println("Id não encontrado");
-//		return false;
-//	}
-//
-//	public void adiciona(String descricao, String nome) {
-//		Filme filme = new Filme();
-//
-//		if(filmes.contains(filme)) {
-//			System.out.println("Filme já existe!");
-//		} else {
-//			filmes.add(filme);
-//			System.out.println("Filme adicionado com sucesso!");
-//		}
-//
-//	}
-//
-//	public List<Filme> imprimeTodos() {
-//		return filmes;
-//	}
-//
-//	public boolean verificaById(int id) {
-//		for (Filme filme : filmes) {
-//			if (filme.getId() == id) {
-//				return true;
-//			}
-//		}
-//
-//		System.out.println("Filme com esse id já existe!");
-//		return false;
-//
-//	}
 
 	public List<FilmeDto> getMinhaListaDeFilmes(Long idPessoa) {
 		Pessoa pessoa = pessoaService.findPessoaById(idPessoa);
-		
+
 		List<Filme> filmes = pessoa.getFilmes();
 		return FilmeDto.converter(filmes);
-		
-		
+
+	}
+
+	public Filme associaPessoa(Long idPessoa, Long idFilme) {
+		Pessoa pessoa = pessoaService.getById(idPessoa);
+
+		Filme filme = find(idFilme);
+		List<Pessoa> pessoas = filme.getPessoas();
+
+		if (filme != null && !filme.getPessoas().contains(pessoa)) {
+			filme.getPessoas().add(pessoa);
+			salvar(filme);
+			return filme;
+		} else {
+			return null;
+		}
+
 	}
 
 }
