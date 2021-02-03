@@ -15,7 +15,9 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.compasso.lambda.desafioCompasso.dtos.CategoriaDto;
 import br.com.compasso.lambda.desafioCompasso.dtos.CategoriaForm;
+import br.com.compasso.lambda.desafioCompasso.exception.ObjectNotFoundException;
 import br.com.compasso.lambda.desafioCompasso.models.Categoria;
+import br.com.compasso.lambda.desafioCompasso.models.Filme;
 import br.com.compasso.lambda.desafioCompasso.repositories.CategoriaRepository;
 
 @Service
@@ -35,9 +37,12 @@ public class CategoriaService {
 	}
 
 	public Categoria getById(long id) {
-		return categoriaRepository.findById(id).get();
+		Optional<Categoria> obj = categoriaRepository.findById(id);
+		
+		return obj.orElseThrow(
+				() -> new ObjectNotFoundException("Objeto não encontrado! Id: " + id + ", Tipo: " + Categoria.class));
 	}
-
+	
 	public Optional<Categoria> findByNome(String nome) {
 		return categoriaRepository.findByNome(nome);
 	}
