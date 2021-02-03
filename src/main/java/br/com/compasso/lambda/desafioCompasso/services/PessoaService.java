@@ -13,6 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 import br.com.compasso.lambda.desafioCompasso.dtos.PessoaAtualizaForm;
 import br.com.compasso.lambda.desafioCompasso.dtos.PessoaDto;
 import br.com.compasso.lambda.desafioCompasso.dtos.PessoaForm;
+import br.com.compasso.lambda.desafioCompasso.exception.ObjectNotFoundException;
+import br.com.compasso.lambda.desafioCompasso.models.Filme;
 import br.com.compasso.lambda.desafioCompasso.models.Pessoa;
 import br.com.compasso.lambda.desafioCompasso.repositories.PessoaRepository;
 
@@ -64,6 +66,12 @@ public class PessoaService {
 
 	public Pessoa getById(Long id) {
 		return pessoaRepository.findById(id).get();
+	}
+	
+	public Pessoa findPessoaById(Long id) {
+		Optional<Pessoa> obj = pessoaRepository.findById(id);
+		return obj.orElseThrow(
+				() -> new ObjectNotFoundException("Objeto não encontrado! Id: " + id + ", Tipo: " + Pessoa.class));
 	}
 
 	public Boolean deleteById(Long id) {

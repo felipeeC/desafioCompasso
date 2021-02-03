@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.mvc.LastModified;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.compasso.lambda.desafioCompasso.dtos.FilmeCompletoCategoriaDto;
@@ -84,21 +85,25 @@ public class FilmeController {
 	// ok
 	@GetMapping(value = "/mylist/{idpessoa}")
 	public List<FilmeDto> filmesPessoa(@PathVariable(name = "idpessoa") long idPessoa) {
-		Pessoa pessoa = pessoaService.getById(idPessoa);
-		List<Filme> filmes = pessoa.getFilmes();
-		return FilmeDto.converter(filmes);
+		List<FilmeDto> filmes = filmeService.getMinhaListaDeFilmes(idPessoa);
+		
+		if(filmes != null) {
+			return filmes;
+		}else {
+			return (List<FilmeDto>) ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		}
 	}
 
 	// ok
-	@RequestMapping(value = "mylist/{idpessoa}/delete/{idfilme}", method = RequestMethod.DELETE)
+	@DeleteMapping(value = "mylist/{idpessoa}/delete/{idfilme}")
 	public ResponseEntity<FilmeCompletoDto> removeFilmeMyList(@PathVariable(name = "idfilme") Long idFilme,
 			@PathVariable(name = "idpessoa") long idPessoa, UriComponentsBuilder uriBuilder) {
 		Optional<Filme> filme = filmeService.getFilmeById(idFilme);
 		if (filmeService.deleteFilmeDoMyList(idFilme, idPessoa)) {
-			URI uri = uriBuilder.path("/filmes/{id}").buildAndExpand(filme.get().getId()).toUri();
-			return ResponseEntity.ok(new FilmeCompletoDto(filme.get()));
+
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 		} else {
-			return ResponseEntity.noContent().build();
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}
 
 	}
@@ -115,11 +120,10 @@ public class FilmeController {
 	@PostMapping
 	public ResponseEntity<FilmeCompletoDto> cadastrar(@RequestBody @Valid FilmeForm form,
 			UriComponentsBuilder uriBuilder) {
-
-		if (filmeService.postFilme(form)) {
-			Filme filme = filmeService.converteFilmeForm(form);
-			URI uri = uriBuilder.path("/filmes/{id}").buildAndExpand(filme.getId()).toUri();
-			return ResponseEntity.created(uri).body(new FilmeCompletoDto(filme));
+		Filme filmeNovo = filmeService.postFilme(form);
+		if (filmeNovo != null) {
+			URI uri = uriBuilder.path("/filmes/{id}").buildAndExpand(filmeNovo.getId()).toUri();
+			return ResponseEntity.created(uri).body(new FilmeCompletoDto(filmeNovo));
 		} else {
 			return ResponseEntity.status(HttpStatus.CONFLICT).build();
 		}

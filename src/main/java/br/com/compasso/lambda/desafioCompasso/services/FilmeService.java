@@ -10,6 +10,8 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.compasso.lambda.desafioCompasso.dtos.FilmeCompletoDto;
+import br.com.compasso.lambda.desafioCompasso.dtos.FilmeDto;
 import br.com.compasso.lambda.desafioCompasso.dtos.FilmeForm;
 import br.com.compasso.lambda.desafioCompasso.exception.ObjectNotFoundException;
 import br.com.compasso.lambda.desafioCompasso.models.Categoria;
@@ -38,15 +40,15 @@ public class FilmeService {
 	}
 
 	// ok
-	public boolean postFilme(@Valid FilmeForm form) {
+	public Filme postFilme(@Valid FilmeForm form) {
 		Filme filme = converteFilmeForm(form);
 		List<Filme> filmes = getFilmes();
 		if (filmes.contains(filme)) {
 			System.out.println("Tentou Adicionar Filme Repetido");
-			return false;
+			return null;
 		}
 		filmeRepository.save(filme);
-		return true;
+		return filme;
 	}
 
 	public Filme converteFilmeForm(FilmeForm form) {
@@ -87,13 +89,17 @@ public class FilmeService {
 	}
 
 	public boolean deleteFilmeDoMyList(Long idFilme, Long idPessoa) {
-		Optional<Filme> filme = getFilmeById(idFilme);
-		Pessoa pessoa = pessoaService.getById(idPessoa);
-		if (filme.get().getPessoas().contains(pessoa)) {
-			filme.get().getPessoas().remove(pessoa);
-			salvar(filme.get());
-			return true;
-		} else {
+		Filme filme = find(idFilme);
+		if(filme != null) {
+			Pessoa pessoa = pessoaService.getById(idPessoa);
+			if (filme.getPessoas().contains(pessoa)) {
+				filme.getPessoas().remove(pessoa);
+				salvar(filme);
+				return true;
+				}else {return false;
+				}
+		}
+		 else {
 			return false;
 		}
 
@@ -180,5 +186,14 @@ public class FilmeService {
 //		return false;
 //
 //	}
+
+	public List<FilmeDto> getMinhaListaDeFilmes(Long idPessoa) {
+		Pessoa pessoa = pessoaService.findPessoaById(idPessoa);
+		
+		List<Filme> filmes = pessoa.getFilmes();
+		return FilmeDto.converter(filmes);
+		
+		
+	}
 
 }

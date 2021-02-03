@@ -77,7 +77,7 @@ public class FilmeControllerTest {
 	// OK
 	@Test
 	public void adicionaCategoriaDuplicadaNoFilme() throws Exception {
-		URI uriCategoriaFilme = new URI("/filmes/associar-categoria/1/1");
+		URI uriCategoriaFilme = new URI("/filmes/1/associar-categoria/1");
 
 		mockMvc.perform(post(uriCategoriaFilme).contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().is(HttpStatus.CONFLICT.value()));
@@ -133,6 +133,7 @@ public class FilmeControllerTest {
 
 	// OK
 	@Test
+	@Order(3)
 	public void deletaFilmeExistenteDeFilmePessoa() throws Exception {
 		URI uriCategoriaFilme = new URI("/filmes/mylist/2/delete/1");
 
