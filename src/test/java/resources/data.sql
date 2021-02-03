@@ -1,4 +1,4 @@
-INSERT INTO Filme(descricao, nome, comentario, data_lancamento, estudio, diretor, elenco)
+INSERT INTO Filme (descricao, nome, comentario, data_lancamento, estudio, diretor, elenco)
 	VALUES (
 		'A bordo',
 		'Titanic',
@@ -15,21 +15,28 @@ INSERT INTO Filme(descricao, nome, comentario, data_lancamento, estudio, diretor
 		'Warner Bros.',
 		'Chris Columbus',
 		'Daniel Radcliffe'
-		);
+		),(
+		'tt',
+		'calculadora',
+		'ttttt',
+		'1999-05-12',
+		'Hollywood',
+		'felipe alves',
+		'Leonardo Da vinci');
 
 
-INSERT INTO Filme(descricao, nome, comentario, data_lancamento, estudio, diretor, elenco)
-	VALUES ('tt', 'calculadora','ttttt',  '1999-05-12', 'Hollywood',  'felipe alves', 'Leonardo Da vinci');
-
-
-INSERT INTO Pessoa(nome, idade)
+INSERT INTO Pessoa (nome, aniversario, email)
 	VALUES 
-		('Guilherme', 24),
-		('Rafael', 21),
-		('Gabriel', 27);
+		('Guilherme', '1996-11-22', 'guilhermecald96@gmail.com'),
+		('Rafael', '1999-05-22', 'rafaelcalderaro@gmail.com'),
+		('Gabriel', '1993-04-17', 'gabrielcalderaro@gmail.com');
     
 INSERT INTO Categoria(nome)
-     VALUES ('Suspense'), ('Comédia'), ('Ação'), ('Aventura'), ('Infantil'), ('Romance'), ('Ficção'), ('Terror'), ('Mistério'), ('Drama');
+     VALUES
+		('Suspense'), ('Comédia'), ('Ação'),
+		('Aventura'), ('Infantil'), ('Romance'),
+		('Ficção'), ('Terror'), ('Mistério'),
+		('Drama');
      
-     INSERT INTO FILME_PESSOAS (FILMES_ID, PESSOAS_ID)
+INSERT INTO FILME_PESSOAS (FILMES_ID, PESSOAS_ID)
 	VALUES (2,2), (1,2);
