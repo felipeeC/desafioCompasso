@@ -11,11 +11,12 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import br.com.compasso.lambda.desafioCompasso.models.Categoria;
-import br.com.compasso.lambda.desafioCompasso.models.Filme;
 
+@ActiveProfiles("test")
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
 class CategoriaServiceTest {
@@ -32,12 +33,6 @@ class CategoriaServiceTest {
 		Categoria categoria1 = new Categoria("Suspense");
 		Categoria categoria2 = new Categoria("Comédia");
 		Categoria categoria3 = new Categoria("Ação");
-
-		List<Categoria> categoriasTeste = new ArrayList<>();
-
-		categoriasTeste.add(categoria1);
-		categoriasTeste.add(categoria2);
-		categoriasTeste.add(categoria3);
 
 		assertEquals(categoria1.getNome(), categorias.get(0).getNome());
 		assertEquals(categoria2.getNome(), categorias.get(1).getNome());
