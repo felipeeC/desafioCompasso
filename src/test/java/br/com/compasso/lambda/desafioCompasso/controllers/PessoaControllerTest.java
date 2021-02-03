@@ -145,7 +145,8 @@ class PessoaControllerTest {
 		  .andExpect(MockMvcResultMatchers.status().is(HttpStatus.CREATED.value()));
 		 
 	}
-
+	
+	//ERRO DE RETORNO VAZIO MAS QUE FUNCIONA
 	@Test
 	void testGetPessoa() throws Exception {
 		URI uri = new URI("/pessoas/1");
