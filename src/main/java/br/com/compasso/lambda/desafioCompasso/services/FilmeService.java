@@ -1,21 +1,17 @@
 package br.com.compasso.lambda.desafioCompasso.services;
 
-import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.util.UriComponentsBuilder;
 
-import br.com.compasso.lambda.desafioCompasso.dtos.FilmeCompletoCategoriaDto;
-import br.com.compasso.lambda.desafioCompasso.dtos.FilmeCompletoDto;
 import br.com.compasso.lambda.desafioCompasso.dtos.FilmeForm;
+import br.com.compasso.lambda.desafioCompasso.exception.ObjectNotFoundException;
 import br.com.compasso.lambda.desafioCompasso.models.Categoria;
 import br.com.compasso.lambda.desafioCompasso.models.Filme;
 import br.com.compasso.lambda.desafioCompasso.models.Pessoa;
@@ -58,25 +54,36 @@ public class FilmeService {
 		return filme;
 	}
 
-	public ResponseEntity<FilmeCompletoDto> update(Long id, @Valid FilmeForm form) {
-		Optional<Filme> optional = filmeRepository.findById(id);
-		if (optional.isPresent()) {
-			optional.get().setNome(form.getNome());
-			optional.get().setDescricao(form.getDescricao());
-			optional.get().setComentario(form.getComentario());
-			optional.get().setDiretor(form.getDiretor());
-			optional.get().setElenco(form.getElenco());
-			optional.get().setEstudio(form.getEstudio());
-			Filme filmeAtualizado = filmeRepository.save(optional.get());
-			return ResponseEntity.ok(new FilmeCompletoDto(filmeAtualizado));
-		}
+	public Filme update(Filme obj) {
+		Filme newObj = find(obj.getId());
+		updateData(newObj, obj);
+		return filmeRepository.save(newObj);
+	}
 
-		return ResponseEntity.notFound().build();
+	private void updateData(Filme newObj, Filme obj) {
+		newObj.setNome(obj.getNome());
+		newObj.setDescricao(obj.getDescricao());
+		newObj.setComentario(obj.getComentario());
+		newObj.setDiretor(obj.getDiretor());
+		newObj.setEstudio(obj.getEstudio());
+		newObj.setElenco(obj.getElenco());
 	}
 
 	public void delete(Long id) {
-		filmeRepository.deleteById(id);
+		find(id);
+		try {
+			filmeRepository.deleteById(id);
+		} catch (DataIntegrityViolationException e) {
+			throw new DataIntegrityViolationException(
+					"Não é possível excluir um filme porque há entidades relacionadas");
+		}
 
+	}
+
+	public Filme find(Long id) {
+		Optional<Filme> obj = filmeRepository.findById(id);
+		return obj.orElseThrow(
+				() -> new ObjectNotFoundException("Objeto não encontrado! Id: " + id + ", Tipo: " + Filme.class));
 	}
 
 	public boolean deleteFilmeDoMyList(Long idFilme, Long idPessoa) {
