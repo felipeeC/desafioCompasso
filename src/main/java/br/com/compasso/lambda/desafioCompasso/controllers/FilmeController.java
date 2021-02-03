@@ -50,21 +50,20 @@ public class FilmeController {
 		return FilmeDto.converter(filmes);
 	}
 
+	// ok
 	@PostMapping("/{idfilme}/associar-pessoa/{idpessoa}")
 	public ResponseEntity<FilmeCompletoDto> associarPessoa(@PathVariable(name = "idpessoa") long idPessoa,
 			@PathVariable(name = "idfilme") long idFilme, UriComponentsBuilder uriBuilder) {
-		Pessoa pessoa = pessoaService.getById(idPessoa);
-		Optional<Filme> filme = filmeService.getFilmeById(idFilme);
-		List<Pessoa> pessoas = filme.get().getPessoas();
+		Filme filmeAssociado = filmeService.associaPessoa(idFilme, idFilme);
+		if (filmeAssociado != null) {
 
-		if (filme.isPresent() && !filme.get().getPessoas().contains(pessoa)) {
-			filme.get().getPessoas().add(pessoa);
-			filmeService.salvar(filme.get());
+			URI uri = uriBuilder.path("/filmes/{id}").buildAndExpand(filmeAssociado.getId()).toUri();
+			return ResponseEntity.created(uri).body(new FilmeCompletoDto(filmeAssociado));
 
-			URI uri = uriBuilder.path("/filmes/{id}").buildAndExpand(filme.get().getId()).toUri();
-			return ResponseEntity.created(uri).body(new FilmeCompletoDto(filme.get()));
+		} else {
+			return ResponseEntity.status(HttpStatus.CONFLICT).build();
 		}
-		return ResponseEntity.status(HttpStatus.CONFLICT).build();
+
 	}
 
 	// ok
@@ -86,10 +85,10 @@ public class FilmeController {
 	@GetMapping(value = "/mylist/{idpessoa}")
 	public List<FilmeDto> filmesPessoa(@PathVariable(name = "idpessoa") long idPessoa) {
 		List<FilmeDto> filmes = filmeService.getMinhaListaDeFilmes(idPessoa);
-		
-		if(filmes != null) {
+
+		if (filmes != null) {
 			return filmes;
-		}else {
+		} else {
 			return (List<FilmeDto>) ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}
 	}

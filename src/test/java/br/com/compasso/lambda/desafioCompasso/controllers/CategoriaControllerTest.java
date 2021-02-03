@@ -82,17 +82,20 @@ class CategoriaControllerTest {
 
 		idCategoria.setId(0);
 
-		URI uri = new URI("/categorias/id");
+		//URI uri = new URI("/categorias/id");
 
-		mockMvc.perform(MockMvcRequestBuilders.delete(uri).contentType(MediaType.APPLICATION_JSON))
-				.andExpect(MockMvcResultMatchers.status().is(HttpStatus.NO_CONTENT.value()));
+		//mockMvc.perform(MockMvcRequestBuilders.delete(uri).contentType(MediaType.APPLICATION_JSON))
+			//	.andExpect(MockMvcResultMatchers.status().is(HttpStatus.NO_CONTENT.value()));
+		
+		mockMvc.perform( MockMvcRequestBuilders.delete("/categorias/{id}", 1) )
+        .andExpect(MockMvcResultMatchers.status().is(HttpStatus.NO_CONTENT.value()));
 	}
 
 	// OK
 	@Test
 	public void DevolveFilmesPorCategoria() throws Exception {
 
-		URI uri = new URI("/categorias/filmes/1");
+		URI uri = new URI("/categorias/filmes/2");
 
 		mockMvc.perform(MockMvcRequestBuilders.get(uri).contentType(MediaType.APPLICATION_JSON))
 				.andExpect(MockMvcResultMatchers.status().is(HttpStatus.OK.value()));

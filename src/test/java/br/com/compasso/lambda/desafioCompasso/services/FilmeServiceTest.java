@@ -1,6 +1,7 @@
 package br.com.compasso.lambda.desafioCompasso.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
@@ -14,7 +15,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import br.com.compasso.lambda.desafioCompasso.dtos.FilmeForm;
 import br.com.compasso.lambda.desafioCompasso.models.Filme;
 
 @ActiveProfiles("test")
@@ -63,7 +63,7 @@ public class FilmeServiceTest {
 	// OK
 	@Test
 	public void deletaFilmeById() {
-		Long id = 1L;
+		Long id = 2L;
 
 		service.delete(id);
 
@@ -106,17 +106,16 @@ public class FilmeServiceTest {
 	public void atualizaFilmeComDadosFaltando() {
 		Long id = 1L;
 
-		Filme filme = new Filme("A bordo", "Titanic", "", "1997-05-23", "Hollywood", "James Cameron",
-				"Leonardo Dicaprio");
-		
-		Filme filmeAtualizado = new Filme("A bordo", "", "Drama antigo", "1997-05-23", "Hollywood", "James Cameron",
+		Filme filme = new Filme("A bordo", "", "Filme Tragico", "1997-05-23", "Hollywood", "James Cameron",
 				"Leonardo Dicaprio");
 
-		service.updateData(filmeAtualizado, filme);
+		filme.setId(id);
 		
-		Optional<Filme> filme3 = service.getFilmeById(id);
+		service.update(filme);
+		
+		Filme filmeVerifica = service.find(id);
 
-		assertTrue(filme3.isEmpty());
+		assertNotEquals(filme.getNome(),filmeVerifica.getNome());
 	}
 	
 
