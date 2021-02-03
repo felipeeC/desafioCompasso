@@ -45,7 +45,6 @@ public class CategoriaService {
 	public ResponseEntity<CategoriaDto> postCategoria(@Valid CategoriaForm form, UriComponentsBuilder uriBuilder) {
 		Categoria categoria = form.converter();
 		List<Categoria> categorias = getCategorias();
-		HttpStatus status;
 		if (categorias.contains(categoria)) {
 			System.out.println("Tentou adicionar Categoria repetida");
 			return ResponseEntity.status(HttpStatus.CONFLICT).build();
