@@ -24,7 +24,6 @@ import br.com.compasso.lambda.desafioCompasso.dtos.FilmeCompletoCategoriaDto;
 import br.com.compasso.lambda.desafioCompasso.dtos.FilmeCompletoDto;
 import br.com.compasso.lambda.desafioCompasso.dtos.FilmeDto;
 import br.com.compasso.lambda.desafioCompasso.dtos.FilmeForm;
-import br.com.compasso.lambda.desafioCompasso.models.Categoria;
 import br.com.compasso.lambda.desafioCompasso.models.Filme;
 import br.com.compasso.lambda.desafioCompasso.models.Pessoa;
 import br.com.compasso.lambda.desafioCompasso.services.CategoriaService;
@@ -126,15 +125,16 @@ public class FilmeController {
 		}
 	}
 
-	// ok
-	@PutMapping(value = "/completo/{id}")
-	public ResponseEntity<FilmeCompletoDto> atualizarFilme(@PathVariable Long id, @RequestBody @Valid FilmeForm form) {
-		return filmeService.update(id, form);
+	@PutMapping(value = "{id}")
+	public ResponseEntity<Void> atualizarFilme(@PathVariable Long id, @RequestBody @Valid FilmeForm form) {
+		Filme obj = form.converter();
+		obj.setId(id);
+		obj = filmeService.update(obj);
+		return ResponseEntity.noContent().build();
 
 	}
 
-	// ok
-	@DeleteMapping(value = "/completo/{id}")
+	@DeleteMapping(value = "{id}")
 	public ResponseEntity<Void> delete(@PathVariable Long id) {
 		filmeService.delete(id);
 		return ResponseEntity.noContent().build();
