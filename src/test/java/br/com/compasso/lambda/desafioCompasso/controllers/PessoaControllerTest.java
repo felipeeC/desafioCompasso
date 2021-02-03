@@ -51,7 +51,7 @@ class PessoaControllerTest {
 		mockMvc.perform(MockMvcRequestBuilders.post(uri)
 		  .content(asJsonString(pessoaForm))
 		  .contentType(MediaType.APPLICATION_JSON))
-		  .andExpect(MockMvcResultMatchers.status().is(HttpStatus.BAD_REQUEST.value()));
+		  .andExpect(MockMvcResultMatchers.status().is(HttpStatus.UNPROCESSABLE_ENTITY.value()));
 		  
 	}
 	
@@ -67,7 +67,7 @@ class PessoaControllerTest {
 		mockMvc.perform(MockMvcRequestBuilders.post(uri)
 		  .content(asJsonString(pessoaForm))
 		  .contentType(MediaType.APPLICATION_JSON))
-		  .andExpect(MockMvcResultMatchers.status().is(HttpStatus.BAD_REQUEST.value()));
+		  .andExpect(MockMvcResultMatchers.status().is(HttpStatus.UNPROCESSABLE_ENTITY.value()));
 		  
 		 
 	}
@@ -84,7 +84,7 @@ class PessoaControllerTest {
 		mockMvc.perform(MockMvcRequestBuilders.post(uri)
 		  .content(asJsonString(pessoaForm))
 		  .contentType(MediaType.APPLICATION_JSON))
-		  .andExpect(MockMvcResultMatchers.status().is(HttpStatus.BAD_REQUEST.value()));
+		  .andExpect(MockMvcResultMatchers.status().is(HttpStatus.UNPROCESSABLE_ENTITY.value()));
 		  
 		 
 	}
@@ -103,7 +103,7 @@ class PessoaControllerTest {
 		mockMvc.perform(MockMvcRequestBuilders.post(uri)
 		  .content(asJsonString(pessoaForm))
 		  .contentType(MediaType.APPLICATION_JSON))
-		  .andExpect(MockMvcResultMatchers.status().is(HttpStatus.BAD_REQUEST.value()));
+		  .andExpect(MockMvcResultMatchers.status().is(HttpStatus.UNPROCESSABLE_ENTITY.value()));
 		  
 		 
 	}
@@ -170,7 +170,7 @@ class PessoaControllerTest {
 	
 	@Test
 	void testDeletePessoa() throws Exception {
-		URI uri = new URI("/pessoas/3");
+		URI uri = new URI("/pessoas/1");
 		
 		mockMvc.perform(delete(uri)
 		.accept(MediaType.APPLICATION_JSON))
