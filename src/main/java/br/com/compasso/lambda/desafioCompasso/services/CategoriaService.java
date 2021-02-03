@@ -49,6 +49,11 @@ public class CategoriaService {
 			System.out.println("Tentou adicionar Categoria repetida");
 			return ResponseEntity.status(HttpStatus.CONFLICT).build();
 		}
+		else if (categoria.getNome() == null || categoria.getNome().isEmpty())
+		{
+			return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build();
+		}
+		
 		categoriaRepository.save(categoria);
 		
 		URI uri = uriBuilder.path("/categorias/{id}").buildAndExpand(categoria.getId()).toUri();
