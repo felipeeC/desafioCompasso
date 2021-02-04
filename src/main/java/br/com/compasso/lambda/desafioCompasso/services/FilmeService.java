@@ -1,6 +1,5 @@
 package br.com.compasso.lambda.desafioCompasso.services;
 
-
 import java.util.List;
 import java.util.Optional;
 
@@ -41,12 +40,11 @@ public class FilmeService {
 		return filmes;
 	}
 
-
 	// ok
 	public Filme postFilme(@Valid FilmeForm form) {
 		Filme filme = converteFilmeForm(form);
 		List<Filme> filmes = filmeRepository.findAll();
-		
+
 		if (filmes.contains(filme)) {
 			System.out.println("Tentou Adicionar Filme Repetido");
 			return null;
@@ -92,7 +90,7 @@ public class FilmeService {
 				() -> new ObjectNotFoundException("Objeto não encontrado! Id: " + id + ", Tipo: " + Filme.class));
 	}
 
-	public boolean deleteFilmeDoMyList(Long idFilme, Long idPessoa) {
+	public boolean desassociaPessoa(Long idFilme, Long idPessoa) {
 		Filme filme = find(idFilme);
 		if (filme != null) {
 			Pessoa pessoa = pessoaService.getById(idPessoa);
@@ -157,4 +155,22 @@ public class FilmeService {
 
 	}
 
+	public boolean desassociaCategoria(Long idFilme, Long idCategoria) {
+		Filme filme = find(idFilme);
+		if (filme != null) {
+			Categoria categoria = categoriaService.getById(idCategoria);
+			if (filme.getCategorias().contains(categoria)) {
+				filme.getCategorias().remove(categoria);
+				salvar(filme);
+				return true;
+			} else {
+				System.out.println("contains n funfa");
+				return false;
+			}
+		} else {
+			System.out.println("ta retornando null");
+			return false;
+		}
+
+	}
 }

@@ -125,7 +125,7 @@ public class FilmeControllerTest {
 	// OK
 	@Test
 	public void deletaFilmeInexistenteDeFilmePessoa() throws Exception {
-		URI uriCategoriaFilme = new URI("/filmes/mylist/3/delete/1");
+		URI uriCategoriaFilme = new URI("/filmes/3/desassociar-pessoa/1");
 
 		mockMvc.perform(MockMvcRequestBuilders.delete(uriCategoriaFilme).contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().is(HttpStatus.NOT_FOUND.value()));
@@ -135,7 +135,7 @@ public class FilmeControllerTest {
 	@Test
 	@Order(3)
 	public void deletaFilmeExistenteDeFilmePessoa() throws Exception {
-		URI uriCategoriaFilme = new URI("/filmes/mylist/2/delete/1");
+		URI uriCategoriaFilme = new URI("/filmes/2/desassociar-pessoa/1");
 
 		mockMvc.perform(MockMvcRequestBuilders.delete(uriCategoriaFilme).contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().is(HttpStatus.NO_CONTENT.value()));

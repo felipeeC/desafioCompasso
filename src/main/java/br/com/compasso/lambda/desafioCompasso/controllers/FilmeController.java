@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import br.com.compasso.lambda.desafioCompasso.dtos.CategoriaDto;
 import br.com.compasso.lambda.desafioCompasso.dtos.FilmeCompletoCategoriaDto;
 import br.com.compasso.lambda.desafioCompasso.dtos.FilmeCompletoDto;
 import br.com.compasso.lambda.desafioCompasso.dtos.FilmeDto;
@@ -85,6 +86,18 @@ public class FilmeController {
 		}
 	}
 
+	@DeleteMapping(value = "/{idfilme}/desassociar-categoria/{idcategoria}")
+	public ResponseEntity<CategoriaDto> desassociarCategoria(@PathVariable(name = "idfilme") Long idFilme,
+			@PathVariable(name = "idcategoria") long idCategoria, UriComponentsBuilder uriBuilder) {
+		Optional<Filme> filme = filmeService.getFilmeById(idFilme);
+		if (filmeService.desassociaCategoria(idFilme, idCategoria)) {
+
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+		} else {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		}
+	}
+
 	// ok
 	@GetMapping(value = "/mylist/{idpessoa}")
 	public List<FilmeDto> filmesPessoa(@PathVariable(name = "idpessoa") long idPessoa) {
@@ -98,11 +111,11 @@ public class FilmeController {
 	}
 
 	// ok
-	@DeleteMapping(value = "mylist/{idpessoa}/delete/{idfilme}")
-	public ResponseEntity<FilmeCompletoDto> removeFilmeMyList(@PathVariable(name = "idfilme") Long idFilme,
+	@DeleteMapping(value = "/{idfilme}/desassociar-pessoa/{idpessoa}")
+	public ResponseEntity<FilmeCompletoDto> desassociarPessoa(@PathVariable(name = "idfilme") Long idFilme,
 			@PathVariable(name = "idpessoa") long idPessoa, UriComponentsBuilder uriBuilder) {
 		Optional<Filme> filme = filmeService.getFilmeById(idFilme);
-		if (filmeService.deleteFilmeDoMyList(idFilme, idPessoa)) {
+		if (filmeService.desassociaPessoa(idFilme, idPessoa)) {
 
 			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 		} else {
@@ -113,7 +126,8 @@ public class FilmeController {
 
 	// ok
 	@GetMapping(value = "/completo")
-	public Page<FilmeCompletoDto> filmesCompletos(@PageableDefault(sort = "id", direction = Direction.ASC, page = 0, size = 10) Pageable paginacao) {
+	public Page<FilmeCompletoDto> filmesCompletos(
+			@PageableDefault(sort = "id", direction = Direction.ASC, page = 0, size = 10) Pageable paginacao) {
 		Page<Filme> filmes = filmeService.getFilmes(paginacao);
 
 		return FilmeCompletoDto.converterPage(filmes);
