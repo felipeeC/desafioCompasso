@@ -48,9 +48,9 @@ public class ResourceExceptionHandler {
 		return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(err);
 	}
 	
-	@ExceptionHandler(Conflict.class)
+	@ExceptionHandler(ConflictException.class)
 	public ResponseEntity<StandardError> dataIntegrity(
-			Conflict e,
+			ConflictException e,
 			HttpServletRequest request
 			) {
 		

@@ -1,14 +1,14 @@
 package br.com.compasso.lambda.desafioCompasso.exception;
 
-public class Conflict extends RuntimeException {
+public class ConflictException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;
 
-	public Conflict(String msg) {
+	public ConflictException(String msg) {
 		super(msg);
 	}
 	
-	public Conflict(String msg, Throwable cause) {
+	public ConflictException(String msg, Throwable cause) {
 		super(msg, cause);
 	}
 
