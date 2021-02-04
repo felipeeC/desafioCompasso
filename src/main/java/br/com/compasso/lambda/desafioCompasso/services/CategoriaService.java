@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.compasso.lambda.desafioCompasso.dtos.CategoriaDto;
@@ -30,38 +31,30 @@ public class CategoriaService {
 		List<Categoria> categorias = categoriaRepository.findAll();
 		return categorias;
 	}
-	
+
 	public void delete(long id) {
 		categoriaRepository.deleteById(id);
 	}
 
 	public Categoria getById(long id) {
 		Optional<Categoria> obj = categoriaRepository.findById(id);
-		
+
 		return obj.orElseThrow(
 				() -> new ObjectNotFoundException("Objeto não encontrado! Id: " + id + ", Tipo: " + Categoria.class));
 	}
-	
+
 	public Optional<Categoria> findByNome(String nome) {
 		return categoriaRepository.findByNome(nome);
 	}
 
-	public ResponseEntity<CategoriaDto> postCategoria(@Valid CategoriaForm form, UriComponentsBuilder uriBuilder) {
+	public Categoria postCategoria(@Valid CategoriaForm form) {
 		Categoria categoria = form.converter();
 		List<Categoria> categorias = getCategorias();
 		if (categorias.contains(categoria)) {
 			System.out.println("Tentou adicionar Categoria repetida");
-			return ResponseEntity.status(HttpStatus.CONFLICT).build();
+			return null;
 		}
-		else if (categoria.getNome() == null || categoria.getNome().isEmpty())
-		{
-			return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build();
-		}
-		
 		categoriaRepository.save(categoria);
-		
-		URI uri = uriBuilder.path("/categorias/{id}").buildAndExpand(categoria.getId()).toUri();
-		return ResponseEntity.created(uri).body(new CategoriaDto(categoria));
+		return categoria;
 	}
 }
-
