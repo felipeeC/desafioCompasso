@@ -3,6 +3,8 @@ package br.com.compasso.lambda.desafioCompasso.dtos;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
+
 import br.com.compasso.lambda.desafioCompasso.models.Filme;
 
 public class FilmeCompletoDto {
@@ -63,7 +65,9 @@ public class FilmeCompletoDto {
 		
 		return filmes.stream().map(FilmeCompletoDto::new).collect(Collectors.toList());
 	}
-
+	public static Page<FilmeCompletoDto> converterPage(Page<Filme> filmes) {
+		return filmes.map(FilmeCompletoDto::new);
+	}
 
 
 }

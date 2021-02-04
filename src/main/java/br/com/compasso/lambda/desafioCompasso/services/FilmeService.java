@@ -1,5 +1,6 @@
 package br.com.compasso.lambda.desafioCompasso.services;
 
+
 import java.util.List;
 import java.util.Optional;
 
@@ -7,10 +8,11 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.com.compasso.lambda.desafioCompasso.dtos.FilmeCompletoDto;
 import br.com.compasso.lambda.desafioCompasso.dtos.FilmeDto;
 import br.com.compasso.lambda.desafioCompasso.dtos.FilmeForm;
 import br.com.compasso.lambda.desafioCompasso.exception.ObjectNotFoundException;
@@ -34,15 +36,17 @@ public class FilmeService {
 	// Métodos
 	//
 	@Transactional(readOnly = true)
-	public List<Filme> getFilmes() {
-		List<Filme> filmes = filmeRepository.findAll();
+	public Page<Filme> getFilmes(Pageable paginacao) {
+		Page<Filme> filmes = filmeRepository.findAll(paginacao);
 		return filmes;
 	}
+
 
 	// ok
 	public Filme postFilme(@Valid FilmeForm form) {
 		Filme filme = converteFilmeForm(form);
-		List<Filme> filmes = getFilmes();
+		List<Filme> filmes = filmeRepository.findAll();
+		
 		if (filmes.contains(filme)) {
 			System.out.println("Tentou Adicionar Filme Repetido");
 			return null;
