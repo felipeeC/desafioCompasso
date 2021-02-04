@@ -17,7 +17,6 @@ import br.com.compasso.lambda.desafioCompasso.dtos.CategoriaDto;
 import br.com.compasso.lambda.desafioCompasso.dtos.CategoriaForm;
 import br.com.compasso.lambda.desafioCompasso.exception.ObjectNotFoundException;
 import br.com.compasso.lambda.desafioCompasso.models.Categoria;
-import br.com.compasso.lambda.desafioCompasso.models.Filme;
 import br.com.compasso.lambda.desafioCompasso.repositories.CategoriaRepository;
 
 @Service
