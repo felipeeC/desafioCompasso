@@ -1,7 +1,6 @@
 package br.com.compasso.lambda.desafioCompasso.controllers;
 
 import java.net.URI;
-import java.util.Optional;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
@@ -51,13 +50,8 @@ public class PessoaController {
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<PessoaDto> pessoaById(@PathVariable Long id) {
-		Optional<Pessoa> pessoa = pessoaService.findById(id);
-
-		if (pessoa.isPresent()) {
-			return ResponseEntity.ok(new PessoaDto(pessoa.get()));
-		}
-
-		return ResponseEntity.notFound().build();
+		Pessoa pessoa = pessoaService.findById(id);
+		return ResponseEntity.ok(new PessoaDto(pessoa));
 	}
 	
 	@PostMapping
@@ -99,11 +93,8 @@ public class PessoaController {
 	public ResponseEntity<?> deleteById(
 			@PathVariable Long id
 			){
-		Boolean deleted = pessoaService.deleteById(id);
-		if(deleted) {
-			ResponseEntity.noContent().build();
-		}
-		return ResponseEntity.notFound().build();
+		pessoaService.deleteById(id);
+		return ResponseEntity.noContent().build();
 	}
 
 }

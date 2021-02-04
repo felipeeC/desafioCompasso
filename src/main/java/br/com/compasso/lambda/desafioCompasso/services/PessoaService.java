@@ -13,8 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 import br.com.compasso.lambda.desafioCompasso.dtos.PessoaAtualizaForm;
 import br.com.compasso.lambda.desafioCompasso.dtos.PessoaDto;
 import br.com.compasso.lambda.desafioCompasso.dtos.PessoaForm;
+import br.com.compasso.lambda.desafioCompasso.exception.ConflictException;
 import br.com.compasso.lambda.desafioCompasso.exception.ObjectNotFoundException;
-import br.com.compasso.lambda.desafioCompasso.models.Filme;
 import br.com.compasso.lambda.desafioCompasso.models.Pessoa;
 import br.com.compasso.lambda.desafioCompasso.repositories.PessoaRepository;
 
@@ -24,8 +24,6 @@ public class PessoaService {
 	@Autowired
 	private PessoaRepository pessoaRepository;
 
-	// Métodoss
-
 	@Transactional(readOnly = true)
 	public Page<PessoaDto> retornaTodas(Pageable paginacao) {
 		Page<Pessoa> pessoas = pessoaRepository.findAll(paginacao);
@@ -33,8 +31,17 @@ public class PessoaService {
 	}
 
 	@Transactional(readOnly = true)
-	public Optional<Pessoa> findById(Long id) {
-		return pessoaRepository.findById(id);
+	public Pessoa findById(Long id) {
+		Optional<Pessoa> pessoaEncontrada = pessoaRepository.findById(id);
+		
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append("Objeto não encontrado! Id: ");
+		stringBuilder.append(id);
+		stringBuilder.append(", Tipo: ");
+		stringBuilder.append(Pessoa.class);
+		
+		return pessoaEncontrada.orElseThrow(
+				() -> new ObjectNotFoundException(stringBuilder.toString()));
 	}
 
 	public PessoaDto cadastrarPessoa(@Valid PessoaForm form) {
@@ -43,7 +50,11 @@ public class PessoaService {
 		List<Pessoa> pessoas = pessoaRepository.findAll();
 
 		if (pessoas.contains(pessoa)) {
-			return null;
+			StringBuilder stringBuilder = new StringBuilder();
+			stringBuilder.append(Pessoa.class);
+			stringBuilder.append(" já existe");
+			
+			throw new ConflictException(stringBuilder.toString());
 		}
 
 		pessoaRepository.save(pessoa);
@@ -52,16 +63,13 @@ public class PessoaService {
 	}
 
 	public PessoaDto atualizarPessoa(Long id, @Valid PessoaAtualizaForm form) {
-		Optional<Pessoa> optional = pessoaRepository.findById(id);
-		if (optional.isPresent()) {
-			optional.get().setNome(form.getNome());
-			optional.get().setAniversario(form.getAniversario());
-			optional.get().setEmail(form.getEmail());
-			Pessoa pessoaAtualizada = pessoaRepository.save(optional.get());
-			return new PessoaDto(pessoaAtualizada);
-		}
-
-		return null;
+		Pessoa pessoaOriginal = findById(id);
+		pessoaOriginal.setNome(form.getNome());
+		pessoaOriginal.setAniversario(form.getAniversario());
+		pessoaOriginal.setEmail(form.getEmail());
+		
+		Pessoa pessoaAtualizada = pessoaRepository.save(pessoaOriginal);
+		return new PessoaDto(pessoaAtualizada);
 	}
 
 	public Pessoa getById(Long id) {
@@ -74,15 +82,10 @@ public class PessoaService {
 				() -> new ObjectNotFoundException("Objeto não encontrado! Id: " + id + ", Tipo: " + Pessoa.class));
 	}
 
-	public Boolean deleteById(Long id) {
-		Optional<Pessoa> pessoa = pessoaRepository.findById(id);
-
-		if (pessoa.isPresent()) {
-			pessoaRepository.delete(pessoa.get());
-			return true;
-		}
-
-		return false;
+	public void deleteById(Long id) {
+		Pessoa pessoa = findById(id);
+		pessoaRepository.delete(pessoa);
 	}
 
+	
 }
