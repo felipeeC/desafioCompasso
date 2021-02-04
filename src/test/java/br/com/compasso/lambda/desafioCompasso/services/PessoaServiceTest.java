@@ -3,10 +3,12 @@ package br.com.compasso.lambda.desafioCompasso.services;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.time.LocalDate;
 import java.util.Optional;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import br.com.compasso.lambda.desafioCompasso.dtos.PessoaAtualizaForm;
 import br.com.compasso.lambda.desafioCompasso.dtos.PessoaDto;
 import br.com.compasso.lambda.desafioCompasso.dtos.PessoaForm;
+import br.com.compasso.lambda.desafioCompasso.exception.ObjectNotFoundException;
 import br.com.compasso.lambda.desafioCompasso.models.Pessoa;
 
 @ActiveProfiles("test")
@@ -48,21 +51,20 @@ class PessoaServiceTest {
 	// Ok
 	@Test
 	public void retornaPessoaPorId() {
-		Optional<Pessoa> pessoa = pessoaService.findById(1L);
+		Pessoa pessoa = pessoaService.findById(1L);
 
 		Pessoa pessoa1 = new Pessoa("Guilherme", LocalDate.now(), "teste1");
 
-		assertEquals(pessoa1.getNome(), pessoa.get().getNome());
+		assertEquals(pessoa1.getNome(), pessoa.getNome());
 	}
 
 	// Ok
 	@Test
 	public void retornaPessoaQueNaoExistePorId() {
-		Optional<Pessoa> pessoa = pessoaService.findById(4L);
-
-		Pessoa pessoa1 = new Pessoa();
-
-		assertTrue(pessoa.isEmpty());
+		assertThrows(
+				ObjectNotFoundException.class, 
+				() -> pessoaService.findById(4L));
+		
 	}
 
 	// Ok
@@ -75,9 +77,9 @@ class PessoaServiceTest {
 
 		pessoaService.cadastrarPessoa(form);
 
-		Optional<Pessoa> pessoa = pessoaService.findById(4L);
+		Pessoa pessoa = pessoaService.findById(4L);
 
-		assertEquals("Augusto", pessoa.get().getNome());
+		assertEquals("Augusto", pessoa.getNome());
 	}
 
 	// Ok
@@ -90,9 +92,9 @@ class PessoaServiceTest {
 
 		pessoaService.cadastrarPessoa(form);
 
-		Optional<Pessoa> pessoa = pessoaService.findById(4L);
+		Pessoa pessoa = pessoaService.findById(4L);
 
-		assertNotEquals("Guilherme", pessoa.get().getNome());
+		assertNotEquals("Guilherme", pessoa.getNome());
 	}
 
 	// Ok
@@ -105,9 +107,9 @@ class PessoaServiceTest {
 
 		pessoaService.cadastrarPessoa(form);
 
-		Optional<Pessoa> pessoa = pessoaService.findById(4L);
+		Pessoa pessoa = pessoaService.findById(4L);
 
-		assertNotEquals("", pessoa.get().getNome());
+		assertNotEquals("", pessoa.getNome());
 	}
 
 	// Ok
@@ -120,9 +122,9 @@ class PessoaServiceTest {
 
 		pessoaService.atualizarPessoa(1L, form);
 
-		Optional<Pessoa> pessoa = pessoaService.findById(1L);
+		Pessoa pessoa = pessoaService.findById(1L);
 
-		assertEquals("Novo", pessoa.get().getNome());
+		assertEquals("Novo", pessoa.getNome());
 	}
 
 	// Not Ok
@@ -135,9 +137,9 @@ class PessoaServiceTest {
 
 		pessoaService.atualizarPessoa(1L, form);
 
-		Optional<Pessoa> pessoa = pessoaService.findById(1L);
+		Pessoa pessoa = pessoaService.findById(1L);
 
-		assertEquals("Guilherme", pessoa.get().getNome());
+		assertEquals("Guilherme", pessoa.getNome());
 	}
 
 }
