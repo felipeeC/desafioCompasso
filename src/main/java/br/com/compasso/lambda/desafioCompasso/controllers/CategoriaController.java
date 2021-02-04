@@ -49,14 +49,10 @@ public class CategoriaController {
 			UriComponentsBuilder uriBuilder) {
 		Categoria categoria = categoriaService.postCategoria(form);
 
-		//return ResponseEntity.status(HttpStatus.CONFLICT).build();
-
 		if (categoria.getNome() == null || categoria.getNome().isEmpty()) {
-
 			return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build();
 
 		} else {
-
 			URI uri = uriBuilder.path("/categorias/{id}").buildAndExpand(categoria.getId()).toUri();
 			return ResponseEntity.created(uri).body(new CategoriaDto(categoria));
 		}
