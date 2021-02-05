@@ -3,6 +3,8 @@ package br.com.compasso.lambda.desafioCompasso.dtos;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
+
 import br.com.compasso.lambda.desafioCompasso.models.Categoria;
 
 public class CategoriaDto {
@@ -23,7 +25,7 @@ public class CategoriaDto {
 			return nome;
 		}
 
-		public static List<CategoriaDto> converter(List<Categoria> categorias) {
-			return categorias.stream().map(CategoriaDto::new).collect(Collectors.toList());
+		public static Page<CategoriaDto> converter(Page<Categoria> categorias) {
+			return categorias.map(CategoriaDto :: new);
 		}
 	}
