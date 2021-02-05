@@ -2,7 +2,6 @@ package br.com.compasso.lambda.desafioCompasso.services;
 
 import java.util.List;
 import java.util.Optional;
-import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -33,41 +32,43 @@ public class PessoaService {
 	@Transactional(readOnly = true)
 	public Pessoa findById(Long id) {
 		Optional<Pessoa> pessoaEncontrada = pessoaRepository.findById(id);
-		
+
 		StringBuilder stringBuilder = new StringBuilder();
 		stringBuilder.append("Objeto não encontrado! Id: ");
 		stringBuilder.append(id);
 		stringBuilder.append(", Tipo: ");
 		stringBuilder.append(Pessoa.class);
-		
-		return pessoaEncontrada.orElseThrow(
-				() -> new ObjectNotFoundException(stringBuilder.toString()));
+
+		return pessoaEncontrada.orElseThrow(() -> new ObjectNotFoundException(stringBuilder.toString()));
 	}
 
-	public PessoaDto cadastrarPessoa(@Valid PessoaForm form) {
+	public PessoaDto cadastrarPessoa(PessoaForm form) {
 
-		Pessoa pessoa = form.converter();
+		Pessoa novaPessoa = form.converter();
 		List<Pessoa> pessoas = pessoaRepository.findAll();
 
-		if (pessoas.contains(pessoa)) {
+		if (pessoas.contains(novaPessoa)) {
 			StringBuilder stringBuilder = new StringBuilder();
-			stringBuilder.append(Pessoa.class);
+			stringBuilder.append("Pessoa com nome: ");
+			stringBuilder.append(novaPessoa.getNome());
+			stringBuilder.append(" e email: ");
+			stringBuilder.append(novaPessoa.getEmail());
 			stringBuilder.append(" já existe");
-			
+
 			throw new ConflictException(stringBuilder.toString());
 		}
 
-		pessoaRepository.save(pessoa);
+		pessoaRepository.save(novaPessoa);
 
-		return new PessoaDto(pessoa);
+		return new PessoaDto(novaPessoa);
 	}
 
-	public PessoaDto atualizarPessoa(Long id, @Valid PessoaAtualizaForm form) {
+	public PessoaDto atualizarPessoa(Long id, PessoaAtualizaForm form) {
 		Pessoa pessoaOriginal = findById(id);
 		pessoaOriginal.setNome(form.getNome());
 		pessoaOriginal.setAniversario(form.getAniversario());
 		pessoaOriginal.setEmail(form.getEmail());
-		
+
 		Pessoa pessoaAtualizada = pessoaRepository.save(pessoaOriginal);
 		return new PessoaDto(pessoaAtualizada);
 	}
@@ -75,7 +76,7 @@ public class PessoaService {
 	public Pessoa getById(Long id) {
 		return pessoaRepository.findById(id).get();
 	}
-	
+
 	public Pessoa findPessoaById(Long id) {
 		Optional<Pessoa> obj = pessoaRepository.findById(id);
 		return obj.orElseThrow(
@@ -87,5 +88,4 @@ public class PessoaService {
 		pessoaRepository.delete(pessoa);
 	}
 
-	
 }
