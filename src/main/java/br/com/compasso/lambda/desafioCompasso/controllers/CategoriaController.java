@@ -3,8 +3,6 @@ package br.com.compasso.lambda.desafioCompasso.controllers;
 import java.net.URI;
 import java.util.List;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -55,7 +53,7 @@ public class CategoriaController {
 	}
 
 	@PostMapping
-	public ResponseEntity<CategoriaDto> cadastrar(@RequestBody @Valid CategoriaForm form,
+	public ResponseEntity<CategoriaDto> cadastrar(@RequestBody CategoriaForm form,
 			UriComponentsBuilder uriBuilder) {
 		Categoria categoria = categoriaService.postCategoria(form);
 
