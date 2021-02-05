@@ -28,4 +28,7 @@ public class CategoriaDto {
 		public static Page<CategoriaDto> converter(Page<Categoria> categorias) {
 			return categorias.map(CategoriaDto :: new);
 		}
+		public static List<CategoriaDto> converter(List<Categoria> categorias) {
+			return categorias.stream().map(CategoriaDto::new).collect(Collectors.toList());
+		}
 	}

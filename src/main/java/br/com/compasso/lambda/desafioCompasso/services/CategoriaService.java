@@ -35,7 +35,6 @@ public class CategoriaService {
 		return CategoriaDto.converter(categorias);
 	}
 
-
 	public void delete(long id) {
 		categoriaRepository.deleteById(id);
 	}
