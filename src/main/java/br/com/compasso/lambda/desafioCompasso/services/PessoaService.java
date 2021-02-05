@@ -14,6 +14,7 @@ import br.com.compasso.lambda.desafioCompasso.dtos.PessoaDto;
 import br.com.compasso.lambda.desafioCompasso.dtos.PessoaForm;
 import br.com.compasso.lambda.desafioCompasso.exception.ConflictException;
 import br.com.compasso.lambda.desafioCompasso.exception.ObjectNotFoundException;
+import br.com.compasso.lambda.desafioCompasso.models.Filme;
 import br.com.compasso.lambda.desafioCompasso.models.Pessoa;
 import br.com.compasso.lambda.desafioCompasso.repositories.PessoaRepository;
 
@@ -22,6 +23,9 @@ public class PessoaService {
 
 	@Autowired
 	private PessoaRepository pessoaRepository;
+	
+	@Autowired
+	private FilmeService filmeservice;
 
 	@Transactional(readOnly = true)
 	public Page<PessoaDto> retornaTodas(Pageable paginacao) {
@@ -85,7 +89,17 @@ public class PessoaService {
 
 	public void deleteById(Long id) {
 		Pessoa pessoa = findById(id);
+		desassociarFilmes(pessoa);
 		pessoaRepository.delete(pessoa);
 	}
 
+	private void desassociarFilmes(Pessoa pessoa) {
+		List<Filme> filmes = pessoa.getFilmes();
+		for (Filme filme : filmes) {
+			filmeservice.desassociaPessoa(filme.getId(), pessoa.getId());
+		}
+		
+	}
+
+	
 }
