@@ -1,10 +1,16 @@
 package br.com.compasso.lambda.desafioCompasso.controllers;
 
+import java.net.URI;
 import java.util.List;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,9 +36,15 @@ public class CategoriaController {
 	private CategoriaService categoriaService;
 
 	@GetMapping
-	public List<CategoriaDto> categorias() {
-		List<Categoria> categorias = categoriaService.getCategorias();
-		return CategoriaDto.converter(categorias);
+	public ResponseEntity<Page<CategoriaDto>> todasCategorias(
+			@PageableDefault(
+					sort = "id", 
+					direction = Direction.ASC, 
+					page = 0, 
+					size = 10) Pageable paginacao
+			) {
+		Page<CategoriaDto> categorias = categoriaService.retornaTodas(paginacao);
+		return ResponseEntity.ok(categorias);
 	}
 
 	@GetMapping(value = "/filmes/{idcategoria}")
@@ -41,14 +53,21 @@ public class CategoriaController {
 		List<Filme> filmes = categoria.getFilmes();
 		return FilmeDto.converter(filmes);
 	}
-	
+
 	@PostMapping
 	public ResponseEntity<CategoriaDto> cadastrar(@RequestBody @Valid CategoriaForm form,
 			UriComponentsBuilder uriBuilder) {
-		
-		return categoriaService.postCategoria(form, uriBuilder);
+		Categoria categoria = categoriaService.postCategoria(form);
+
+		if (categoria.getNome() == null || categoria.getNome().isEmpty()) {
+			return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build();
+
+		} else {
+			URI uri = uriBuilder.path("/categorias/{id}").buildAndExpand(categoria.getId()).toUri();
+			return ResponseEntity.created(uri).body(new CategoriaDto(categoria));
 		}
-		
+	}
+
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> delete(@PathVariable long id) {
 		categoriaService.delete(id);
