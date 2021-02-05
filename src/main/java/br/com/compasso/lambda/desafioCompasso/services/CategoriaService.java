@@ -6,9 +6,12 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.compasso.lambda.desafioCompasso.dtos.CategoriaDto;
 import br.com.compasso.lambda.desafioCompasso.dtos.CategoriaForm;
 import br.com.compasso.lambda.desafioCompasso.exception.ObjectNotFoundException;
 import br.com.compasso.lambda.desafioCompasso.models.Categoria;
@@ -25,6 +28,13 @@ public class CategoriaService {
 		List<Categoria> categorias = categoriaRepository.findAll();
 		return categorias;
 	}
+	
+	@Transactional(readOnly = true)
+	public Page<CategoriaDto> retornaTodas(Pageable paginacao) {
+		Page<Categoria> categorias = categoriaRepository.findAll(paginacao);
+		return CategoriaDto.converter(categorias);
+	}
+
 
 	public void delete(long id) {
 		categoriaRepository.deleteById(id);
