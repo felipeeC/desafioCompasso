@@ -1,7 +1,7 @@
 package br.com.compasso.lambda.desafioCompasso.dtos;
 
-
-
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 
 import com.sun.istack.NotNull;
@@ -9,29 +9,35 @@ import com.sun.istack.NotNull;
 import br.com.compasso.lambda.desafioCompasso.models.Filme;
 
 public class FilmeForm {
-	
-	@NotNull @NotEmpty
+
+	@NotNull
+	@NotEmpty
 	private String descricao;
-	@NotNull @NotEmpty
+	@NotNull
+	@NotEmpty
 	private String nome;
-	@NotNull @NotEmpty
+	@NotNull
+	@NotEmpty
 	private String comentario;
-	@NotNull @NotEmpty
+	@NotNull
+	@NotEmpty
 	private String dataLancamento;
-	@NotNull @NotEmpty
+	@NotNull
+	@NotEmpty
 	private String estudio;
-	@NotNull @NotEmpty
+	@NotNull
+	@NotEmpty
 	private String diretor;
-	@NotNull @NotEmpty
+	@NotNull
+	@NotEmpty
 	private String elenco;
-
-	
-	
-
+	@Min(0)
+	@Max(5)
+	private double avaliacao;
 
 	public FilmeForm(@NotEmpty String descricao, @NotEmpty String nome, @NotEmpty String comentario,
 			@NotEmpty String dataLancamento, @NotEmpty String estudio, @NotEmpty String diretor,
-			@NotEmpty String elenco) {
+			@NotEmpty String elenco, @NotEmpty double avaliacao) {
 		this.descricao = descricao;
 		this.nome = nome;
 		this.comentario = comentario;
@@ -39,6 +45,7 @@ public class FilmeForm {
 		this.estudio = estudio;
 		this.diretor = diretor;
 		this.elenco = elenco;
+		this.avaliacao = avaliacao;
 	}
 
 	public String getDescricao() {
@@ -98,7 +105,6 @@ public class FilmeForm {
 	}
 
 	public Filme converter() {
-
-		return new Filme(descricao, nome, comentario, dataLancamento, estudio, diretor, elenco);
+		return new Filme(descricao, nome, comentario, dataLancamento, estudio, diretor, elenco, avaliacao);
 	}
 }

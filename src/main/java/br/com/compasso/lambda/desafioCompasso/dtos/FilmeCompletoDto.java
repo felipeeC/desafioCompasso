@@ -17,6 +17,7 @@ public class FilmeCompletoDto {
 	private String estudio;
 	private String diretor;
 	private String elenco;
+	private double avaliacao;
 
 	public FilmeCompletoDto(Filme filme) {
 		super();
@@ -28,7 +29,13 @@ public class FilmeCompletoDto {
 		this.estudio = filme.getEstudio();
 		this.diretor = filme.getDiretor();
 		this.elenco = filme.getElenco();
+		this.avaliacao = filme.getAvaliacao();
 	}
+
+	public double getAvaliacao() {
+		return avaliacao;
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -62,12 +69,12 @@ public class FilmeCompletoDto {
 	}
 
 	public static List<FilmeCompletoDto> converter(List<Filme> filmes) {
-		
+
 		return filmes.stream().map(FilmeCompletoDto::new).collect(Collectors.toList());
 	}
+
 	public static Page<FilmeCompletoDto> converterPage(Page<Filme> filmes) {
 		return filmes.map(FilmeCompletoDto::new);
 	}
-
 
 }

@@ -33,7 +33,7 @@ public class FilmeService {
 	// private List<Filme> filmes = new ArrayList<Filme>();
 
 	// Métodos
-	//
+	
 	@Transactional(readOnly = true)
 	public Page<Filme> getFilmes(Pageable paginacao) {
 		Page<Filme> filmes = filmeRepository.findAll(paginacao);
@@ -71,6 +71,12 @@ public class FilmeService {
 		newObj.setDiretor(obj.getDiretor());
 		newObj.setEstudio(obj.getEstudio());
 		newObj.setElenco(obj.getElenco());
+	}
+	
+	public Filme avaliaFilme(Filme obj) {
+		Filme filme = find(obj.getId());
+		filme.setAvaliacao(obj.getAvaliacao());
+		return filmeRepository.save(filme);
 	}
 
 	public void delete(Long id) {

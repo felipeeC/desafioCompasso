@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -153,6 +154,14 @@ public class FilmeController {
 		obj = filmeService.update(obj);
 		return ResponseEntity.noContent().build();
 
+	}
+
+	@PatchMapping(value = "/{id}/avaliacao")
+	public ResponseEntity<Void> avaliaFilme(@PathVariable Long id, @RequestBody @Valid FilmeForm form) {
+		Filme filme = form.converter();
+		filme.setId(id);
+		filme = filmeService.avaliaFilme(filme);
+		return ResponseEntity.noContent().build();
 	}
 
 	@DeleteMapping(value = "{id}")

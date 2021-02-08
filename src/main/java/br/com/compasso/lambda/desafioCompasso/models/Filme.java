@@ -22,6 +22,7 @@ public class Filme {
 	private String estudio;
 	private String diretor;
 	private String elenco;
+	private double avaliacao;
 
 	@ManyToMany
 //	@JoinTable(name = "FILME_PESSOAS" ,
@@ -46,7 +47,7 @@ public class Filme {
 	}
 
 	public Filme(String descricao, String nome, String comentario, String dataLancamento, String estudio,
-			String diretor, String elenco) {
+			String diretor, String elenco, double avaliacao) {
 		super();
 		this.descricao = descricao;
 		this.nome = nome;
@@ -55,6 +56,7 @@ public class Filme {
 		this.estudio = estudio;
 		this.diretor = diretor;
 		this.elenco = elenco;
+		this.avaliacao = avaliacao;
 	}
 
 	// HashCode e Equals
@@ -84,6 +86,14 @@ public class Filme {
 	}
 
 	// Getters e Setters
+
+	public double getAvaliacao() {
+		return avaliacao;
+	}
+
+	public void setAvaliacao(double avaliacao) {
+		this.avaliacao = avaliacao;
+	}
 
 	public Long getId() {
 		return id;

@@ -5,7 +5,8 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import br.com.compasso.lambda.desafioCompasso.models.Filme;
-@JsonIgnoreProperties( {"hibernateLaziInitializer", "handler" } )
+
+@JsonIgnoreProperties({ "hibernateLaziInitializer", "handler" })
 public class FilmeCompletoCategoriaDto {
 
 	private Long id;
@@ -16,9 +17,8 @@ public class FilmeCompletoCategoriaDto {
 	private String estudio;
 	private String diretor;
 	private String elenco;
+	private double avaliacao;
 	private List<CategoriaDto> categoriaDto;
-
-
 
 	public FilmeCompletoCategoriaDto(Filme filme) {
 		super();
@@ -30,7 +30,12 @@ public class FilmeCompletoCategoriaDto {
 		this.estudio = filme.getEstudio();
 		this.diretor = filme.getDiretor();
 		this.elenco = filme.getElenco();
-		this.categoriaDto =  CategoriaDto.converter(filme.getCategorias());
+		this.categoriaDto = CategoriaDto.converter(filme.getCategorias());
+		this.avaliacao = filme.getAvaliacao();
+	}
+
+	public double getAvaliacao() {
+		return avaliacao;
 	}
 
 	public Long getId() {
