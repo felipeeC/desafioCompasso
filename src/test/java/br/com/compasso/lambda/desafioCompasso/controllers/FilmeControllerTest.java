@@ -44,7 +44,7 @@ public class FilmeControllerTest {
 	@Test
 	public void cadastraFilmeVazio() throws Exception {
 
-		FilmeForm ff = new FilmeForm(null, null, null, null, null, null, null);
+		FilmeForm ff = new FilmeForm(null, null, null, null, null, null, null,0);
 
 		ff.setNome("");
 
