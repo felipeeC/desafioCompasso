@@ -29,7 +29,6 @@ import br.com.compasso.lambda.desafioCompasso.dtos.FilmeCompletoCategoriaDto;
 import br.com.compasso.lambda.desafioCompasso.dtos.FilmeCompletoDto;
 import br.com.compasso.lambda.desafioCompasso.dtos.FilmeDto;
 import br.com.compasso.lambda.desafioCompasso.dtos.FilmeForm;
-import br.com.compasso.lambda.desafioCompasso.dtos.PessoaDto;
 import br.com.compasso.lambda.desafioCompasso.models.Filme;
 import br.com.compasso.lambda.desafioCompasso.services.CategoriaService;
 import br.com.compasso.lambda.desafioCompasso.services.FilmeService;
@@ -49,7 +48,7 @@ public class FilmeController {
 	private CategoriaService categoriaService;
 
 	@GetMapping
-	public ResponseEntity<Page<FilmeDto>> Todosfilmes(
+	public ResponseEntity<Page<FilmeDto>> todosFilmes(
 			@PageableDefault(sort = "id", direction = Direction.ASC, page = 0, size = 10) Pageable paginacao) {
 
 		Page<Filme> filmes = filmeService.getFilmes(paginacao);
@@ -57,7 +56,7 @@ public class FilmeController {
 
 	}
 	@GetMapping("/{idfilme}")
-	public ResponseEntity<FilmeCompletoDto> FindfilmeById(@PathVariable(name = "idfilme") long idFilme) {
+	public ResponseEntity<FilmeCompletoDto> findFilmeById(@PathVariable(name = "idfilme") long idFilme) {
 
 		Filme filme = filmeService.find(idFilme);
 		return ResponseEntity.ok(new FilmeCompletoDto(filme));
