@@ -55,12 +55,13 @@ public class FilmeController {
 		return ResponseEntity.ok(FilmeDto.converterPage(filmes));
 
 	}
+
 	@GetMapping("/{idfilme}")
 	public ResponseEntity<FilmeCompletoDto> findFilmeById(@PathVariable(name = "idfilme") long idFilme) {
 
 		Filme filme = filmeService.find(idFilme);
 		return ResponseEntity.ok(new FilmeCompletoDto(filme));
-		
+
 	}
 
 	// ok
