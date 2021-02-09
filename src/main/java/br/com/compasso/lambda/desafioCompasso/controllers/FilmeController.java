@@ -29,6 +29,7 @@ import br.com.compasso.lambda.desafioCompasso.dtos.FilmeCompletoCategoriaDto;
 import br.com.compasso.lambda.desafioCompasso.dtos.FilmeCompletoDto;
 import br.com.compasso.lambda.desafioCompasso.dtos.FilmeDto;
 import br.com.compasso.lambda.desafioCompasso.dtos.FilmeForm;
+import br.com.compasso.lambda.desafioCompasso.dtos.PessoaDto;
 import br.com.compasso.lambda.desafioCompasso.models.Filme;
 import br.com.compasso.lambda.desafioCompasso.services.CategoriaService;
 import br.com.compasso.lambda.desafioCompasso.services.FilmeService;
@@ -54,6 +55,13 @@ public class FilmeController {
 		Page<Filme> filmes = filmeService.getFilmes(paginacao);
 		return ResponseEntity.ok(FilmeDto.converterPage(filmes));
 
+	}
+	@GetMapping("/{idfilme}")
+	public ResponseEntity<FilmeCompletoDto> FindfilmeById(@PathVariable(name = "idfilme") long idFilme) {
+
+		Filme filme = filmeService.find(idFilme);
+		return ResponseEntity.ok(new FilmeCompletoDto(filme));
+		
 	}
 
 	// ok
