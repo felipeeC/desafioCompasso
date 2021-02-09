@@ -76,5 +76,10 @@ public class FilmeCompletoDto {
 	public static Page<FilmeCompletoDto> converterPage(Page<Filme> filmes) {
 		return filmes.map(FilmeCompletoDto::new);
 	}
+	
+	public static FilmeCompletoDto converter(Filme filme) {
+
+		return filme.map(FilmeCompletoDto::new);
+	}
 
 }
