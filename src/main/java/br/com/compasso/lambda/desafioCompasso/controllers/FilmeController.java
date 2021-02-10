@@ -30,9 +30,7 @@ import br.com.compasso.lambda.desafioCompasso.dtos.FilmeCompletoDto;
 import br.com.compasso.lambda.desafioCompasso.dtos.FilmeDto;
 import br.com.compasso.lambda.desafioCompasso.dtos.FilmeForm;
 import br.com.compasso.lambda.desafioCompasso.models.Filme;
-import br.com.compasso.lambda.desafioCompasso.services.CategoriaService;
 import br.com.compasso.lambda.desafioCompasso.services.FilmeService;
-import br.com.compasso.lambda.desafioCompasso.services.PessoaService;
 
 @RestController
 @RequestMapping(value = "/filmes")
@@ -40,12 +38,6 @@ public class FilmeController {
 
 	@Autowired
 	private FilmeService filmeService;
-
-	@Autowired
-	private PessoaService pessoaService;
-
-	@Autowired
-	private CategoriaService categoriaService;
 
 	@GetMapping
 	public ResponseEntity<Page<FilmeDto>> todosFilmes(
@@ -66,9 +58,12 @@ public class FilmeController {
 
 	// ok
 	@PostMapping("/{idfilme}/associar-pessoa/{idpessoa}")
-	public ResponseEntity<FilmeCompletoDto> associarPessoa(@PathVariable(name = "idpessoa") long idPessoa,
-			@PathVariable(name = "idfilme") long idFilme, UriComponentsBuilder uriBuilder) {
-		Filme filmeAssociado = filmeService.associaPessoa(idFilme, idFilme);
+	public ResponseEntity<FilmeCompletoDto> associarPessoa(
+			@PathVariable(name = "idpessoa") long idPessoa,
+			@PathVariable(name = "idfilme") long idFilme,
+			UriComponentsBuilder uriBuilder) {
+		
+		Filme filmeAssociado = filmeService.associaPessoa(idPessoa, idFilme);
 		if (filmeAssociado != null) {
 
 			URI uri = uriBuilder.path("/filmes/{id}").buildAndExpand(filmeAssociado.getId()).toUri();
@@ -98,7 +93,7 @@ public class FilmeController {
 	@DeleteMapping(value = "/{idfilme}/desassociar-categoria/{idcategoria}")
 	public ResponseEntity<CategoriaDto> desassociarCategoria(@PathVariable(name = "idfilme") Long idFilme,
 			@PathVariable(name = "idcategoria") long idCategoria, UriComponentsBuilder uriBuilder) {
-		Optional<Filme> filme = filmeService.getFilmeById(idFilme);
+
 		if (filmeService.desassociaCategoria(idFilme, idCategoria)) {
 
 			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
@@ -123,7 +118,6 @@ public class FilmeController {
 	@DeleteMapping(value = "/{idfilme}/desassociar-pessoa/{idpessoa}")
 	public ResponseEntity<FilmeCompletoDto> desassociarPessoa(@PathVariable(name = "idfilme") Long idFilme,
 			@PathVariable(name = "idpessoa") long idPessoa, UriComponentsBuilder uriBuilder) {
-		Optional<Filme> filme = filmeService.getFilmeById(idFilme);
 		if (filmeService.desassociaPessoa(idFilme, idPessoa)) {
 
 			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
