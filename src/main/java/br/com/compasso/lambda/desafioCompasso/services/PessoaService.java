@@ -47,24 +47,30 @@ public class PessoaService {
 	}
 
 	public PessoaDto cadastrarPessoa(PessoaForm form) {
+	    Pessoa novaPessoa = form.converter();
+	    List<Pessoa> pessoas = pessoaRepository.findAll();
 
-		Pessoa novaPessoa = form.converter();
-		List<Pessoa> pessoas = pessoaRepository.findAll();
+	    if (pessoas.contains(novaPessoa)) {
+	        StringBuilder stringBuilder = new StringBuilder();
+	        stringBuilder.append("Pessoa com nome: ");
+	        stringBuilder.append(novaPessoa.getNome());
+	        stringBuilder.append(" e email: ");
+	        stringBuilder.append(novaPessoa.getEmail());
+	        stringBuilder.append(" já existe");
 
-		if (pessoas.contains(novaPessoa)) {
-			StringBuilder stringBuilder = new StringBuilder();
-			stringBuilder.append("Pessoa com nome: ");
-			stringBuilder.append(novaPessoa.getNome());
-			stringBuilder.append(" e email: ");
-			stringBuilder.append(novaPessoa.getEmail());
-			stringBuilder.append(" já existe");
+	        throw new ConflictException(stringBuilder.toString());
+	    }
 
-			throw new ConflictException(stringBuilder.toString());
-		}
+	    boolean emailJaCadastrado = pessoas.stream()
+	            .anyMatch(pessoa -> pessoa.getEmail().equalsIgnoreCase(novaPessoa.getEmail()));
 
-		pessoaRepository.save(novaPessoa);
+	    if (emailJaCadastrado) {
+	        throw new ConflictException("Email já cadastrado: " + novaPessoa.getEmail());
+	    }
 
-		return new PessoaDto(novaPessoa);
+	    pessoaRepository.save(novaPessoa);
+
+	    return new PessoaDto(novaPessoa);
 	}
 
 	public PessoaDto atualizarPessoa(Long id, PessoaAtualizaForm form) {

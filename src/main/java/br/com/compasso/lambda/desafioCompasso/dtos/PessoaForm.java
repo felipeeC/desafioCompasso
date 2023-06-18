@@ -13,20 +13,30 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import br.com.compasso.lambda.desafioCompasso.models.Pessoa;
 
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public class PessoaForm {
-	
-	@NotNull @NotEmpty @Length(min = 5, max = 60)
+
+	@NotNull
+	@NotEmpty
+	@Length(min = 5, max = 60)
 	private String nome;
-	
-	@NotNull @NotEmpty @DateTimeFormat(pattern = "yyyy-MM-dd")
+
+	@NotNull
+	@NotEmpty
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private String aniversario;
-	
-	@NotNull @NotEmpty @Email
+
+	@NotNull
+	@NotEmpty
+	@Email
 	private String email;
-	
+
+	@NotNull
+	@NotEmpty
+	private String senha;
+
 	public Pessoa converter() {
-		return new Pessoa(nome, LocalDate.parse(aniversario), email);
+		return new Pessoa(nome, LocalDate.parse(aniversario), email, senha);
 	}
 
 	public String getNome() {
@@ -41,6 +51,10 @@ public class PessoaForm {
 		return email;
 	}
 
+	public String getSenha() {
+		return senha;
+	}
+
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
@@ -51,6 +65,10 @@ public class PessoaForm {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public void setSenha(String senha) {
+		this.senha = senha;
 	}
 
 }

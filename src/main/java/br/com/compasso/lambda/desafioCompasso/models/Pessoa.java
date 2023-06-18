@@ -18,6 +18,7 @@ public class Pessoa {
 	private String nome;
 	private LocalDate aniversario;
 	private String email;
+	private String senha;
 
 	@ManyToMany(mappedBy = "pessoas")
 	private List<Filme> filmes = new ArrayList<>();
@@ -27,16 +28,25 @@ public class Pessoa {
 		super();
 	}
 
-	public Pessoa(String nome, LocalDate aniversario, String email) {
+	public Pessoa(String nome, LocalDate aniversario, String email, String senha) {
 		this.nome = nome;
 		this.aniversario = aniversario;
 		this.email = email;
+		this.senha= senha;
 	}
 
 	// Getters e Setters
 
 	public List<Filme> getFilmes() {
 		return filmes;
+	}
+
+	public String getSenha() {
+		return senha;
+	}
+
+	public void setSenha(String senha) {
+		this.senha = senha;
 	}
 
 	public void setFilmes(List<Filme> filmes) {

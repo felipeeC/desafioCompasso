@@ -13,12 +13,14 @@ public class PessoaDto {
 	private String nome;
 	private String email;
 	private int idade;
+	private String senha;
 	
 	public PessoaDto(Pessoa pessoa) {
 		this.id = pessoa.getId();
 		this.nome = pessoa.getNome();
 		this.email = pessoa.getEmail();
 		this.idade = Period.between(pessoa.getAniversario(), LocalDate.now()).getYears();
+		this.senha = pessoa.getSenha();
 	}
 
 	public Long getId() {
@@ -35,6 +37,10 @@ public class PessoaDto {
 
 	public int getIdade() {
 		return idade;
+	}
+	
+	public String getSenha() {
+		return senha;
 	}
 	
 	public static Page<PessoaDto> converter(Page<Pessoa> pessoas) {
